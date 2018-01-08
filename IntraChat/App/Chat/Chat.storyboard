@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Mbs-nJ-ft9">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Room-->
+        <scene sceneID="qdG-IA-tse">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="kTC-ki-uvD" customClass="RoomListViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3F5-JZ-dfL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cmx-F8-8vf">
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WKx-I1-CE2" firstAttribute="trailing" secondItem="cmx-F8-8vf" secondAttribute="trailing" id="EDM-SU-5CA"/>
+                            <constraint firstItem="cmx-F8-8vf" firstAttribute="leading" secondItem="WKx-I1-CE2" secondAttribute="leading" id="cNf-Gn-L4s"/>
+                            <constraint firstItem="cmx-F8-8vf" firstAttribute="top" secondItem="WKx-I1-CE2" secondAttribute="top" id="hOW-Ok-BWL"/>
+                            <constraint firstItem="WKx-I1-CE2" firstAttribute="bottom" secondItem="cmx-F8-8vf" secondAttribute="bottom" id="jIF-BF-4Kg"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WKx-I1-CE2"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Room" id="8F4-wc-gvl">
+                        <barButtonItem key="rightBarButtonItem" title="add" id="P4x-pi-FNd">
+                            <connections>
+                                <segue destination="INL-a6-QRR" kind="presentation" id="aX9-yA-HSg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="cmx-F8-8vf" id="Y8m-S5-IKf"/>
+                        <segue destination="oOL-Ut-klC" kind="show" identifier="chat" id="WnN-vv-U85"/>
+                        <segue destination="bqY-aZ-FUc" kind="presentation" identifier="auth" id="ZDZ-8J-zez"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="b3Q-9X-rqf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="396" y="125.4872563718141"/>
+        </scene>
+        <!--Auth-->
+        <scene sceneID="fmh-dK-twO">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Auth" id="bqY-aZ-FUc" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bhw-Yc-mTi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="145" y="579"/>
+        </scene>
+        <!--Chat-->
+        <scene sceneID="MCO-Tz-Tcp">
+            <objects>
+                <viewController id="oOL-Ut-klC" customClass="RoomChatViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YBp-Wr-Ea0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="Tfw-9D-Fbb"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Chat" id="ugh-2C-A9E">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="IQButtonBarArrowLeft.png" id="lK4-Mu-JCl">
+                            <connections>
+                                <action selector="back:" destination="oOL-Ut-klC" id="Wxi-Ue-hE6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4I5-SQ-Mvc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1236" y="125"/>
+        </scene>
+        <!--Chat-->
+        <scene sceneID="9sF-7U-cug">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Mbs-nJ-ft9" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Chat" id="wMm-Pm-lSz"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="C8r-9d-gcM">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="kTC-ki-uvD" kind="relationship" relationship="rootViewController" id="bZy-tW-xcR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Isw-83-BB1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-436" y="125"/>
+        </scene>
+        <!--Create Room-->
+        <scene sceneID="zhW-h7-qAt">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Create Room" id="INL-a6-QRR" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HBN-pG-IqN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="647" y="579"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="IQButtonBarArrowLeft.png" width="12" height="21"/>
+    </resources>
+</document>
