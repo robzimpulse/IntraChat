@@ -25,6 +25,8 @@ class FirebaseManager: NSObject {
     
     let rooms = Variable<[Room]>([])
     
+    let messages = Variable<[Message]>([])
+    
     var authListener: AuthStateDidChangeListenerHandle?
     
     lazy var roomRef: DatabaseReference = {
@@ -51,6 +53,7 @@ class FirebaseManager: NSObject {
         
         authListener = Auth.auth().addStateDidChangeListener({ auth, user in
             if let user = user {
+                
                 self.roomRef.observe(.childAdded, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
                     guard room.users.contains(user.uid) else {return}
@@ -88,14 +91,28 @@ class FirebaseManager: NSObject {
                     self.users.value[index] = user
                 })
                 
+                self.messageRef.observe(.childAdded, with: { snapshot in
+                    // TODO: handle message added
+                })
+                
+                self.messageRef.observe(.childRemoved, with: { snapshot in
+                    // TODO: handle message removed
+                })
+                
+                self.messageRef.observe(.childChanged, with: { snapshot in
+                    // TODO: handle message edited
+                })
+                
                 self.userRef.child(user.uid).onDisconnectUpdateChildValues(["online": false])
                 self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
                 
             }else{
                 self.rooms.value = []
                 self.users.value = []
+                self.messages.value = []
                 self.roomRef.removeAllObservers()
                 self.userRef.removeAllObservers()
+                self.messageRef.removeAllObservers()
             }
         })
     }
