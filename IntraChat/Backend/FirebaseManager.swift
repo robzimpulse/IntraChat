@@ -35,6 +35,10 @@ class FirebaseManager: NSObject {
         return Database.database().reference().child("user")
     }()
     
+    lazy var messageRef: DatabaseReference = {
+        return Database.database().reference().child("message")
+    }()
+    
     lazy var storageRef: StorageReference = {
         return Storage.storage().reference()
     }()
@@ -120,6 +124,14 @@ class FirebaseManager: NSObject {
     func applicationWillTerminate() {
         guard let user = Auth.auth().currentUser else {return}
         userRef.child(user.uid).updateChildValues(["online": false])
+    }
+    
+    // MARK: Message
+    
+    func create(message: Message, completion: ((Error?) -> Void)? = nil){
+        messageRef.childByAutoId().setValue(message.keyValue(), withCompletionBlock: { error, ref in
+            completion?(error)
+        })
     }
     
     // MARK: Room

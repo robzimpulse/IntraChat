@@ -10,6 +10,21 @@ import UIKit
 
 extension String {
     
+    func dateFormat(from: String = "yyyy-MM-dd'T'HH:mm:ssZ", to: String) -> String {
+        guard let validDate = dateFormat(from: from) else { return self }
+        return validDate.toString(format: to)
+    }
+    
+    func dateFormat(from: String = "yyyy-MM-dd'T'HH:mm:ssZ") -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = from
+        return dateFormatter.date(from: self)
+    }
+    
+    func initials() -> String {
+        return self.capitalized.split(" ").flatMap({ $0.first?.toString }).joined()
+    }
+    
     func isVersionLess() -> Bool {
         return UIDevice
             .current
@@ -18,10 +33,6 @@ extension String {
                 self,
                 options: NSString.CompareOptions.numeric
             ) == ComparisonResult.orderedAscending
-    }
-    
-    func initials() -> String {
-        return self.capitalized.split(" ").flatMap({ $0.first?.toString }).joined()
     }
     
 }
