@@ -14,6 +14,14 @@ class Room: Mappable, FirebaseModel {
     var id: String = ""
     var name: String = ""
     var icon: String = ""
+    var users: [String] = []
+    
+    convenience init(name: String, icon: String, users: [User]) {
+        self.init()
+        self.name = name
+        self.icon = icon
+        self.users = users.map { $0.uid }
+    }
     
     // MARK: Mappable
     
@@ -25,12 +33,14 @@ class Room: Mappable, FirebaseModel {
         id <- map[Room.firebaseIdKey]
         name <- map["name"]
         icon <- map["icon"]
+        users <- map["users"]
     }
     
     func keyValue() -> [AnyHashable : Any]? {
         return [
             "name": name,
-            "icon": icon
+            "icon": icon,
+            "users": users
         ]
     }
     

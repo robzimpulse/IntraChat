@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,19 +16,28 @@
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="d3f-xS-G6i" customClass="ListUserViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="khZ-Ug-97G">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="akP-Wo-7pV">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="56" width="375" height="547"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="YDL-2I-Ho5">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="barTintColor" red="0.0084150675679999995" green="0.015765907240000002" blue="0.0028606951239999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="YDL-2I-Ho5" firstAttribute="top" secondItem="xL3-DD-elA" secondAttribute="top" id="3nu-Xq-scl"/>
                             <constraint firstItem="akP-Wo-7pV" firstAttribute="leading" secondItem="xL3-DD-elA" secondAttribute="leading" id="52n-UP-JDH"/>
+                            <constraint firstItem="YDL-2I-Ho5" firstAttribute="leading" secondItem="xL3-DD-elA" secondAttribute="leading" id="DLo-pg-eC3"/>
                             <constraint firstItem="xL3-DD-elA" firstAttribute="bottom" secondItem="akP-Wo-7pV" secondAttribute="bottom" id="F7O-oC-hf0"/>
-                            <constraint firstItem="akP-Wo-7pV" firstAttribute="top" secondItem="xL3-DD-elA" secondAttribute="top" id="Sqe-dP-Fgx"/>
+                            <constraint firstItem="akP-Wo-7pV" firstAttribute="top" secondItem="YDL-2I-Ho5" secondAttribute="bottom" id="GGh-pA-gQN"/>
+                            <constraint firstAttribute="trailing" secondItem="YDL-2I-Ho5" secondAttribute="trailing" id="Umv-zz-I0z"/>
                             <constraint firstItem="xL3-DD-elA" firstAttribute="trailing" secondItem="akP-Wo-7pV" secondAttribute="trailing" id="xC0-Gm-Itl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xL3-DD-elA"/>
@@ -39,8 +49,15 @@
                                 <action selector="back:" destination="d3f-xS-G6i" id="B17-SV-2pJ"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="SPm-4b-O2m">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <segue destination="oFX-4M-KcC" kind="show" id="BRB-Z6-4ZF"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchBar" destination="YDL-2I-Ho5" id="uyW-ER-2vT"/>
                         <outlet property="tableView" destination="akP-Wo-7pV" id="WGJ-TK-FOD"/>
                     </connections>
                 </viewController>
@@ -48,12 +65,115 @@
             </objects>
             <point key="canvasLocation" x="85.599999999999994" y="158.77061469265368"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Room Info-->
+        <scene sceneID="tYe-aX-PC8">
+            <objects>
+                <viewController id="oFX-4M-KcC" customClass="RoomInfoViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jr6-Q1-j3q">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OtD-OC-GJe">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nOm-47-xPf">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="444"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xjQ-Hm-idb">
+                                                <rect key="frame" x="16" y="16" width="342" height="342"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="xjQ-Hm-idb" secondAttribute="height" multiplier="1:1" id="ikn-vb-1Az"/>
+                                                </constraints>
+                                            </imageView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IY3-Yh-xsE">
+                                                <rect key="frame" x="16" y="378" width="343" height="46"/>
+                                                <subviews>
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Room Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MpR-rs-L3c">
+                                                        <rect key="frame" x="1" y="1" width="341" height="44"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="44" id="pKT-xp-ClA"/>
+                                                        </constraints>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="_placeholderLabel.textColor">
+                                                                <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                </subviews>
+                                                <color key="backgroundColor" red="0.0084150675679999995" green="0.015765907240000002" blue="0.0028606951239999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="MpR-rs-L3c" secondAttribute="bottom" constant="1" id="13u-ZQ-2kn"/>
+                                                    <constraint firstItem="MpR-rs-L3c" firstAttribute="leading" secondItem="IY3-Yh-xsE" secondAttribute="leading" constant="1" id="6qO-lD-btJ"/>
+                                                    <constraint firstItem="MpR-rs-L3c" firstAttribute="top" secondItem="IY3-Yh-xsE" secondAttribute="top" constant="1" id="GUe-Xd-A1d"/>
+                                                    <constraint firstAttribute="trailing" secondItem="MpR-rs-L3c" secondAttribute="trailing" constant="1" id="u3b-VX-UdM"/>
+                                                    <constraint firstAttribute="height" constant="46" id="uw8-El-uBo"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="IY3-Yh-xsE" firstAttribute="leading" secondItem="nOm-47-xPf" secondAttribute="leading" constant="16" id="2C2-lC-HeE"/>
+                                            <constraint firstItem="xjQ-Hm-idb" firstAttribute="centerX" secondItem="nOm-47-xPf" secondAttribute="centerX" id="6uV-b1-yan"/>
+                                            <constraint firstItem="IY3-Yh-xsE" firstAttribute="top" secondItem="xjQ-Hm-idb" secondAttribute="bottom" constant="20" id="AJ0-Lt-Xzj"/>
+                                            <constraint firstAttribute="bottom" secondItem="IY3-Yh-xsE" secondAttribute="bottom" constant="20" id="Bml-JV-tyl"/>
+                                            <constraint firstItem="xjQ-Hm-idb" firstAttribute="top" secondItem="nOm-47-xPf" secondAttribute="top" constant="16" id="Elf-B3-P6g"/>
+                                            <constraint firstItem="xjQ-Hm-idb" firstAttribute="leading" secondItem="nOm-47-xPf" secondAttribute="leading" constant="16" id="omX-D6-K0b"/>
+                                            <constraint firstAttribute="trailing" secondItem="IY3-Yh-xsE" secondAttribute="trailing" constant="16" id="tt6-bw-kmW"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="nOm-47-xPf" firstAttribute="width" secondItem="OtD-OC-GJe" secondAttribute="width" id="Hhj-Zc-RnB"/>
+                                    <constraint firstAttribute="bottom" secondItem="nOm-47-xPf" secondAttribute="bottom" id="Hil-NS-pnM"/>
+                                    <constraint firstItem="nOm-47-xPf" firstAttribute="top" secondItem="OtD-OC-GJe" secondAttribute="top" id="VtD-X8-bPn"/>
+                                    <constraint firstAttribute="trailing" secondItem="nOm-47-xPf" secondAttribute="trailing" id="e7V-C3-ftl"/>
+                                    <constraint firstItem="nOm-47-xPf" firstAttribute="leading" secondItem="OtD-OC-GJe" secondAttribute="leading" id="uf1-YO-aSy"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WME-6j-ilY" firstAttribute="trailing" secondItem="OtD-OC-GJe" secondAttribute="trailing" id="BDu-8E-xxN"/>
+                            <constraint firstItem="WME-6j-ilY" firstAttribute="bottom" secondItem="OtD-OC-GJe" secondAttribute="bottom" id="Bzp-3m-8gF"/>
+                            <constraint firstItem="OtD-OC-GJe" firstAttribute="top" secondItem="WME-6j-ilY" secondAttribute="top" id="foy-kM-3G1"/>
+                            <constraint firstItem="OtD-OC-GJe" firstAttribute="leading" secondItem="WME-6j-ilY" secondAttribute="leading" id="rYV-in-VjQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WME-6j-ilY"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Room Info" id="ZR2-Vo-vFH">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="p5F-aH-s34">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="back:" destination="oFX-4M-KcC" id="KKm-oB-AlY"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="M5D-m5-ecO">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="create:" destination="oFX-4M-KcC" id="DkP-64-54u"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="photoImageView" destination="xjQ-Hm-idb" id="mVS-89-8Y6"/>
+                        <outlet property="roomNameContainer" destination="IY3-Yh-xsE" id="bxo-1z-rcM"/>
+                        <outlet property="roomNameTextField" destination="MpR-rs-L3c" id="t50-EM-fX1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eXD-w1-ETQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="864.79999999999995" y="158.77061469265368"/>
+        </scene>
+        <!--Create User Navigation View Controller-->
         <scene sceneID="mKJ-Dd-o32">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="oSJ-nP-tBO" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="oSJ-nP-tBO" customClass="CreateUserNavigationViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="j4A-2k-nZp">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="j4A-2k-nZp">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="0.0082509713250000002" green="0.015832165259999999" blue="0.0027721789670000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

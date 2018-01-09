@@ -31,12 +31,12 @@ class FirebaseManager: NSObject {
         return Database.database().reference().child("room")
     }()
     
-    lazy var memberRef: DatabaseReference = {
-        return Database.database().reference().child("member")
-    }()
-    
     lazy var userRef: DatabaseReference = {
         return Database.database().reference().child("user")
+    }()
+    
+    lazy var storageRef: StorageReference = {
+        return Storage.storage().reference()
     }()
     
     override init() {
@@ -49,25 +49,22 @@ class FirebaseManager: NSObject {
             if let user = user {
                 self.roomRef.observe(.childAdded, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    self.get(memberWithRoomId: room.id, completion: { members in
-                        if members.contains(user.uid) { self.rooms.value.append(room) }
-                    })
+                    guard room.users.contains(user.uid) else {return}
+                    self.rooms.value.append(room)
                 })
                 
                 self.roomRef.observe(.childRemoved, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
                     guard let index = self.rooms.value.index(where: { room.id == $0.id }) else {return}
-                    self.get(memberWithRoomId: room.id, completion: { members in
-                        if members.contains(user.uid) { self.rooms.value.remove(at: index) }
-                    })
+                    guard room.users.contains(user.uid) else {return}
+                    self.rooms.value.remove(at: index)
                 })
                 
                 self.roomRef.observe(.childChanged, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
                     guard let index = self.rooms.value.index(where: { room.id == $0.id }) else {return}
-                    self.get(memberWithRoomId: room.id, completion: { members in
-                        if members.contains(user.uid) { self.rooms.value[index] = room }
-                    })
+                    guard room.users.contains(user.uid) else {return}
+                    self.rooms.value[index] = room
                 })
                 
                 self.userRef.observe(.childAdded, with: { snapshot in
@@ -87,14 +84,8 @@ class FirebaseManager: NSObject {
                     self.users.value[index] = user
                 })
                 
-                let myUser = User()
-                myUser.name = user.displayName
-                myUser.email = user.email
-                myUser.phone = user.phoneNumber
-                myUser.photo = user.photoURL?.absoluteString
-                
                 self.userRef.child(user.uid).onDisconnectUpdateChildValues(["online": false])
-                self.userRef.child(user.uid).updateChildValues(myUser.keyValue() ?? [:])
+                self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
                 
             }else{
                 self.rooms.value = []
@@ -109,6 +100,12 @@ class FirebaseManager: NSObject {
         guard let listener = authListener else {return}
         Auth.auth().removeStateDidChangeListener(listener)
     }
+    
+    func currentUser() -> Firebase.User? {
+        return Auth.auth().currentUser
+    }
+    
+    // MARK: Application Delegate
     
     func applicationWillResignActive() {
         guard let user = Auth.auth().currentUser else {return}
@@ -129,46 +126,32 @@ class FirebaseManager: NSObject {
     
     func create(room: Room, completion: ((Error?) -> Void)? = nil){
         roomRef.childByAutoId().setValue(room.keyValue(), withCompletionBlock: { error, ref in
-            if let error = error { completion?(error); return}
-            self.add(memberWithRoomId: room.id, completion: { completion?($0) })
+            completion?(error)
         })
     }
     
-    // MARK: Member
-    
-    private func add(memberWithRoomId roomId: String, completion: ((Error?) -> Void)? = nil){
-        if let user = Auth.auth().currentUser {
-            get(memberWithRoomId: roomId, completion: { members in
-                if !members.contains(user.uid) {
-                    var newMembers = members
-                    newMembers.append(user.uid)
-                    self.memberRef.child(roomId).setValue(["users": newMembers], withCompletionBlock: { error, ref in
-                        completion?(error)
-                    })
-                }
-            })
-        }
-    }
-    
-    func get(memberWithRoomId roomId: String, completion: (([String]) -> Void)? = nil){
-        memberRef.child(roomId).observeSingleEvent(of: .value, with: { snapshot in
-            guard let member = Member(snapshot: snapshot) else {return}
-            completion?(member.users)
-        })
-    }
-    
-    func remove(memberWithRoomId roomId: String, completion: ((Error?) -> Void)? = nil){
-        if let user = Auth.auth().currentUser {
-            get(memberWithRoomId: roomId, completion: { members in
-                if members.contains(user.uid) {
-                    var newMembers = members
-                    newMembers.removeAll([user.uid])
-                    self.memberRef.child(roomId).setValue(["users": newMembers], withCompletionBlock: { error, ref in
-                        completion?(error)
-                    })
-                }
-            })
-        }
+    // MARK: files upload
+    func upload(
+        image: UIImage,
+        handleFailure: ((StorageTaskSnapshot) -> Void)? = nil,
+        handlePause: ((StorageTaskSnapshot) -> Void)? = nil,
+        handleProgress: ((StorageTaskSnapshot) -> Void)? = nil,
+        handleResume: ((StorageTaskSnapshot) -> Void)? = nil,
+        handleSuccess: ((StorageTaskSnapshot) -> Void)? = nil,
+        handleUnknown: ((StorageTaskSnapshot) -> Void)? = nil,
+        completion: ((StorageMetadata?, Error?) -> Void)? = nil
+    ){
+        guard let data = UIImagePNGRepresentation(image) else {return}
+        let filename = UUID().uuidString.appending(".png")
+        let meta = StorageMetadata()
+        meta.contentType = "image/png"
+        let task = storageRef.child(filename).putData(data, metadata: meta, completion: completion)
+        if let handler = handleFailure {task.observe(.failure, handler: handler)}
+        if let handler = handlePause {task.observe(.pause, handler: handler)}
+        if let handler = handleProgress {task.observe(.progress, handler: handler)}
+        if let handler = handleResume {task.observe(.resume, handler: handler)}
+        if let handler = handleSuccess {task.observe(.success, handler: handler)}
+        if let handler = handleUnknown {task.observe(.unknown, handler: handler)}
     }
     
 }

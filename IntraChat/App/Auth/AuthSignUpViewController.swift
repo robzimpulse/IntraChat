@@ -41,12 +41,15 @@ class AuthSignUpViewController: UIViewController {
             Auth.auth().createUser(withEmail: email, password: password, completion: { user, error in
                 guard let user = user else {
                     print(error as Any)
+                    self.submitButton.isEnabled = true
                     return
                 }
-                self.navigationController?.dismissVC(completion: {
-                    let request = user.createProfileChangeRequest()
-                    request.displayName = username
-                    request.commitChanges(completion: { error in print(error as Any) })
+                let request = user.createProfileChangeRequest()
+                request.displayName = username
+                request.commitChanges(completion: { error in
+                    FirebaseManager.shared.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
+                    self.navigationController?.dismissVC(completion: nil)
+                    print(error as Any)
                 })
             })
         }).disposed(by: disposeBag)

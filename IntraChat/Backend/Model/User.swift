@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 import ObjectMapper
 
 class User: Mappable, FirebaseModel {
@@ -18,6 +19,15 @@ class User: Mappable, FirebaseModel {
     var phone: String?
     var online: Bool = false
     
+    convenience init(user: Firebase.User) {
+        self.init()
+        uid = user.uid
+        name = user.displayName
+        email = user.email
+        photo = user.photoURL?.absoluteString
+        phone = user.phoneNumber
+    }
+    
     // MARK: Mappable
     
     convenience required init?(map: Map) {
@@ -25,7 +35,7 @@ class User: Mappable, FirebaseModel {
     }
     
     func mapping(map: Map) {
-        uid <- map[Member.firebaseIdKey]
+        uid <- map[User.firebaseIdKey]
         name <- map["name"]
         email <- map["email"]
         photo <- map["photo"]
@@ -34,13 +44,12 @@ class User: Mappable, FirebaseModel {
     }
     
     func keyValue() -> [AnyHashable : Any]? {
-        return [
-            "name": name,
-            "email": email,
-            "photo": photo,
-            "phone": phone,
-            "online": online
-        ]
+        var array : [AnyHashable: Any] = ["online": online]
+        if let data = name { array["name"] = data }
+        if let data = email { array["email"] = data }
+        if let data = photo { array["photo"] = data }
+        if let data = phone { array["phone"] = data }
+        return array
     }
     
 }

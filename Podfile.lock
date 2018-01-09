@@ -2,6 +2,9 @@ PODS:
   - Alamofire (4.6.0)
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
+  - Cache (4.1.2)
+  - DACircularProgress (2.3.1)
+  - Eureka (4.0.1)
   - EZSwiftExtensions (1.11)
   - Firebase/Auth (4.8.0):
     - Firebase/Core
@@ -47,8 +50,15 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
   - GTMSessionFetcher/Core (1.1.12)
+  - Hue (3.0.1)
+  - ImagePicker (3.0.0)
+  - Imaginary (3.0.2):
+    - Cache (~> 4.0)
   - IQKeyboardManager (5.0.7)
   - leveldb-library (1.20)
+  - Lightbox (2.1.1):
+    - Hue (~> 3.0)
+    - Imaginary (~> 3.0)
   - MessageKit (0.12.0)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
@@ -62,24 +72,33 @@ PODS:
   - RxCocoa (4.0.0):
     - RxSwift (~> 4.0)
   - RxSwift (4.0.0)
+  - TOCropViewController (2.3.5)
 
 DEPENDENCIES:
   - AlamofireImage
+  - DACircularProgress
+  - Eureka
   - EZSwiftExtensions
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
+  - ImagePicker
   - IQKeyboardManager
+  - Lightbox
   - MessageKit
   - ObjectMapper
   - PusherChatkit
   - RxCocoa
   - RxSwift
+  - TOCropViewController
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
+  Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
+  DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
+  Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   EZSwiftExtensions: 84000042202d9fd574f626cda3064143f27fa767
   Firebase: 710decbbc6d9d48530e9a5dba3209740c3532e05
   FirebaseAnalytics: 5b02a63ead2c3f0259cfc7f15e053e440587ecf8
@@ -90,8 +109,12 @@ SPEC CHECKSUMS:
   FirebaseStorage: ab08d1c93a2feffa038fdd6693088b310ab1e6c6
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
+  Hue: 93e852fa6211ab35922ad8c293f51c43d6c79eb2
+  ImagePicker: 973953c25960fe04729a7082a56194321c6762d2
+  Imaginary: d675200546110e305d6a26db6267c0622ffe5e6b
   IQKeyboardManager: 0bfa4607d39924116b5c0c8b55b5d789288b5cba
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
+  Lightbox: 30dc3540527e03194a10ee51be8ad5e039a1893f
   MessageKit: 9455b04be28eb7c50a00962e6168672cd3d403ae
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
@@ -99,7 +122,8 @@ SPEC CHECKSUMS:
   PusherPlatform: d9abd46caac2d49c797bd18d9e34c36f2000364b
   RxCocoa: d62846ca96495d862fa4c59ea7d87e5031d7340e
   RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
+  TOCropViewController: a21b39c910d161600a26b6e3f89a58707afaa4f8
 
-PODFILE CHECKSUM: fa33531b3c346eac6c176741188219b75e34712b
+PODFILE CHECKSUM: 020be10fb38d06c7910da39cff7937615a9e97e1
 
 COCOAPODS: 1.3.1

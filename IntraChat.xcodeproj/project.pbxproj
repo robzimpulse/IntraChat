@@ -34,10 +34,11 @@
 		3EE3D7122000CFC300D77A8F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D7112000CFC300D77A8F /* GoogleService-Info.plist */; };
 		3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */; };
 		3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7152000D74200D77A8F /* BaseMappable.swift */; };
-		3EE3D7182000F61500D77A8F /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7172000F61500D77A8F /* Member.swift */; };
 		3EE3D71A2000F78C00D77A8F /* DictionaryTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7192000F78C00D77A8F /* DictionaryTransform.swift */; };
 		3EE3D71D20016E9E00D77A8F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D71C20016E9E00D77A8F /* Auth.storyboard */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
+		848FE201200458140025B982 /* CreateUserNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FE200200458140025B982 /* CreateUserNavigationViewController.swift */; };
+		848FE20320045F3F0025B982 /* RoomInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FE20220045F3F0025B982 /* RoomInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,10 +71,11 @@
 		3EE3D7112000CFC300D77A8F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		3EE3D7152000D74200D77A8F /* BaseMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMappable.swift; sourceTree = "<group>"; };
-		3EE3D7172000F61500D77A8F /* Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
 		3EE3D7192000F78C00D77A8F /* DictionaryTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryTransform.swift; sourceTree = "<group>"; };
 		3EE3D71C20016E9E00D77A8F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
+		848FE200200458140025B982 /* CreateUserNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserNavigationViewController.swift; sourceTree = "<group>"; };
+		848FE20220045F3F0025B982 /* RoomInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoViewController.swift; sourceTree = "<group>"; };
 		B5023256F62985F125840E25 /* Pods-IntraChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.debug.xcconfig"; sourceTree = "<group>"; };
 		BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntraChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -103,7 +105,9 @@
 			isa = PBXGroup;
 			children = (
 				3E2090162003BBE00062BA7C /* Create Room.storyboard */,
+				848FE200200458140025B982 /* CreateUserNavigationViewController.swift */,
 				3E20901F2003D2060062BA7C /* ListUserViewController.swift */,
+				848FE20220045F3F0025B982 /* RoomInfoViewController.swift */,
 			);
 			path = "Create Room";
 			sourceTree = "<group>";
@@ -196,7 +200,6 @@
 			isa = PBXGroup;
 			children = (
 				3E6A22F0200065F0006A5607 /* Room.swift */,
-				3EE3D7172000F61500D77A8F /* Member.swift */,
 				3E20901D2003CE650062BA7C /* User.swift */,
 			);
 			path = Model;
@@ -363,16 +366,24 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
+				"${BUILT_PRODUCTS_DIR}/Cache/Cache.framework",
+				"${BUILT_PRODUCTS_DIR}/DACircularProgress/DACircularProgress.framework",
 				"${BUILT_PRODUCTS_DIR}/EZSwiftExtensions/EZSwiftExtensions.framework",
+				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Hue/Hue.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
+				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
+				"${BUILT_PRODUCTS_DIR}/Imaginary/Imaginary.framework",
+				"${BUILT_PRODUCTS_DIR}/Lightbox/Lightbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/PusherChatkit/PusherChatkit.framework",
 				"${BUILT_PRODUCTS_DIR}/PusherPlatform/PusherPlatform.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/TOCropViewController/TOCropViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -380,16 +391,24 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cache.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DACircularProgress.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EZSwiftExtensions.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hue.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Imaginary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lightbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PusherChatkit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PusherPlatform.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TOCropViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -414,6 +433,7 @@
 				3EC9025F2003AC1200BEBA71 /* FadeTransition.swift in Sources */,
 				3E2090232003D4660062BA7C /* UserCell.swift in Sources */,
 				3E15536720027089007BD985 /* AuthSignUpViewController.swift in Sources */,
+				848FE201200458140025B982 /* CreateUserNavigationViewController.swift in Sources */,
 				3E20901E2003CE650062BA7C /* User.swift in Sources */,
 				3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */,
 				3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */,
@@ -423,8 +443,8 @@
 				3E15536520027082007BD985 /* AuthSignInViewController.swift in Sources */,
 				3EE3D7102000C34B00D77A8F /* UIViewController.swift in Sources */,
 				3E2090202003D2060062BA7C /* ListUserViewController.swift in Sources */,
+				848FE20320045F3F0025B982 /* RoomInfoViewController.swift in Sources */,
 				3EE3D71A2000F78C00D77A8F /* DictionaryTransform.swift in Sources */,
-				3EE3D7182000F61500D77A8F /* Member.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,7 +583,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7RPGJ28F8X;
+				DEVELOPMENT_TEAM = U6K5WUTV76;
 				INFOPLIST_FILE = "$(SRCROOT)/IntraChat/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -580,7 +600,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7RPGJ28F8X;
+				DEVELOPMENT_TEAM = U6K5WUTV76;
 				INFOPLIST_FILE = "$(SRCROOT)/IntraChat/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

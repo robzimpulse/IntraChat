@@ -13,7 +13,7 @@ class RoomChatViewController: UIViewController {
     var roomId: String?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
+        return .lightContent
     }
     
     override func viewDidLoad() {

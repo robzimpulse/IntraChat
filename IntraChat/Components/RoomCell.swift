@@ -15,6 +15,8 @@ class RoomCell: UITableViewCell {
     @IBOutlet weak var lastChatLabel: UILabel!
     @IBOutlet weak var iconImageView: UIImageView!
     
+    var room: Room?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -26,6 +28,7 @@ class RoomCell: UITableViewCell {
     }
     
     func configure(room: Room){
+        self.room = room
         nameLabel.text = room.name
         lastChatLabel.text = ""
         iconImageView.image = nil

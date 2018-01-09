@@ -14,6 +14,8 @@ class UserCell: UITableViewCell {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     
+    var user: User? 
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
@@ -24,6 +26,7 @@ class UserCell: UITableViewCell {
     }
     
     func configure(user: User){
+        self.user = user
         usernameLabel.text = user.name
         profileImageView.image = nil
         guard let photo = user.photo, let url = URL(string: photo) else {return}

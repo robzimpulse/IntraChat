@@ -7,12 +7,17 @@ target 'IntraChat' do
 
   # Pods for IntraChat
   
+  pod 'Eureka'
+  pod 'Lightbox'
   pod 'MessageKit'
+  pod 'ImagePicker'
   pod 'ObjectMapper'
   pod 'PusherChatkit'
   pod 'AlamofireImage'
   pod 'IQKeyboardManager'
   pod 'EZSwiftExtensions'
+  pod 'DACircularProgress'
+  pod 'TOCropViewController'
   
   pod 'RxSwift'
   pod 'RxCocoa'
@@ -24,7 +29,7 @@ target 'IntraChat' do
 end
 
 post_install do |installer|
-    myExcludedTargets = ['MessageKit','ILLoginKit']
+    myExcludedTargets = ['MessageKit','ILLoginKit','ImagePicker','Lightbox','Eureka']
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             if myExcludedTargets.include? target.name

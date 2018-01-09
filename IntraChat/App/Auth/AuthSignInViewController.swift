@@ -31,9 +31,11 @@ class AuthSignInViewController: UIViewController {
         submitButton.rx.tap.bind(onNext: {
             guard let email = self.emailTextField.text else {return}
             guard let password = self.passwordTextField.text else {return}
+            self.submitButton.isEnabled = false
             Auth.auth().signIn(withEmail: email, password: password, completion: { user, error in
                 guard user != nil else {
                     print(error as Any)
+                    self.submitButton.isEnabled = true
                     return
                 }
                 self.navigationController?.dismissVC(completion: nil)

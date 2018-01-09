@@ -21,7 +21,7 @@ class RoomListViewController: UIViewController {
     var selectedRoomId: String?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .default
+        return .lightContent
     }
     
     override func viewDidLoad() {
@@ -57,13 +57,6 @@ class RoomListViewController: UIViewController {
         if Auth.auth().currentUser == nil {
             performSegue(withIdentifier: "auth", sender: self)
         }
-    }
-    
-    @IBAction func createRoom(_ sender: Any){
-//        let room = Room()
-//        room.name = "testing"
-//        room.icon = "https://lorempixel.com/200/200"
-//        manager.create(room: room)
     }
     
 }
