@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Firebase
+import FirebaseStorage
 import FirebaseDatabase
 import EZSwiftExtensions
 
@@ -23,9 +24,15 @@ class FirebaseManager: NSObject {
     
     let users = Variable<[User]>([])
     
+    let userForRoom = Variable<User?>(nil)
+    
     let rooms = Variable<[Room]>([])
     
     let messages = Variable<[Message]>([])
+    
+    let roomForMessage = Variable<Room?>(nil)
+    
+    let disposeBag = DisposeBag()
     
     var authListener: AuthStateDidChangeListenerHandle?
     
@@ -51,9 +58,8 @@ class FirebaseManager: NSObject {
         
         FirebaseApp.configure()
         
-        authListener = Auth.auth().addStateDidChangeListener({ auth, user in
-            if let user = user {
-                
+        userForRoom.asObservable().bind(onNext: {
+            if let user = $0 {
                 self.roomRef.observe(.childAdded, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
                     guard room.users.contains(user.uid) else {return}
@@ -73,6 +79,38 @@ class FirebaseManager: NSObject {
                     guard room.users.contains(user.uid) else {return}
                     self.rooms.value[index] = room
                 })
+            }else{
+                self.rooms.value = []
+                self.roomRef.removeAllObservers()
+            }
+            
+        }).disposed(by: disposeBag)
+        
+        roomForMessage.asObservable().bind(onNext: {
+            if let room = $0 {
+                self.messageRef.observe(.childAdded, with: { snapshot in
+                    // TODO: handle message added
+                    print("added message for room: \(room.id)")
+                })
+                
+                self.messageRef.observe(.childRemoved, with: { snapshot in
+                    // TODO: handle message removed
+                    print("removed message for room: \(room.id)")
+                })
+                
+                self.messageRef.observe(.childChanged, with: { snapshot in
+                    // TODO: handle message edited
+                    print("changed message for room: \(room.id)")
+                })
+            }else{
+                self.messages.value = []
+                self.messageRef.removeAllObservers()
+            }
+        }).disposed(by: disposeBag)
+        
+        
+        authListener = Auth.auth().addStateDidChangeListener({ auth, user in
+            if let user = user {
                 
                 self.userRef.observe(.childAdded, with: { snapshot in
                     guard let user = User(snapshot: snapshot) else {return}
@@ -91,28 +129,14 @@ class FirebaseManager: NSObject {
                     self.users.value[index] = user
                 })
                 
-                self.messageRef.observe(.childAdded, with: { snapshot in
-                    // TODO: handle message added
-                })
-                
-                self.messageRef.observe(.childRemoved, with: { snapshot in
-                    // TODO: handle message removed
-                })
-                
-                self.messageRef.observe(.childChanged, with: { snapshot in
-                    // TODO: handle message edited
-                })
-                
                 self.userRef.child(user.uid).onDisconnectUpdateChildValues(["online": false])
                 self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
                 
             }else{
-                self.rooms.value = []
+                
                 self.users.value = []
-                self.messages.value = []
-                self.roomRef.removeAllObservers()
                 self.userRef.removeAllObservers()
-                self.messageRef.removeAllObservers()
+                
             }
         })
     }

@@ -34,7 +34,6 @@
 		3EE3D7122000CFC300D77A8F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D7112000CFC300D77A8F /* GoogleService-Info.plist */; };
 		3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */; };
 		3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7152000D74200D77A8F /* BaseMappable.swift */; };
-		3EE3D71A2000F78C00D77A8F /* DictionaryTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7192000F78C00D77A8F /* DictionaryTransform.swift */; };
 		3EE3D71D20016E9E00D77A8F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D71C20016E9E00D77A8F /* Auth.storyboard */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
 		842A229D2004D109008AE4A4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229C2004D109008AE4A4 /* Message.swift */; };
@@ -73,7 +72,6 @@
 		3EE3D7112000CFC300D77A8F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		3EE3D7152000D74200D77A8F /* BaseMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMappable.swift; sourceTree = "<group>"; };
-		3EE3D7192000F78C00D77A8F /* DictionaryTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryTransform.swift; sourceTree = "<group>"; };
 		3EE3D71C20016E9E00D77A8F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
 		842A229C2004D109008AE4A4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -149,7 +147,6 @@
 			children = (
 				3EE3D70E2000C33D00D77A8F /* Extension */,
 				3E6A22EF200065E4006A5607 /* Model */,
-				3EE3D7192000F78C00D77A8F /* DictionaryTransform.swift */,
 				3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */,
 				3EC9025E2003AC1200BEBA71 /* FadeTransition.swift */,
 			);
@@ -452,7 +449,6 @@
 				3EE3D7102000C34B00D77A8F /* UIViewController.swift in Sources */,
 				3E2090202003D2060062BA7C /* ListUserViewController.swift in Sources */,
 				848FE20320045F3F0025B982 /* RoomInfoViewController.swift in Sources */,
-				3EE3D71A2000F78C00D77A8F /* DictionaryTransform.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

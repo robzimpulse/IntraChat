@@ -11,7 +11,7 @@ import MessageKit
 
 class RoomChatViewController: MessagesViewController {
 
-    var roomId: String?
+    var room: Room?
     
     var isTyping: Bool = false
     
@@ -53,6 +53,8 @@ class RoomChatViewController: MessagesViewController {
         messageInputBar = customInputBar
         reloadInputViews()
         
+        FirebaseManager.shared.roomForMessage.value = room
+        
 //        myAvatarImage.af_setImage(
 //            withURL: URL(string: ProfileController.shared.get()?.photoUrl ?? "")!,
 //            filter: AspectScaledToFillSizeCircleFilter(size: CGSize(width: 100, height: 100))
@@ -69,7 +71,7 @@ class RoomChatViewController: MessagesViewController {
 
 extension RoomChatViewController: MessageInputBarDelegate {
     func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
-        guard let roomId = roomId else {return}
+        guard let roomId = room?.id else {return}
         inputBar.inputTextView.text = String()
         let message = Message(roomId: roomId, text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
         FirebaseManager.shared.create(message: message, completion: { error in

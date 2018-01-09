@@ -18,7 +18,7 @@ class RoomListViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
-    var selectedRoomId: String?
+    var selectedRoom: Room?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -35,7 +35,7 @@ class RoomListViewController: UIViewController {
         )
 
         tableView.rx.modelSelected(Room.self).bind(onNext: { room in
-            self.selectedRoomId = room.id
+            self.selectedRoom = room
             self.performSegue(withIdentifier: "chat", sender: self)
         }).disposed(by: disposeBag)
         
@@ -43,12 +43,16 @@ class RoomListViewController: UIViewController {
             to: tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
             curriedArgument: { row, room, cell in cell.configure(room: room) }
         ).disposed(by: disposeBag)
-
+        
+        if let user = FirebaseManager.shared.currentUser() {
+            FirebaseManager.shared.userForRoom.value = User(user: user)
+        }
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? RoomChatViewController {
-            destination.roomId = selectedRoomId
+            destination.room = selectedRoom
         }
     }
     
