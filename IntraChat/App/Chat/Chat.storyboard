@@ -84,7 +84,7 @@
         <!--Chat-->
         <scene sceneID="9sF-7U-cug">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Mbs-nJ-ft9" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Mbs-nJ-ft9" customClass="NavigationController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" id="wMm-Pm-lSz"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>

@@ -37,7 +37,9 @@
 		3EE3D71A2000F78C00D77A8F /* DictionaryTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7192000F78C00D77A8F /* DictionaryTransform.swift */; };
 		3EE3D71D20016E9E00D77A8F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D71C20016E9E00D77A8F /* Auth.storyboard */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
-		848FE201200458140025B982 /* CreateUserNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FE200200458140025B982 /* CreateUserNavigationViewController.swift */; };
+		842A229D2004D109008AE4A4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229C2004D109008AE4A4 /* Message.swift */; };
+		842A229F2004D2EE008AE4A4 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229E2004D2EE008AE4A4 /* String.swift */; };
+		842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A22A02004E867008AE4A4 /* NavigationController.swift */; };
 		848FE20320045F3F0025B982 /* RoomInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FE20220045F3F0025B982 /* RoomInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -74,7 +76,9 @@
 		3EE3D7192000F78C00D77A8F /* DictionaryTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryTransform.swift; sourceTree = "<group>"; };
 		3EE3D71C20016E9E00D77A8F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
-		848FE200200458140025B982 /* CreateUserNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUserNavigationViewController.swift; sourceTree = "<group>"; };
+		842A229C2004D109008AE4A4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		842A229E2004D2EE008AE4A4 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		842A22A02004E867008AE4A4 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		848FE20220045F3F0025B982 /* RoomInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoViewController.swift; sourceTree = "<group>"; };
 		B5023256F62985F125840E25 /* Pods-IntraChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.debug.xcconfig"; sourceTree = "<group>"; };
 		BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntraChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -105,7 +109,6 @@
 			isa = PBXGroup;
 			children = (
 				3E2090162003BBE00062BA7C /* Create Room.storyboard */,
-				848FE200200458140025B982 /* CreateUserNavigationViewController.swift */,
 				3E20901F2003D2060062BA7C /* ListUserViewController.swift */,
 				848FE20220045F3F0025B982 /* RoomInfoViewController.swift */,
 			);
@@ -201,6 +204,7 @@
 			children = (
 				3E6A22F0200065F0006A5607 /* Room.swift */,
 				3E20901D2003CE650062BA7C /* User.swift */,
+				842A229C2004D109008AE4A4 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -212,6 +216,7 @@
 				3E2090222003D4660062BA7C /* UserCell.xib */,
 				3E6A22FC200087BF006A5607 /* RoomCell.swift */,
 				3E6A22FD200087BF006A5607 /* RoomCell.xib */,
+				842A22A02004E867008AE4A4 /* NavigationController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -219,10 +224,11 @@
 		3EE3D70E2000C33D00D77A8F /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				3EE3D7152000D74200D77A8F /* BaseMappable.swift */,
 				3EE3D70F2000C34B00D77A8F /* UIViewController.swift */,
 				3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */,
-				3EE3D7152000D74200D77A8F /* BaseMappable.swift */,
 				3E2090252003D7EA0062BA7C /* UINavigationController.swift */,
+				842A229E2004D2EE008AE4A4 /* String.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -425,7 +431,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E3487EC1FFFDBD1009ED2E0 /* AppDelegate.swift in Sources */,
+				842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */,
 				3E2090262003D7EA0062BA7C /* UINavigationController.swift in Sources */,
+				842A229F2004D2EE008AE4A4 /* String.swift in Sources */,
 				3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */,
 				3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */,
 				3E6A230120009652006A5607 /* RoomChatViewController.swift in Sources */,
@@ -433,7 +441,6 @@
 				3EC9025F2003AC1200BEBA71 /* FadeTransition.swift in Sources */,
 				3E2090232003D4660062BA7C /* UserCell.swift in Sources */,
 				3E15536720027089007BD985 /* AuthSignUpViewController.swift in Sources */,
-				848FE201200458140025B982 /* CreateUserNavigationViewController.swift in Sources */,
 				3E20901E2003CE650062BA7C /* User.swift in Sources */,
 				3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */,
 				3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */,
@@ -441,6 +448,7 @@
 				3E6A22EE200064BD006A5607 /* SettingViewController.swift in Sources */,
 				3E6A22FE200087BF006A5607 /* RoomCell.swift in Sources */,
 				3E15536520027082007BD985 /* AuthSignInViewController.swift in Sources */,
+				842A229D2004D109008AE4A4 /* Message.swift in Sources */,
 				3EE3D7102000C34B00D77A8F /* UIViewController.swift in Sources */,
 				3E2090202003D2060062BA7C /* ListUserViewController.swift in Sources */,
 				848FE20320045F3F0025B982 /* RoomInfoViewController.swift in Sources */,

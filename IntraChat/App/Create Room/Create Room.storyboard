@@ -168,10 +168,10 @@
             </objects>
             <point key="canvasLocation" x="864.79999999999995" y="158.77061469265368"/>
         </scene>
-        <!--Create User Navigation View Controller-->
+        <!--Navigation Controller-->
         <scene sceneID="mKJ-Dd-o32">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="oSJ-nP-tBO" customClass="CreateUserNavigationViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="oSJ-nP-tBO" customClass="NavigationController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="j4A-2k-nZp">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>

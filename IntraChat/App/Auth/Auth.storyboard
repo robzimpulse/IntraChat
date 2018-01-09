@@ -15,7 +15,7 @@
         <!--Navigation Controller-->
         <scene sceneID="cIs-tI-7hC">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="AD0-uU-Hhf" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="AD0-uU-Hhf" customClass="NavigationController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="84H-qq-R08">
                         <autoresizingMask key="autoresizingMask"/>

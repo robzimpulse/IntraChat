@@ -7,18 +7,164 @@
 //
 
 import UIKit
+import MessageKit
 
-class RoomChatViewController: UIViewController {
+class RoomChatViewController: MessagesViewController {
 
     var roomId: String?
+    
+    var isTyping: Bool = false
+    
+    var messageList: [Message] = []
+    
+    let myAvatarImage = UIImageView()
+    
+    let clientAvatarImage = UIImageView()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
+    lazy var customInputBar: MessageInputBar = {
+        let newMessageInputBar = MessageInputBar()
+        newMessageInputBar.backgroundColor = UIColor.black
+        newMessageInputBar.sendButton.tintColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
+        newMessageInputBar.inputTextView.textContainerInset = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        newMessageInputBar.inputTextView.placeholderLabelInsets = UIEdgeInsets(top: 8, left: 20, bottom: 8, right: 16)
+        newMessageInputBar.delegate = self
+        return newMessageInputBar
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerSwipeBack()
-    }
 
+        registerSwipeBack()
+        
+        if "11.0".isVersionLess() { automaticallyAdjustsScrollViewInsets = true }
+        
+        messagesCollectionView.messagesDataSource = self
+        messagesCollectionView.messagesLayoutDelegate = self
+        messagesCollectionView.messagesDisplayDelegate = self
+        messagesCollectionView.messageCellDelegate = self
+        
+        scrollsToBottomOnKeybordBeginsEditing = true
+        maintainPositionOnKeyboardFrameChanged = true
+        
+        messageInputBar = customInputBar
+        reloadInputViews()
+        
+//        myAvatarImage.af_setImage(
+//            withURL: URL(string: ProfileController.shared.get()?.photoUrl ?? "")!,
+//            filter: AspectScaledToFillSizeCircleFilter(size: CGSize(width: 100, height: 100))
+//        )
+        
+//        clientAvatarImage.af_setImage(
+//            withURL: URL(string: consultation.customerPhoto)!,
+//            filter: AspectScaledToFillSizeCircleFilter(size: CGSize(width: 100, height: 100))
+//        )
+        
+    }
+    
+}
+
+extension RoomChatViewController: MessageInputBarDelegate {
+    func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
+        inputBar.inputTextView.text = String()
+        let message = Message(text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
+        messageList.append(message)
+        messagesCollectionView.reloadData()
+        messagesCollectionView.scrollToBottom(animated: true)
+    }
+}
+
+extension RoomChatViewController: MessagesDataSource {
+    func currentSender() -> Sender {
+        return Sender(
+            id: FirebaseManager.shared.currentUser()?.uid ?? "",
+            displayName: FirebaseManager.shared.currentUser()?.displayName ?? ""
+        )
+    }
+    
+    func messageForItem(at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageType {
+        return messageList[indexPath.section]
+    }
+    
+    func numberOfMessages(in messagesCollectionView: MessagesCollectionView) -> Int {
+        return messageList.count
+    }
+    
+    func avatar(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> Avatar {
+        let senderName = isFromCurrentSender(message: message) ? currentSender().displayName : message.sender.displayName
+        let image = isFromCurrentSender(message: message) ? myAvatarImage : clientAvatarImage
+        return Avatar(image: image.image, initials: senderName.initials())
+    }
+}
+
+extension RoomChatViewController: MessagesLayoutDelegate {
+    func heightForLocation(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat { return 200 }
+    
+    func avatarPosition(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> AvatarPosition {
+        return AvatarPosition(horizontal: .natural, vertical: .messageBottom)
+    }
+    
+    func messagePadding(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIEdgeInsets {
+        return isFromCurrentSender(message: message) ?
+            UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 4):
+            UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 30)
+    }
+    
+    func cellTopLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
+        return isFromCurrentSender(message: message) ?
+            .messageTrailing(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)) :
+            .messageLeading(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
+    }
+    
+    func cellBottomLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
+        return isFromCurrentSender(message: message) ?
+            .messageTrailing(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)) :
+            .messageLeading(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
+    }
+    
+    func footerViewSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
+        return CGSize(width: messagesCollectionView.bounds.width, height: 10)
+    }
+}
+
+extension RoomChatViewController: MessagesDisplayDelegate {
+    
+    // MARK: All Message
+    
+    func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
+        return isFromCurrentSender(message: message) ? UIColor.lightGray : UIColor.darkGray
+    }
+    
+    func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
+        return isFromCurrentSender(message: message) ? .bubbleTail(.bottomRight, .curved) : .bubbleTail(.bottomLeft, .curved)
+    }
+    
+    // MARK: Text Message
+    func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
+        return isFromCurrentSender(message: message) ? .white : .darkText
+    }
+    
+    func detectorAttributes(for detector: DetectorType, and message: MessageType, at indexPath: IndexPath) -> [NSAttributedStringKey : Any] {
+        return MessageLabel.defaultAttributes
+    }
+    
+    func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
+        return [.url, .address, .phoneNumber, .date]
+    }
+    
+}
+
+extension RoomChatViewController: MessageCellDelegate {
+    
+    func didTapAvatar(in cell: MessageCollectionViewCell) {
+        print("avatar tapped")
+    }
+    
+    func didTapMessage(in cell: MessageCollectionViewCell) {
+        print("message tapped")
+    }
+    
 }
