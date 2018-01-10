@@ -12,10 +12,10 @@ import ObjectMapper
 
 class User: Mappable, FirebaseModel {
 
-    var uid: String = ""
+    var uid: String?
     var name: String?
     var email: String?
-    var photo: String? 
+    var photo: String?
     var phone: String?
     var online: Bool = false
     

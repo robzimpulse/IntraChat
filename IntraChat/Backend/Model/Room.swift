@@ -21,7 +21,7 @@ class Room: Mappable, FirebaseModel {
         self.init()
         self.name = name
         self.icon = icon
-        self.users = users.map { $0.uid }
+        self.users = users.flatMap { $0.uid }
     }
     
     // MARK: Mappable

@@ -208,8 +208,8 @@
 			children = (
 				3E6A22F0200065F0006A5607 /* Room.swift */,
 				3E20901D2003CE650062BA7C /* User.swift */,
-				842A229C2004D109008AE4A4 /* Message.swift */,
 				8447F73E20061617002B9528 /* Notification.swift */,
+				842A229C2004D109008AE4A4 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

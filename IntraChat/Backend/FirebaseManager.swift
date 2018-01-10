@@ -70,18 +70,18 @@ class FirebaseManager: NSObject {
         Realm.Configuration.defaultConfiguration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
         
         userForRoom.asObservable().bind(onNext: {
-            if let user = $0 {
+            if let uid = $0?.uid {
                 self.roomRef.observe(.childAdded, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
                     guard let users = room.users else {return}
-                    guard users.contains(user.uid) else {return}
+                    guard users.contains(uid) else {return}
                     self.rooms.value.append(room)
                 })
                 
                 self.roomRef.observe(.childRemoved, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
                     guard let users = room.users else {return}
-                    guard users.contains(user.uid) else {return}
+                    guard users.contains(uid) else {return}
                     guard let index = self.rooms.value.index(where: { room.id == $0.id }) else {return}
                     self.rooms.value.remove(at: index)
                 })
@@ -89,7 +89,7 @@ class FirebaseManager: NSObject {
                 self.roomRef.observe(.childChanged, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
                     guard let users = room.users else {return}
-                    guard users.contains(user.uid) else {return}
+                    guard users.contains(uid) else {return}
                     guard let index = self.rooms.value.index(where: { room.id == $0.id }) else {return}
                     self.rooms.value[index] = room
                 })
