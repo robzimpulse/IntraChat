@@ -20,6 +20,7 @@
 		3E3487F11FFFDBD1009ED2E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E3487EF1FFFDBD1009ED2E0 /* Main.storyboard */; };
 		3E3487F31FFFDBD1009ED2E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E3487F21FFFDBD1009ED2E0 /* Assets.xcassets */; };
 		3E3487F61FFFDBD1009ED2E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E3487F41FFFDBD1009ED2E0 /* LaunchScreen.storyboard */; };
+		3E35B93A2006CA0F00AA4125 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35B9392006CA0F00AA4125 /* Chat.swift */; };
 		3E6A22E720005DF0006A5607 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22E620005DF0006A5607 /* Chat.storyboard */; };
 		3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22E820005EA4006A5607 /* RoomListViewController.swift */; };
 		3E6A22EC200064B4006A5607 /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22EB200064B4006A5607 /* Setting.storyboard */; };
@@ -60,6 +61,7 @@
 		3E3487F21FFFDBD1009ED2E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3E3487F51FFFDBD1009ED2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3E3487F71FFFDBD1009ED2E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E35B9392006CA0F00AA4125 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		3E6A22E620005DF0006A5607 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		3E6A22E820005EA4006A5607 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
 		3E6A22EB200064B4006A5607 /* Setting.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Setting.storyboard; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 				3E20901D2003CE650062BA7C /* User.swift */,
 				8447F73E20061617002B9528 /* Notification.swift */,
 				842A229C2004D109008AE4A4 /* Message.swift */,
+				3E35B9392006CA0F00AA4125 /* Chat.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				3E3487EC1FFFDBD1009ED2E0 /* AppDelegate.swift in Sources */,
 				842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */,
 				3E2090262003D7EA0062BA7C /* UINavigationController.swift in Sources */,
+				3E35B93A2006CA0F00AA4125 /* Chat.swift in Sources */,
 				842A229F2004D2EE008AE4A4 /* String.swift in Sources */,
 				3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */,
 				3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */,

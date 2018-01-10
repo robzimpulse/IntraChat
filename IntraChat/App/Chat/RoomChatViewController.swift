@@ -9,6 +9,8 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxRealm
+import RealmSwift
 import MessageKit
 
 class RoomChatViewController: MessagesViewController {
@@ -17,7 +19,7 @@ class RoomChatViewController: MessagesViewController {
     
     var isTyping: Bool = false
     
-    var messageList: [Message] = []
+    var messageList: [Chat] = []
     
     let disposeBag = DisposeBag()
     
@@ -55,21 +57,20 @@ class RoomChatViewController: MessagesViewController {
         messageInputBar = customInputBar
         reloadInputViews()
         
-        FirebaseManager.shared.messages.asObservable().scan([Message](), accumulator: { old, new in
-            guard let last = new.last else {return []}
-            return [last]
-        }).bind(onNext: {
-            guard let message = $0.first else {return}
-            self.messageList.append(message)
-        }).disposed(by: disposeBag)
-        
-        FirebaseManager.shared.messages.asObservable()
-            .throttle(1, scheduler: MainScheduler.instance)
-            .bind(onNext: { _ in
-                self.messagesCollectionView.reloadData()
-                self.messagesCollectionView.scrollToBottom(animated: true)
-            })
-            .disposed(by: disposeBag)
+        Realm.asyncOpen(callback: { realm, _ in
+            guard let realm = realm else {return}
+            guard let roomId = self.room?.id else {return}
+            Observable
+                .changeset(from: realm.objects(Message.self).filter("roomId = '\(roomId)'"))
+                .throttle(1.0, scheduler: MainScheduler.instance)
+                .subscribe(onNext: { results, changes in
+                    self.messageList = results.flatMap({ Chat(message: $0) })
+                    self.messagesCollectionView.reloadData()
+                    self.messagesCollectionView.scrollToBottom(animated: changes != nil)
+                })
+                .disposed(by: self.disposeBag)
+            
+        })
         
     }
     
@@ -90,17 +91,16 @@ extension RoomChatViewController: MessageInputBarDelegate {
         guard let room = room else {return}
         guard let roomId = room.id else {return}
         inputBar.inputTextView.text = String()
-        let message = Message(roomId: roomId, text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
+        let message = Message(roomId: roomId, text: text, sender: currentSender().id, date: Date())
         FirebaseManager.shared.create(message: message, completion: { error in
             guard error == nil else {return}
-            FirebaseManager.shared.updateLastChat(roomId: roomId, date: message.sentDate)
+            FirebaseManager.shared.updateLastChat(roomId: roomId, date: Date())
             room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
-                let notification = Notification(
+                FirebaseManager.shared.create(notification: Notification(
                     title: "\(self.currentSender().displayName) @\(room.name ?? "")",
                     body: text,
                     receiver: user
-                )
-                FirebaseManager.shared.create(notification: notification)
+                ))
             })
         })
     }

@@ -113,21 +113,36 @@ class FirebaseManager: NSObject {
                 self.messageRef.observe(.childAdded, with: { snapshot in
                     guard let message = Message(snapshot: snapshot) else {return}
                     guard message.roomId == room.id else {return}
-                    self.messages.value.append(message)
+                    Realm.asyncOpen(callback: { realm, _ in
+                        guard let realm = realm else {return}
+                        print("add to realm")
+                        do { try realm.write { realm.add(message, update: true) } }
+                        catch { print("error update to realm") }
+                    })
                 })
                 
                 self.messageRef.observe(.childRemoved, with: { snapshot in
                     guard let message = Message(snapshot: snapshot) else {return}
                     guard message.roomId == room.id else {return}
-                    guard let index = self.messages.value.index(where: { message.messageId == $0.messageId }) else {return}
-                    self.messages.value.remove(at: index)
+                    Realm.asyncOpen(callback: { realm, _ in
+                        guard let realm = realm else {return}
+                        guard let messageId = message.messageId else {return}
+                        guard let object = realm.object(ofType: Message.self, forPrimaryKey: messageId) else {return}
+                        print("deleted from realm")
+                        do { try realm.write { realm.delete(object) } }
+                        catch { print("error delete from realm") }
+                    })
                 })
                 
                 self.messageRef.observe(.childChanged, with: { snapshot in
                     guard let message = Message(snapshot: snapshot) else {return}
                     guard message.roomId == room.id else {return}
-                    guard let index = self.messages.value.index(where: { message.messageId == $0.messageId }) else {return}
-                    self.messages.value[index] = message
+                    Realm.asyncOpen(callback: { realm, _ in
+                        guard let realm = realm else {return}
+                        print("updated to realm")
+                        do { try realm.write { realm.add(message, update: true) } }
+                        catch { print("error update to realm") }
+                    })
                 })
             }else{
                 self.messages.value = []

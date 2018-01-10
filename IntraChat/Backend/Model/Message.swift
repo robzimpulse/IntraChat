@@ -9,39 +9,62 @@
 import UIKit
 import MapKit
 import MessageKit
+import RealmSwift
 import ObjectMapper
 
-class Message: MessageType, FirebaseModel, Mappable {
+class Message: Object, FirebaseModel, Mappable {
     
-    var sender: Sender
-    var messageId: String
-    var sentDate: Date
-    var data: MessageData
-    var roomId: String
+    @objc dynamic var sender: String?
+    @objc dynamic var messageId: String?
+    @objc dynamic var sentDate: Date?
+    @objc dynamic var roomId: String?
+    @objc dynamic var type: String?
+    @objc dynamic var content: String?
     
-    init(roomId: String, data: MessageData, sender: Sender, messageId: String, date: Date) {
-        self.data = data
-        self.sender = sender
-        self.messageId = messageId
-        self.sentDate = date
-        self.roomId = roomId
+    override static func primaryKey() -> String? { return "messageId" }
+    override static func ignoredProperties() -> [String] { return ["data"] }
+    
+    var data: MessageData? {
+        get {
+            guard let type = self.type else {return nil}
+            guard let content = self.content else {return nil}
+            if type == "text" {
+                return MessageData.text(content)
+            } else { return nil }
+        }
+        set {
+            guard let value = newValue else {return}
+            switch value {
+            case .text(let text):
+                self.type = "text"
+                self.content = text
+                break
+            default:
+                self.type = nil
+                self.content = nil
+                break
+            }
+        }
     }
     
-    convenience init(roomId: String, text: String, sender: Sender, messageId: String, date: Date) {
-        self.init(roomId: roomId, data: .text(text), sender: sender, messageId: messageId, date: date)
+    convenience init(roomId: String, text: String, sender: String, date: Date) {
+        self.init()
+        self.roomId = roomId
+        self.data = .text(text)
+        self.sender = sender
+        self.sentDate = date
     }
     
     convenience required init?(map: Map) {
-        guard let messageId = map.JSON[Message.firebaseIdKey] as? String else {return nil}
-        guard let roomId = map.JSON["room"] as? String else {return nil}
-        guard let date = Transform.date.transformFromJSON(map.JSON["date"]) else {return nil}
-        guard let sender = Transform.messageSender.transformFromJSON(map.JSON["sender"]) else {return nil}
-        guard let data = Transform.messageData.transformFromJSON(map.JSON["data"]) else {return nil}
-        
-        self.init(roomId: roomId, data: data, sender: sender, messageId: messageId, date: date)
+        self.init()
     }
     
     func mapping(map: Map) {
+        messageId <- map[Message.firebaseIdKey]
+        roomId <- map["room"]
+        sender <- map["sender"]
+        sentDate <- (map["date"], Transform.date)
+        data <- (map["data"], Transform.messageData)
     }
     
     func keyValue() -> [AnyHashable : Any]? {
@@ -49,7 +72,7 @@ class Message: MessageType, FirebaseModel, Mappable {
         
         array["data"] = Transform.messageData.transformToJSON(data)
         array["date"] = Transform.date.transformToJSON(sentDate)
-        array["sender"] = Transform.messageSender.transformToJSON(sender)
+        array["sender"] = sender
         array["room"] = roomId
         
         return array
