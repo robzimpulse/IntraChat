@@ -188,6 +188,14 @@ class FirebaseManager: NSObject {
         })
     }
     
+    func updateLastChat(roomId: String, date: Date, completion: ((Error?) -> Void)? = nil){
+        roomRef.child(roomId).updateChildValues(
+            ["lastChat": Transform.date.transformToJSON(date)],
+            withCompletionBlock: { error, _ in
+                completion?(error)
+            })
+    }
+    
     // MARK: files upload
     func upload(
         image: UIImage,

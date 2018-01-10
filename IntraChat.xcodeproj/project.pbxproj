@@ -39,6 +39,7 @@
 		842A229D2004D109008AE4A4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229C2004D109008AE4A4 /* Message.swift */; };
 		842A229F2004D2EE008AE4A4 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229E2004D2EE008AE4A4 /* String.swift */; };
 		842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A22A02004E867008AE4A4 /* NavigationController.swift */; };
+		8451A0D62005CDE40097BED7 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451A0D52005CDE40097BED7 /* Transform.swift */; };
 		848FE20320045F3F0025B982 /* RoomInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FE20220045F3F0025B982 /* RoomInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,7 @@
 		842A229C2004D109008AE4A4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		842A229E2004D2EE008AE4A4 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		842A22A02004E867008AE4A4 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		8451A0D52005CDE40097BED7 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		848FE20220045F3F0025B982 /* RoomInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInfoViewController.swift; sourceTree = "<group>"; };
 		B5023256F62985F125840E25 /* Pods-IntraChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.debug.xcconfig"; sourceTree = "<group>"; };
 		BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IntraChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,6 +150,7 @@
 				3EE3D70E2000C33D00D77A8F /* Extension */,
 				3E6A22EF200065E4006A5607 /* Model */,
 				3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */,
+				8451A0D52005CDE40097BED7 /* Transform.swift */,
 				3EC9025E2003AC1200BEBA71 /* FadeTransition.swift */,
 			);
 			path = Backend;
@@ -444,6 +447,7 @@
 				3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */,
 				3E6A22EE200064BD006A5607 /* SettingViewController.swift in Sources */,
 				3E6A22FE200087BF006A5607 /* RoomCell.swift in Sources */,
+				8451A0D62005CDE40097BED7 /* Transform.swift in Sources */,
 				3E15536520027082007BD985 /* AuthSignInViewController.swift in Sources */,
 				842A229D2004D109008AE4A4 /* Message.swift in Sources */,
 				3EE3D7102000C34B00D77A8F /* UIViewController.swift in Sources */,

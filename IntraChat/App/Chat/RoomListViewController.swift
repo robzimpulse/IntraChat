@@ -20,9 +20,15 @@ class RoomListViewController: UIViewController {
     
     var selectedRoom: Room?
     
+    var isScrolled = false
+    
+    var timer: Timer?
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
+    deinit { timer?.invalidate() }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,15 +45,24 @@ class RoomListViewController: UIViewController {
             self.performSegue(withIdentifier: "chat", sender: self)
         }).disposed(by: disposeBag)
         
+        tableView.rx.willBeginDragging.bind { self.isScrolled = true }.disposed(by: disposeBag)
+        
+        tableView.rx.didEndDragging.bind { self.isScrolled = !$0 }.disposed(by: disposeBag)
+        
+        tableView.rx.didEndScrollingAnimation.bind { self.isScrolled = false }.disposed(by: disposeBag)
+        
         FirebaseManager.shared.rooms.asObservable().bind(
             to: tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
             curriedArgument: { row, room, cell in cell.configure(room: room) }
         ).disposed(by: disposeBag)
         
+        timer = Timer.runThisEvery(seconds: 1.0, handler: { _ in
+            if !self.isScrolled { self.tableView.reloadData() }
+        })
+     
         if let user = FirebaseManager.shared.currentUser() {
             FirebaseManager.shared.userForRoom.value = User(user: user)
         }
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

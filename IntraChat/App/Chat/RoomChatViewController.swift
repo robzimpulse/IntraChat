@@ -87,7 +87,6 @@ class RoomChatViewController: MessagesViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         FirebaseManager.shared.roomForMessage.value = nil
-        
     }
     
 }
@@ -99,6 +98,7 @@ extension RoomChatViewController: MessageInputBarDelegate {
         let message = Message(roomId: roomId, text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
         FirebaseManager.shared.create(message: message, completion: { error in
             guard error == nil else {return}
+            FirebaseManager.shared.updateLastChat(roomId: message.roomId, date: message.sentDate)
             print("success sent message")
         })
     }
@@ -124,6 +124,16 @@ extension RoomChatViewController: MessagesDataSource {
         let senderName = isFromCurrentSender(message: message) ? currentSender().displayName : message.sender.displayName
         let image = isFromCurrentSender(message: message) ? myAvatarImage : clientAvatarImage
         return Avatar(image: image.image, initials: senderName.initials())
+    }
+    
+    func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+        return NSAttributedString(
+            string: message.sentDate.toString(format: "HH:mm"),
+            attributes: [
+                NSAttributedStringKey.font: UIFont.systemFont(ofSize: 11, weight: .bold),
+                NSAttributedStringKey.foregroundColor : UIColor.lightGray
+            ]
+        )
     }
 }
 

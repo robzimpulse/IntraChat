@@ -15,6 +15,7 @@ class Room: Mappable, FirebaseModel {
     var name: String = ""
     var icon: String = ""
     var users: [String] = []
+    var lastChat: Date?
     
     convenience init(name: String, icon: String, users: [User]) {
         self.init()
@@ -34,14 +35,16 @@ class Room: Mappable, FirebaseModel {
         name <- map["name"]
         icon <- map["icon"]
         users <- map["users"]
+        lastChat <- (map["lastChat"], Transform.date)
     }
     
     func keyValue() -> [AnyHashable : Any]? {
-        return [
-            "name": name,
-            "icon": icon,
-            "users": users
-        ]
+        var array : [String : Any] = [:]
+        if let data = lastChat { array["lastChat"] = Transform.date.transformToJSON(data) }
+        array["name"] = name
+        array["icon"] = icon
+        array["users"] = users
+        return array
     }
     
 }

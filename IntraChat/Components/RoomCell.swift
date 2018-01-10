@@ -30,7 +30,7 @@ class RoomCell: UITableViewCell {
     func configure(room: Room){
         self.room = room
         nameLabel.text = room.name
-        lastChatLabel.text = ""
+        lastChatLabel.text = "Last chat \((room.lastChat ?? Date()).timePassed())"
         iconImageView.image = nil
         guard let url = URL(string: room.icon) else {return}
         let filter = AspectScaledToFillSizeCircleFilter(size: CGSize(width: 100, height: 100))
