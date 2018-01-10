@@ -81,7 +81,15 @@ PODS:
   - PusherChatkit (0.3.0):
     - PusherPlatform (~> 0.1.23)
   - PusherPlatform (0.1.30)
+  - Realm (3.0.2):
+    - Realm/Headers (= 3.0.2)
+  - Realm/Headers (3.0.2)
+  - RealmSwift (3.0.2):
+    - Realm (= 3.0.2)
   - RxCocoa (4.0.0):
+    - RxSwift (~> 4.0)
+  - RxRealm (0.7.5):
+    - RealmSwift (~> 3.0)
     - RxSwift (~> 4.0)
   - RxSwift (4.0.0)
   - TOCropViewController (2.3.5)
@@ -103,6 +111,7 @@ DEPENDENCIES:
   - ObjectMapper
   - PusherChatkit
   - RxCocoa
+  - RxRealm
   - RxSwift
   - TOCropViewController
 
@@ -135,10 +144,13 @@ SPEC CHECKSUMS:
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   PusherChatkit: 53d6b4f413f15d95421c9a215875fb647358ac7a
   PusherPlatform: d9abd46caac2d49c797bd18d9e34c36f2000364b
+  Realm: 6f23fd1f178a09342eac21bfa7c2bf4312a7a180
+  RealmSwift: 695393add1b8f9d5fa75dd16e6355cf3935f71e2
   RxCocoa: d62846ca96495d862fa4c59ea7d87e5031d7340e
+  RxRealm: a6c6c0a07cb61f34209969ca6657734edfdfff30
   RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
   TOCropViewController: a21b39c910d161600a26b6e3f89a58707afaa4f8
 
-PODFILE CHECKSUM: ee46d306e16c0e0334dc2d2f2e96b0274da75a12
+PODFILE CHECKSUM: d85fd60abb7370c42c3808fc4139c00f1bf176ee
 
 COCOAPODS: 1.3.1

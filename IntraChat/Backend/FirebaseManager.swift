@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import Firebase
+import RealmSwift
 import FirebaseStorage
 import FirebaseDatabase
 import EZSwiftExtensions
@@ -65,6 +66,8 @@ class FirebaseManager: NSObject {
         FirebaseApp.configure()
         
         Messaging.messaging().delegate = self
+        
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
         
         userForRoom.asObservable().bind(onNext: {
             if let user = $0 {

@@ -21,6 +21,7 @@ target 'IntraChat' do
   
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'RxRealm'
   
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
