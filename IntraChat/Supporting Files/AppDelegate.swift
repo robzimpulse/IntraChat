@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        registerPushNotification(application: application)
         return true
     }
 
@@ -43,12 +44,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate: UNUserNotificationCenterDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        FirebaseManager.shared.setupApns(token: deviceToken)
         let token = deviceToken.map({ return String(format: "%02.2hhx", $0) }).joined()
         print("device token : \(token)")
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        print("didReceiveRemoteNotification \(userInfo)")
+        FirebaseManager.shared.didReceiveRemoteNotification(userInfo: userInfo)
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        FirebaseManager.shared.didReceiveRemoteNotification(userInfo: userInfo)
+        completionHandler(.newData)
     }
     
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
@@ -69,13 +76,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     @available(iOS 10, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("willPresent withCompletionHandler")
+        print("willPresent withCompletionHandler \(notification)")
         completionHandler([.sound,.alert,.badge])
     }
     
     @available(iOS 10, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("didReceive withCompletionHandler")
+        print("didReceive withCompletionHandler \(response)")
         completionHandler()
     }
 }

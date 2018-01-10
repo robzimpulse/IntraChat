@@ -38,6 +38,7 @@
 		842A229D2004D109008AE4A4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229C2004D109008AE4A4 /* Message.swift */; };
 		842A229F2004D2EE008AE4A4 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229E2004D2EE008AE4A4 /* String.swift */; };
 		842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A22A02004E867008AE4A4 /* NavigationController.swift */; };
+		8447F73F20061617002B9528 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8447F73E20061617002B9528 /* Notification.swift */; };
 		8451A0D62005CDE40097BED7 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8451A0D52005CDE40097BED7 /* Transform.swift */; };
 		8451A0D92005E5A60097BED7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8451A0D82005E5A60097BED7 /* GoogleService-Info.plist */; };
 		848FE20320045F3F0025B982 /* RoomInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FE20220045F3F0025B982 /* RoomInfoViewController.swift */; };
@@ -77,6 +78,7 @@
 		842A229C2004D109008AE4A4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		842A229E2004D2EE008AE4A4 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		842A22A02004E867008AE4A4 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		8447F73E20061617002B9528 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		8451A0D52005CDE40097BED7 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		8451A0D72005E4E20097BED7 /* IntraChat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = IntraChat.entitlements; sourceTree = "<group>"; };
 		8451A0D82005E5A60097BED7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				3E6A22F0200065F0006A5607 /* Room.swift */,
 				3E20901D2003CE650062BA7C /* User.swift */,
 				842A229C2004D109008AE4A4 /* Message.swift */,
+				8447F73E20061617002B9528 /* Notification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -291,6 +294,9 @@
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -459,6 +465,7 @@
 				8451A0D62005CDE40097BED7 /* Transform.swift in Sources */,
 				3E15536520027082007BD985 /* AuthSignInViewController.swift in Sources */,
 				842A229D2004D109008AE4A4 /* Message.swift in Sources */,
+				8447F73F20061617002B9528 /* Notification.swift in Sources */,
 				3EE3D7102000C34B00D77A8F /* UIViewController.swift in Sources */,
 				3E2090202003D2060062BA7C /* ListUserViewController.swift in Sources */,
 				848FE20320045F3F0025B982 /* RoomInfoViewController.swift in Sources */,

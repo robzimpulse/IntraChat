@@ -33,6 +33,12 @@
                         <viewLayoutGuide key="safeArea" id="WKx-I1-CE2"/>
                     </view>
                     <navigationItem key="navigationItem" title="Room" id="8F4-wc-gvl">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="wd5-Sx-dtg">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="logout:" destination="kTC-ki-uvD" id="PPV-EH-7cW"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Add" id="P4x-pi-FNd">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>

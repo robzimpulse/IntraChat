@@ -36,6 +36,8 @@ class FirebaseManager: NSObject {
     
     var authListener: AuthStateDidChangeListenerHandle?
     
+    private var lastUid: String?
+    
     lazy var roomRef: DatabaseReference = {
         return Database.database().reference().child("room")
     }()
@@ -48,6 +50,10 @@ class FirebaseManager: NSObject {
         return Database.database().reference().child("message")
     }()
     
+    lazy var notificationRef: DatabaseReference = {
+        return Database.database().reference().child("notification")
+    }()
+    
     lazy var storageRef: StorageReference = {
         return Storage.storage().reference()
     }()
@@ -57,6 +63,8 @@ class FirebaseManager: NSObject {
         super.init()
         
         FirebaseApp.configure()
+        
+        Messaging.messaging().delegate = self
         
         userForRoom.asObservable().bind(onNext: {
             if let user = $0 {
@@ -134,14 +142,24 @@ class FirebaseManager: NSObject {
                     self.users.value[index] = user
                 })
                 
+                self.notificationRef.observe(.childAdded, with: { snapshot in
+                    guard let notification = Notification(snapshot: snapshot) else {return}
+                    guard notification.receiver == user.uid else {return}
+                    self.localNotification(object: notification)
+                    snapshot.ref.removeValue()
+                })
+                
                 self.userRef.child(user.uid).onDisconnectUpdateChildValues(["online": false])
                 self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
                 
+                Messaging.messaging().subscribe(toTopic: user.uid)
+                self.lastUid = user.uid
             }else{
                 
                 self.users.value = []
                 self.userRef.removeAllObservers()
-                
+                self.notificationRef.removeAllObservers()
+                if let uid = self.lastUid { Messaging.messaging().unsubscribe(fromTopic: uid) }
             }
         })
     }
@@ -151,8 +169,17 @@ class FirebaseManager: NSObject {
         Auth.auth().removeStateDidChangeListener(listener)
     }
     
+    func setupApns(token: Data?){
+        Messaging.messaging().apnsToken = token
+    }
+    
     func currentUser() -> Firebase.User? {
         return Auth.auth().currentUser
+    }
+    
+    func logout(completion: ((Error?) -> Void)? = nil) {
+        do { try Auth.auth().signOut(); completion?(nil) }
+        catch let error { completion?(error) }
     }
     
     // MARK: Application Delegate
@@ -172,10 +199,22 @@ class FirebaseManager: NSObject {
         userRef.child(user.uid).updateChildValues(["online": false])
     }
     
+    func didReceiveRemoteNotification(userInfo: [AnyHashable : Any]) {
+        print("didReceiveRemoteNotification: \(userInfo)")
+    }
+    
     // MARK: Message
     
     func create(message: Message, completion: ((Error?) -> Void)? = nil){
         messageRef.childByAutoId().setValue(message.keyValue(), withCompletionBlock: { error, ref in
+            completion?(error)
+        })
+    }
+    
+    // MARK: Notification
+    
+    func create(notification: Notification, completion: ((Error?) -> Void)? = nil){
+        notificationRef.childByAutoId().setValue(notification.keyValue(), withCompletionBlock: { error, ref in
             completion?(error)
         })
     }
@@ -221,12 +260,21 @@ class FirebaseManager: NSObject {
         if let handler = handleUnknown {task.observe(.unknown, handler: handler)}
     }
     
-    private func localNotification(title: String, body: String, delay: TimeInterval = 0){
+    private func localNotification(object: Notification, delay: TimeInterval = 0){
         let notification = UILocalNotification()
-        notification.alertTitle = title
-        notification.alertBody = body
+        notification.alertTitle = object.title
+        notification.alertBody = object.body
         notification.soundName = UILocalNotificationDefaultSoundName
         notification.fireDate = Date().addingTimeInterval(delay)
         UIApplication.shared.scheduleLocalNotification(notification)
+    }
+}
+
+extension FirebaseManager: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+        print("didReceiveRegistrationToken: \(fcmToken)")
+    }
+    func messaging(_ messaging: Messaging, didReceive remoteMessage: MessagingRemoteMessage) {
+        print("didReceive remoteMessage: \(remoteMessage.appData)")
     }
 }

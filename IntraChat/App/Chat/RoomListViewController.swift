@@ -24,11 +24,18 @@ class RoomListViewController: UIViewController {
     
     var timer: Timer?
     
+    var authListener: AuthStateDidChangeListenerHandle?
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
-    deinit { timer?.invalidate() }
+    deinit {
+        timer?.invalidate()
+        if let listener = authListener {
+            Auth.auth().removeStateDidChangeListener(listener)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,9 +67,14 @@ class RoomListViewController: UIViewController {
             if !self.isScrolled { self.tableView.reloadData() }
         })
      
-        if let user = FirebaseManager.shared.currentUser() {
-            FirebaseManager.shared.userForRoom.value = User(user: user)
-        }
+        authListener = Auth.auth().addStateDidChangeListener({ _, user in
+            if let user = user {
+                FirebaseManager.shared.userForRoom.value = User(user: user)
+            } else {
+                FirebaseManager.shared.userForRoom.value = nil
+                self.performSegue(withIdentifier: "auth", sender: self)
+            }
+        })
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -71,11 +83,8 @@ class RoomListViewController: UIViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if Auth.auth().currentUser == nil {
-            performSegue(withIdentifier: "auth", sender: self)
-        }
+    @IBAction func logout(_ sender: Any){
+        FirebaseManager.shared.logout()
     }
     
 }

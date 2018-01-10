@@ -93,13 +93,16 @@ class RoomChatViewController: MessagesViewController {
 
 extension RoomChatViewController: MessageInputBarDelegate {
     func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
-        guard let roomId = room?.id else {return}
+        guard let room = room else {return}
         inputBar.inputTextView.text = String()
-        let message = Message(roomId: roomId, text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
+        let message = Message(roomId: room.id, text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
         FirebaseManager.shared.create(message: message, completion: { error in
             guard error == nil else {return}
             FirebaseManager.shared.updateLastChat(roomId: message.roomId, date: message.sentDate)
-            print("success sent message")
+            room.users.filter({ self.currentSender().id != $0 }).forEach({
+                let notification = Notification(title: "Title", body: "Body", receiver: $0)
+                FirebaseManager.shared.create(notification: notification)
+            })
         })
     }
 }
