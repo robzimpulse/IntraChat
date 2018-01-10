@@ -94,8 +94,7 @@ extension RoomChatViewController: MessageInputBarDelegate {
         FirebaseManager.shared.create(message: message, completion: { error in
             guard error == nil else {return}
             FirebaseManager.shared.updateLastChat(roomId: roomId, date: message.sentDate)
-            guard let users = room.users else {return}
-            users.filter({ self.currentSender().id != $0 }).forEach({ user in
+            room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
                 let notification = Notification(
                     title: "\(self.currentSender().displayName) @\(room.name ?? "")",
                     body: text,

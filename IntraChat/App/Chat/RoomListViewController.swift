@@ -9,6 +9,8 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxRealm
+import RealmSwift
 import FirebaseAuth
 import FirebaseDatabase
 
@@ -58,10 +60,10 @@ class RoomListViewController: UIViewController {
         
         tableView.rx.didEndScrollingAnimation.bind { self.isScrolled = false }.disposed(by: disposeBag)
         
-        FirebaseManager.shared.rooms.asObservable().bind(
-            to: tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
-            curriedArgument: { row, room, cell in cell.configure(room: room) }
-        ).disposed(by: disposeBag)
+//        FirebaseManager.shared.rooms.asObservable().bind(
+//            to: tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
+//            curriedArgument: { row, room, cell in cell.configure(room: room) }
+//        ).disposed(by: disposeBag)
         
         timer = Timer.runThisEvery(seconds: 1.0, handler: { _ in
             if !self.isScrolled { self.tableView.reloadData() }
@@ -74,6 +76,17 @@ class RoomListViewController: UIViewController {
                 FirebaseManager.shared.userForRoom.value = nil
                 self.performSegue(withIdentifier: "auth", sender: self)
             }
+        })
+        
+        Realm.asyncOpen(callback: { realm, _ in
+            guard let realm = realm else {return}
+            
+            Observable.collection(from: realm.objects(Room.self).toAnyCollection()).bind(
+                to: self.tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
+                curriedArgument: { row, room, cell in cell.configure(room: room)}
+            ).disposed(by: self.disposeBag)
+            
+            
         })
     }
     

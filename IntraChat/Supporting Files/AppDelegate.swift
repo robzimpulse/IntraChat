@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import RealmSwift
 import UserNotifications
 
 @UIApplicationMain
@@ -15,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        FirebaseApp.configure()
+        Realm.Configuration.defaultConfiguration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
         registerPushNotification(application: application)
         return true
     }

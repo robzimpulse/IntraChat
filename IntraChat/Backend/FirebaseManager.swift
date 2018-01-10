@@ -27,7 +27,7 @@ class FirebaseManager: NSObject {
     
     let userForRoom = Variable<User?>(nil)
     
-    let rooms = Variable<[Room]>([])
+//    let rooms = Variable<[Room]>([])
     
     let messages = Variable<[Message]>([])
     
@@ -63,38 +63,46 @@ class FirebaseManager: NSObject {
         
         super.init()
         
-        FirebaseApp.configure()
-        
         Messaging.messaging().delegate = self
-        
-        Realm.Configuration.defaultConfiguration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
         
         userForRoom.asObservable().bind(onNext: {
             if let uid = $0?.uid {
                 self.roomRef.observe(.childAdded, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard let users = room.users else {return}
-                    guard users.contains(uid) else {return}
-                    self.rooms.value.append(room)
+                    guard room.users.contains(uid) else {return}
+                    Realm.asyncOpen(callback: { realm, _ in
+                        guard let realm = realm else {return}
+                        print("added to realm")
+                        do { try realm.write { realm.add(room, update: true) } }
+                        catch { print("error add to realm") }
+                    })
+                    
                 })
                 
                 self.roomRef.observe(.childRemoved, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard let users = room.users else {return}
-                    guard users.contains(uid) else {return}
-                    guard let index = self.rooms.value.index(where: { room.id == $0.id }) else {return}
-                    self.rooms.value.remove(at: index)
+                    guard room.users.contains(uid) else {return}
+                    Realm.asyncOpen(callback: { realm, _ in
+                        guard let realm = realm else {return}
+                        guard let roomId = room.id else {return}
+                        guard let object = realm.object(ofType: Room.self, forPrimaryKey: roomId) else {return}
+                        print("deleted from realm")
+                        do { try realm.write { realm.delete(object) } }
+                        catch { print("error delete from realm") }
+                    })
                 })
                 
                 self.roomRef.observe(.childChanged, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard let users = room.users else {return}
-                    guard users.contains(uid) else {return}
-                    guard let index = self.rooms.value.index(where: { room.id == $0.id }) else {return}
-                    self.rooms.value[index] = room
+                    guard room.users.contains(uid) else {return}
+                    Realm.asyncOpen(callback: { realm, _ in
+                        guard let realm = realm else {return}
+                        print("updated to realm")
+                        do { try realm.write { realm.add(room, update: true) } }
+                        catch { print("error update to realm") }
+                    })
                 })
             }else{
-                self.rooms.value = []
                 self.roomRef.removeAllObservers()
             }
             
