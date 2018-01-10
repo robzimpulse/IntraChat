@@ -15,9 +15,15 @@ class User: Mappable, FirebaseModel {
     var uid: String = ""
     var name: String?
     var email: String?
-    var photo: String?
+    var photo: String? {
+        didSet(value){
+            
+        }
+    }
     var phone: String?
     var online: Bool = false
+    
+    private let imageView = UIImageView()
     
     convenience init(user: Firebase.User) {
         self.init()
@@ -27,6 +33,8 @@ class User: Mappable, FirebaseModel {
         photo = user.photoURL?.absoluteString
         phone = user.phoneNumber
     }
+    
+    func image() -> UIImage? { return imageView.image }
     
     // MARK: Mappable
     
@@ -41,6 +49,10 @@ class User: Mappable, FirebaseModel {
         photo <- map["photo"]
         phone <- map["phone"]
         online <- map["online"]
+        
+        guard let value = photo else {return}
+        guard let url = URL(string: value) else {return}
+        imageView.af_setImage(withURL: url)
     }
     
     func keyValue() -> [AnyHashable : Any]? {

@@ -44,6 +44,8 @@ class RoomChatViewController: MessagesViewController {
 
         registerSwipeBack()
         
+        navigationItem.title = room?.name
+        
         if "11.0".isVersionLess() { automaticallyAdjustsScrollViewInsets = true }
         
         messagesCollectionView.messagesDataSource = self
@@ -63,9 +65,15 @@ class RoomChatViewController: MessagesViewController {
         }).bind(onNext: {
             guard let message = $0.first else {return}
             self.messageList.append(message)
-            self.messagesCollectionView.reloadData()
-            self.messagesCollectionView.scrollToBottom(animated: true)
         }).disposed(by: disposeBag)
+        
+        FirebaseManager.shared.messages.asObservable()
+            .throttle(1, scheduler: MainScheduler.instance)
+            .bind(onNext: { _ in
+                self.messagesCollectionView.reloadData()
+                self.messagesCollectionView.scrollToBottom(animated: true)
+            })
+            .disposed(by: disposeBag)
         
 //        myAvatarImage.af_setImage(
 //            withURL: URL(string: ProfileController.shared.get()?.photoUrl ?? "")!,
@@ -125,8 +133,8 @@ extension RoomChatViewController: MessagesDataSource {
     
     func avatar(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> Avatar {
         let senderName = isFromCurrentSender(message: message) ? currentSender().displayName : message.sender.displayName
-        let image = isFromCurrentSender(message: message) ? myAvatarImage : clientAvatarImage
-        return Avatar(image: image.image, initials: senderName.initials())
+        let user = FirebaseManager.shared.users.value.filter({ message.sender.id == $0.uid }).first
+        return Avatar(image: user?.image(), initials: senderName.initials())
     }
     
     func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
