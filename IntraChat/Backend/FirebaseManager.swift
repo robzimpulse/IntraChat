@@ -89,18 +89,23 @@ class FirebaseManager: NSObject {
         roomForMessage.asObservable().bind(onNext: {
             if let room = $0 {
                 self.messageRef.observe(.childAdded, with: { snapshot in
-                    // TODO: handle message added
-                    print("added message for room: \(room.id)")
+                    guard let message = Message(snapshot: snapshot) else {return}
+                    guard message.roomId == room.id else {return}
+                    self.messages.value.append(message)
                 })
                 
                 self.messageRef.observe(.childRemoved, with: { snapshot in
-                    // TODO: handle message removed
-                    print("removed message for room: \(room.id)")
+                    guard let message = Message(snapshot: snapshot) else {return}
+                    guard message.roomId == room.id else {return}
+                    guard let index = self.messages.value.index(where: { message.messageId == $0.messageId }) else {return}
+                    self.messages.value.remove(at: index)
                 })
                 
                 self.messageRef.observe(.childChanged, with: { snapshot in
-                    // TODO: handle message edited
-                    print("changed message for room: \(room.id)")
+                    guard let message = Message(snapshot: snapshot) else {return}
+                    guard message.roomId == room.id else {return}
+                    guard let index = self.messages.value.index(where: { message.messageId == $0.messageId }) else {return}
+                    self.messages.value[index] = message
                 })
             }else{
                 self.messages.value = []

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import MessageKit
 
 class RoomChatViewController: MessagesViewController {
@@ -20,6 +22,8 @@ class RoomChatViewController: MessagesViewController {
     let myAvatarImage = UIImageView()
     
     let clientAvatarImage = UIImageView()
+    
+    let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -53,7 +57,15 @@ class RoomChatViewController: MessagesViewController {
         messageInputBar = customInputBar
         reloadInputViews()
         
-        FirebaseManager.shared.roomForMessage.value = room
+        FirebaseManager.shared.messages.asObservable().scan([Message](), accumulator: { old, new in
+            guard let last = new.last else {return []}
+            return [last]
+        }).bind(onNext: {
+            guard let message = $0.first else {return}
+            self.messageList.append(message)
+            self.messagesCollectionView.reloadData()
+            self.messagesCollectionView.scrollToBottom(animated: true)
+        }).disposed(by: disposeBag)
         
 //        myAvatarImage.af_setImage(
 //            withURL: URL(string: ProfileController.shared.get()?.photoUrl ?? "")!,
@@ -67,6 +79,17 @@ class RoomChatViewController: MessagesViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        FirebaseManager.shared.roomForMessage.value = room
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        FirebaseManager.shared.roomForMessage.value = nil
+        
+    }
+    
 }
 
 extension RoomChatViewController: MessageInputBarDelegate {
@@ -76,9 +99,7 @@ extension RoomChatViewController: MessageInputBarDelegate {
         let message = Message(roomId: roomId, text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
         FirebaseManager.shared.create(message: message, completion: { error in
             guard error == nil else {return}
-            self.messageList.append(message)
-            self.messagesCollectionView.reloadData()
-            self.messagesCollectionView.scrollToBottom(animated: true)
+            print("success sent message")
         })
     }
 }
@@ -150,7 +171,7 @@ extension RoomChatViewController: MessagesDisplayDelegate {
     
     // MARK: Text Message
     func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-        return isFromCurrentSender(message: message) ? .white : .darkText
+        return isFromCurrentSender(message: message) ? .white : .white
     }
     
     func detectorAttributes(for detector: DetectorType, and message: MessageType, at indexPath: IndexPath) -> [NSAttributedStringKey : Any] {
