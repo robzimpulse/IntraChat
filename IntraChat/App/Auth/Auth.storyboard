@@ -276,7 +276,11 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0SQ-eR-md6">
-                                                <rect key="frame" x="16" y="44" width="34" height="30"/>
+                                                <rect key="frame" x="16" y="44" width="44" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="44" id="9V1-A2-M99"/>
+                                                    <constraint firstAttribute="height" constant="44" id="di7-RZ-CPN"/>
+                                                </constraints>
                                                 <state key="normal" title="Back">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -437,7 +441,11 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgC-Lh-Bdr">
-                                        <rect key="frame" x="16" y="44" width="34" height="30"/>
+                                        <rect key="frame" x="16" y="44" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="GzJ-FY-93W"/>
+                                            <constraint firstAttribute="width" constant="44" id="Unn-Km-69h"/>
+                                        </constraints>
                                         <state key="normal" title="Back">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>

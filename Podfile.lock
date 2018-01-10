@@ -15,6 +15,9 @@ PODS:
   - Firebase/Database (4.8.0):
     - Firebase/Core
     - FirebaseDatabase (= 4.1.3)
+  - Firebase/Messaging (4.8.0):
+    - Firebase/Core
+    - FirebaseMessaging (= 2.0.8)
   - Firebase/Storage (4.8.0):
     - Firebase/Core
     - FirebaseStorage (= 2.1.1)
@@ -35,6 +38,12 @@ PODS:
     - leveldb-library (~> 1.18)
   - FirebaseInstanceID (2.0.8):
     - FirebaseCore (~> 4.0)
+  - FirebaseMessaging (2.0.8):
+    - FirebaseAnalytics (~> 4.0)
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - Protobuf (~> 3.1)
   - FirebaseStorage (2.1.1):
     - FirebaseAnalytics (~> 4.0)
     - FirebaseCore (~> 4.0)
@@ -42,6 +51,8 @@ PODS:
   - GoogleToolboxForMac/DebugUtils (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/Defines (2.1.3)
+  - GoogleToolboxForMac/Logger (2.1.3):
+    - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/NSData+zlib (2.1.3):
     - GoogleToolboxForMac/Defines (= 2.1.3)
   - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3):
@@ -66,6 +77,7 @@ PODS:
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
   - ObjectMapper (3.1.0)
+  - Protobuf (3.5.0)
   - PusherChatkit (0.3.0):
     - PusherPlatform (~> 0.1.23)
   - PusherPlatform (0.1.30)
@@ -82,6 +94,7 @@ DEPENDENCIES:
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
+  - Firebase/Messaging
   - Firebase/Storage
   - ImagePicker
   - IQKeyboardManager
@@ -106,6 +119,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 3c02ec652db3d03fdc8bc6d9154af3e20d64b6f5
   FirebaseDatabase: 7088bfc4af2cc00231bb36e1404fc2d7509eb4dc
   FirebaseInstanceID: 81df5805a08001e69138664bdd02c6719a9ac80f
+  FirebaseMessaging: dfdcd307c2382290a1e297a81d0f18370f5b1bcd
   FirebaseStorage: ab08d1c93a2feffa038fdd6693088b310ab1e6c6
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
@@ -118,12 +132,13 @@ SPEC CHECKSUMS:
   MessageKit: 9455b04be28eb7c50a00962e6168672cd3d403ae
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
+  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   PusherChatkit: 53d6b4f413f15d95421c9a215875fb647358ac7a
   PusherPlatform: d9abd46caac2d49c797bd18d9e34c36f2000364b
   RxCocoa: d62846ca96495d862fa4c59ea7d87e5031d7340e
   RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
   TOCropViewController: a21b39c910d161600a26b6e3f89a58707afaa4f8
 
-PODFILE CHECKSUM: 020be10fb38d06c7910da39cff7937615a9e97e1
+PODFILE CHECKSUM: ee46d306e16c0e0334dc2d2f2e96b0274da75a12
 
 COCOAPODS: 1.3.1

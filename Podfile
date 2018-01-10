@@ -24,6 +24,7 @@ target 'IntraChat' do
   
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Firebase/Messaging'
   pod 'Firebase/Storage'
   pod 'Firebase/Database'
 end
