@@ -189,10 +189,11 @@ class FirebaseManager: NSObject {
     }
     
     func updateLastChat(roomId: String, date: Date, completion: ((Error?) -> Void)? = nil){
-        roomRef.child(roomId).updateChildValues(
-            ["lastChat": Transform.date.transformToJSON(date)],
-            withCompletionBlock: { error, _ in
-                completion?(error)
+        roomRef.child(roomId)
+            .updateChildValues(
+                ["lastChat": Transform.date.transformToJSON(date) as Any],
+                withCompletionBlock: { error, _ in
+                    completion?(error)
             })
     }
     
@@ -220,4 +221,12 @@ class FirebaseManager: NSObject {
         if let handler = handleUnknown {task.observe(.unknown, handler: handler)}
     }
     
+    private func localNotification(title: String, body: String, delay: TimeInterval = 0){
+        let notification = UILocalNotification()
+        notification.alertTitle = title
+        notification.alertBody = body
+        notification.soundName = UILocalNotificationDefaultSoundName
+        notification.fireDate = Date().addingTimeInterval(delay)
+        UIApplication.shared.scheduleLocalNotification(notification)
+    }
 }
