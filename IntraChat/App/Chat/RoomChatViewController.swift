@@ -19,10 +19,6 @@ class RoomChatViewController: MessagesViewController {
     
     var messageList: [Message] = []
     
-    let myAvatarImage = UIImageView()
-    
-    let clientAvatarImage = UIImageView()
-    
     let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -75,16 +71,6 @@ class RoomChatViewController: MessagesViewController {
             })
             .disposed(by: disposeBag)
         
-//        myAvatarImage.af_setImage(
-//            withURL: URL(string: ProfileController.shared.get()?.photoUrl ?? "")!,
-//            filter: AspectScaledToFillSizeCircleFilter(size: CGSize(width: 100, height: 100))
-//        )
-        
-//        clientAvatarImage.af_setImage(
-//            withURL: URL(string: consultation.customerPhoto)!,
-//            filter: AspectScaledToFillSizeCircleFilter(size: CGSize(width: 100, height: 100))
-//        )
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -102,14 +88,16 @@ class RoomChatViewController: MessagesViewController {
 extension RoomChatViewController: MessageInputBarDelegate {
     func messageInputBar(_ inputBar: MessageInputBar, didPressSendButtonWith text: String) {
         guard let room = room else {return}
+        guard let roomId = room.id else {return}
         inputBar.inputTextView.text = String()
-        let message = Message(roomId: room.id, text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
+        let message = Message(roomId: roomId, text: text, sender: currentSender(), messageId: UUID().uuidString, date: Date())
         FirebaseManager.shared.create(message: message, completion: { error in
             guard error == nil else {return}
-            FirebaseManager.shared.updateLastChat(roomId: room.id, date: message.sentDate)
-            room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
+            FirebaseManager.shared.updateLastChat(roomId: roomId, date: message.sentDate)
+            guard let users = room.users else {return}
+            users.filter({ self.currentSender().id != $0 }).forEach({ user in
                 let notification = Notification(
-                    title: "\(self.currentSender().displayName) @\(room.name)",
+                    title: "\(self.currentSender().displayName) @\(room.name ?? "")",
                     body: text,
                     receiver: user
                 )

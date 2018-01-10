@@ -11,10 +11,10 @@ import ObjectMapper
 
 class Room: Mappable, FirebaseModel {
     
-    var id: String = ""
-    var name: String = ""
-    var icon: String = ""
-    var users: [String] = []
+    var id: String?
+    var name: String?
+    var icon: String?
+    var users: [String]?
     var lastChat: Date?
     
     convenience init(name: String, icon: String, users: [User]) {

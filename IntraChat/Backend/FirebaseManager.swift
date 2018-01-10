@@ -73,21 +73,24 @@ class FirebaseManager: NSObject {
             if let user = $0 {
                 self.roomRef.observe(.childAdded, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard room.users.contains(user.uid) else {return}
+                    guard let users = room.users else {return}
+                    guard users.contains(user.uid) else {return}
                     self.rooms.value.append(room)
                 })
                 
                 self.roomRef.observe(.childRemoved, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
+                    guard let users = room.users else {return}
+                    guard users.contains(user.uid) else {return}
                     guard let index = self.rooms.value.index(where: { room.id == $0.id }) else {return}
-                    guard room.users.contains(user.uid) else {return}
                     self.rooms.value.remove(at: index)
                 })
                 
                 self.roomRef.observe(.childChanged, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
+                    guard let users = room.users else {return}
+                    guard users.contains(user.uid) else {return}
                     guard let index = self.rooms.value.index(where: { room.id == $0.id }) else {return}
-                    guard room.users.contains(user.uid) else {return}
                     self.rooms.value[index] = room
                 })
             }else{

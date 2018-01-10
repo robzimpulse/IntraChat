@@ -22,12 +22,10 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <outlet property="delegate" destination="yau-iO-DnG" id="56V-oS-UAj"/>
                         <segue destination="YOW-rI-eyC" kind="relationship" relationship="rootViewController" id="o0Z-rj-tgy"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HL3-TC-HMV" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="yau-iO-DnG" customClass="NavigationControllerDelegate" customModule="IntraChat" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="1543" y="887"/>
         </scene>
