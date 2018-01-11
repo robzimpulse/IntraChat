@@ -43,6 +43,7 @@ class ProfileViewController: FormViewController {
                     cell.height = { return CGFloat(150) }
                     cell.separatorInset.left = 0
                 }
+                
             }
             
             +++ Section("Email")
