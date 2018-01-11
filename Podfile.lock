@@ -94,6 +94,8 @@ PODS:
     - RxSwift (~> 4.0)
   - RxSwift (4.0.0)
   - TOCropViewController (2.3.5)
+  - ViewRow (0.2.0):
+    - Eureka (>= 4.0.0)
 
 DEPENDENCIES:
   - AlamofireImage
@@ -116,6 +118,16 @@ DEPENDENCIES:
   - RxRealm
   - RxSwift
   - TOCropViewController
+  - ViewRow (from `https://github.com/EurekaCommunity/ViewRow`)
+
+EXTERNAL SOURCES:
+  ViewRow:
+    :git: https://github.com/EurekaCommunity/ViewRow
+
+CHECKOUT OPTIONS:
+  ViewRow:
+    :commit: 9f62ebe51a8885137533db5776103f644296b09b
+    :git: https://github.com/EurekaCommunity/ViewRow
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
@@ -153,7 +165,8 @@ SPEC CHECKSUMS:
   RxRealm: a6c6c0a07cb61f34209969ca6657734edfdfff30
   RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
   TOCropViewController: a21b39c910d161600a26b6e3f89a58707afaa4f8
+  ViewRow: 14475b337be9748b12a6df33d0a160bd5bd7765c
 
-PODFILE CHECKSUM: d187b29e10a66eeb6959ca748cc30b0e0fc94e71
+PODFILE CHECKSUM: a462f2fe4156076166c38330a8f6ecd969babda6
 
 COCOAPODS: 1.3.1

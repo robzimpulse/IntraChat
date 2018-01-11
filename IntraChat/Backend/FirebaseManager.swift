@@ -249,6 +249,28 @@ class FirebaseManager: NSObject {
         print("didReceiveRemoteNotification: \(userInfo)")
     }
     
+    // MARK: Profile
+    
+    func change(name: String, completion: UserProfileChangeCallback? = nil){
+        guard let user = Auth.auth().currentUser else {completion?(nil);return}
+        let request = user.createProfileChangeRequest()
+        request.displayName = name
+        request.commitChanges(completion: { error in
+            self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
+            completion?(error)
+        })
+    }
+    
+    func change(photoUrl: URL, completion: UserProfileChangeCallback? = nil){
+        guard let user = Auth.auth().currentUser else {completion?(nil);return}
+        let request = user.createProfileChangeRequest()
+        request.photoURL = photoUrl
+        request.commitChanges(completion: { error in
+            self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
+            completion?(error)
+        })
+    }
+    
     // MARK: Message
     
     func create(message: Message, completion: ((Error?) -> Void)? = nil){

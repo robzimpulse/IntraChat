@@ -21,8 +21,15 @@
                         <viewLayoutGuide key="safeArea" id="ZYs-1i-QCt"/>
                     </view>
                     <navigationItem key="navigationItem" title="Setting" id="P1Y-q4-zWo"/>
+                    <connections>
+                        <outlet property="profileImageView" destination="hTw-Lx-X7J" id="Fb7-Zf-P4z"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AH9-Qu-rws" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="hTw-Lx-X7J">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
             </objects>
             <point key="canvasLocation" x="623.20000000000005" y="163.26836581709148"/>
         </scene>

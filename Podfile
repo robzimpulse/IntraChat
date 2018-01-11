@@ -29,6 +29,8 @@ target 'IntraChat' do
   pod 'Firebase/Messaging'
   pod 'Firebase/Storage'
   pod 'Firebase/Database'
+  
+  pod 'ViewRow', :git => 'https://github.com/EurekaCommunity/ViewRow'
 end
 
 post_install do |installer|
