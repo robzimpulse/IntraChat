@@ -178,17 +178,24 @@ class FirebaseManager: NSObject {
                     snapshot.ref.removeValue()
                 })
                 
+                self.userRef.child(user.uid).updateChildValues(["online": true])
                 self.userRef.child(user.uid).onDisconnectUpdateChildValues(["online": false])
                 self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
                 
                 Messaging.messaging().subscribe(toTopic: user.uid)
                 self.lastUid = user.uid
+                
             }else{
                 
                 self.users.value = []
                 self.userRef.removeAllObservers()
                 self.notificationRef.removeAllObservers()
-                if let uid = self.lastUid { Messaging.messaging().unsubscribe(fromTopic: uid) }
+                if let uid = self.lastUid {
+                    defer{ self.lastUid = nil }
+                    self.userRef.child(uid).updateChildValues(["online": false])
+                    Messaging.messaging().unsubscribe(fromTopic: uid)
+                }
+                
             }
         })
     }
