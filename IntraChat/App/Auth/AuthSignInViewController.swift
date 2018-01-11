@@ -28,6 +28,7 @@ class AuthSignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerSwipeBack()
         submitButton.rx.tap.bind(onNext: {
             guard let email = self.emailTextField.text else {return}
             guard let password = self.passwordTextField.text else {return}

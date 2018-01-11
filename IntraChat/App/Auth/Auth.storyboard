@@ -273,13 +273,13 @@
                                                     <constraint firstItem="waS-Yq-un1" firstAttribute="top" secondItem="BcH-lm-YgG" secondAttribute="top" constant="1" id="jHm-Hy-iUf"/>
                                                 </constraints>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0SQ-eR-md6">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0SQ-eR-md6">
                                                 <rect key="frame" x="16" y="44" width="44" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="44" id="9V1-A2-M99"/>
                                                     <constraint firstAttribute="height" constant="44" id="di7-RZ-CPN"/>
                                                 </constraints>
-                                                <state key="normal" title="Back">
+                                                <state key="normal" image="icon_chevron_left">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -438,13 +438,13 @@
                                             <constraint firstItem="T6Y-re-CGR" firstAttribute="leading" secondItem="sVU-CJ-Vbq" secondAttribute="leading" constant="40" id="xAc-c0-U1c"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgC-Lh-Bdr">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dgC-Lh-Bdr">
                                         <rect key="frame" x="16" y="44" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="GzJ-FY-93W"/>
                                             <constraint firstAttribute="width" constant="44" id="Unn-Km-69h"/>
                                         </constraints>
-                                        <state key="normal" title="Back">
+                                        <state key="normal" image="icon_chevron_left">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -489,5 +489,6 @@
     </scenes>
     <resources>
         <image name="eclips" width="512" height="384"/>
+        <image name="icon_chevron_left" width="16" height="16"/>
     </resources>
 </document>

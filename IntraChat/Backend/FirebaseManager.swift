@@ -211,19 +211,20 @@ class FirebaseManager: NSObject {
     
     func logout(completion: ((Error?) -> Void)? = nil) {
         guard let user = Auth.auth().currentUser else {return}
-        FirebaseManager.shared.userRef.child(user.uid).updateChildValues(["online": false])
-        Realm.asyncOpen(callback: {realm, _ in
-            guard let realm = realm else {return}
-            print("remove all database")
-            do {
-                try Disk.clear(.caches)
-                try Auth.auth().signOut()
-                try realm.write {
-                    realm.delete(realm.objects(Room.self))
-                    realm.delete(realm.objects(Message.self))
-                    realm.delete(realm.objects(RoomUserString.self))
-                }
-            } catch { completion?(error) }
+        FirebaseManager.shared.userRef.child(user.uid).updateChildValues(["online": false], withCompletionBlock: { _, _ in
+            Realm.asyncOpen(callback: {realm, _ in
+                guard let realm = realm else {return}
+                print("remove all database")
+                do {
+                    try Disk.clear(.caches)
+                    try Auth.auth().signOut()
+                    try realm.write {
+                        realm.delete(realm.objects(Room.self))
+                        realm.delete(realm.objects(Message.self))
+                        realm.delete(realm.objects(RoomUserString.self))
+                    }
+                } catch { completion?(error) }
+            })
         })
     }
     

@@ -30,7 +30,7 @@ class AuthSignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        registerSwipeBack()
         submitButton.rx.tap.bind(onNext: {
             guard let username = self.usernameTextField.text else {return}
             guard let email = self.emailTextField.text else {return}

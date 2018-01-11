@@ -43,13 +43,13 @@
                         <viewLayoutGuide key="safeArea" id="xL3-DD-elA"/>
                     </view>
                     <navigationItem key="navigationItem" title="Users" id="lbp-r4-RDe">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="d8g-c2-VQC">
+                        <barButtonItem key="leftBarButtonItem" title="Back" image="icon_cancel" id="d8g-c2-VQC">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="back:" destination="d3f-xS-G6i" id="B17-SV-2pJ"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="SPm-4b-O2m">
+                        <barButtonItem key="rightBarButtonItem" title="Next" image="icon_chevron_right" id="SPm-4b-O2m">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <segue destination="oFX-4M-KcC" kind="show" id="BRB-Z6-4ZF"/>
@@ -145,7 +145,7 @@
                         <viewLayoutGuide key="safeArea" id="WME-6j-ilY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Room Info" id="ZR2-Vo-vFH">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="p5F-aH-s34">
+                        <barButtonItem key="leftBarButtonItem" title="Back" image="icon_chevron_left" id="p5F-aH-s34">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="back:" destination="oFX-4M-KcC" id="KKm-oB-AlY"/>
@@ -191,4 +191,9 @@
             <point key="canvasLocation" x="-686" y="159"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icon_cancel" width="16" height="16"/>
+        <image name="icon_chevron_left" width="16" height="16"/>
+        <image name="icon_chevron_right" width="16" height="16"/>
+    </resources>
 </document>

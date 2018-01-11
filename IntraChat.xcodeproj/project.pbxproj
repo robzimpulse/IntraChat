@@ -23,8 +23,8 @@
 		3E35B93A2006CA0F00AA4125 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E35B9392006CA0F00AA4125 /* Chat.swift */; };
 		3E6A22E720005DF0006A5607 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22E620005DF0006A5607 /* Chat.storyboard */; };
 		3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22E820005EA4006A5607 /* RoomListViewController.swift */; };
-		3E6A22EC200064B4006A5607 /* Setting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22EB200064B4006A5607 /* Setting.storyboard */; };
-		3E6A22EE200064BD006A5607 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22ED200064BD006A5607 /* SettingViewController.swift */; };
+		3E6A22EC200064B4006A5607 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22EB200064B4006A5607 /* Profile.storyboard */; };
+		3E6A22EE200064BD006A5607 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22ED200064BD006A5607 /* ProfileViewController.swift */; };
 		3E6A22F1200065F0006A5607 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22F0200065F0006A5607 /* Room.swift */; };
 		3E6A22FE200087BF006A5607 /* RoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22FC200087BF006A5607 /* RoomCell.swift */; };
 		3E6A22FF200087BF006A5607 /* RoomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22FD200087BF006A5607 /* RoomCell.xib */; };
@@ -65,8 +65,8 @@
 		3E35B9392006CA0F00AA4125 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		3E6A22E620005DF0006A5607 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		3E6A22E820005EA4006A5607 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
-		3E6A22EB200064B4006A5607 /* Setting.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Setting.storyboard; sourceTree = "<group>"; };
-		3E6A22ED200064BD006A5607 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		3E6A22EB200064B4006A5607 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		3E6A22ED200064BD006A5607 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		3E6A22F0200065F0006A5607 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		3E6A22FC200087BF006A5607 /* RoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCell.swift; sourceTree = "<group>"; };
 		3E6A22FD200087BF006A5607 /* RoomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCell.xib; sourceTree = "<group>"; };
@@ -169,7 +169,7 @@
 			children = (
 				3E2090152003BBC10062BA7C /* Create Room */,
 				3EE3D71B20016E8A00D77A8F /* Auth */,
-				3E6A22EA200064AA006A5607 /* Setting */,
+				3E6A22EA200064AA006A5607 /* Profile */,
 				3E6A22E520005DE4006A5607 /* Chat */,
 				3E3487EF1FFFDBD1009ED2E0 /* Main.storyboard */,
 			);
@@ -198,13 +198,13 @@
 			path = Chat;
 			sourceTree = "<group>";
 		};
-		3E6A22EA200064AA006A5607 /* Setting */ = {
+		3E6A22EA200064AA006A5607 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				3E6A22EB200064B4006A5607 /* Setting.storyboard */,
-				3E6A22ED200064BD006A5607 /* SettingViewController.swift */,
+				3E6A22EB200064B4006A5607 /* Profile.storyboard */,
+				3E6A22ED200064BD006A5607 /* ProfileViewController.swift */,
 			);
-			path = Setting;
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		3E6A22EF200065E4006A5607 /* Model */ = {
@@ -338,7 +338,7 @@
 				3E3487F31FFFDBD1009ED2E0 /* Assets.xcassets in Resources */,
 				3E6A22FF200087BF006A5607 /* RoomCell.xib in Resources */,
 				3E2090242003D4660062BA7C /* UserCell.xib in Resources */,
-				3E6A22EC200064B4006A5607 /* Setting.storyboard in Resources */,
+				3E6A22EC200064B4006A5607 /* Profile.storyboard in Resources */,
 				3E3487F11FFFDBD1009ED2E0 /* Main.storyboard in Resources */,
 				8451A0D92005E5A60097BED7 /* GoogleService-Info.plist in Resources */,
 				3E6A22E720005DF0006A5607 /* Chat.storyboard in Resources */,
@@ -476,7 +476,7 @@
 				3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */,
 				3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */,
 				840E058520074D260084AB6F /* UIImageView.swift in Sources */,
-				3E6A22EE200064BD006A5607 /* SettingViewController.swift in Sources */,
+				3E6A22EE200064BD006A5607 /* ProfileViewController.swift in Sources */,
 				3E6A22FE200087BF006A5607 /* RoomCell.swift in Sources */,
 				8451A0D62005CDE40097BED7 /* Transform.swift in Sources */,
 				3E15536520027082007BD985 /* AuthSignInViewController.swift in Sources */,

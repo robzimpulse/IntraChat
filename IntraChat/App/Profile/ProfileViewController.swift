@@ -9,7 +9,7 @@
 import UIKit
 import Eureka
 
-class SettingViewController: UIViewController {
+class ProfileViewController: UIViewController {
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent

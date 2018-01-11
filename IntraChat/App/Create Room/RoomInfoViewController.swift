@@ -52,7 +52,7 @@ class RoomInfoViewController: UIViewController {
         photoImageView.addTapGesture(action: { _ in
             self.presentVC(self.imagePicker)
         })
-        photoImageView.image = #imageLiteral(resourceName: "icon_group").af_imageAspectScaled(toFill: photoImageView.frame.size).af_imageRoundedIntoCircle()
+//        photoImageView.image = #imageLiteral(resourceName: "icon_group").af_imageAspectScaled(toFill: photoImageView.frame.size).af_imageRoundedIntoCircle()
     }
     
     override func viewDidLayoutSubviews() {

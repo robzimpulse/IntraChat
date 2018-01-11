@@ -13,7 +13,7 @@
         <!--Setting-->
         <scene sceneID="kBI-qt-eyE">
             <objects>
-                <viewController id="9I6-Um-dkG" customClass="SettingViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="9I6-Um-dkG" customClass="ProfileViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7sQ-Ob-4zx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -26,11 +26,11 @@
             </objects>
             <point key="canvasLocation" x="623.20000000000005" y="163.26836581709148"/>
         </scene>
-        <!--Setting-->
+        <!--Profile-->
         <scene sceneID="mXE-U1-yzZ">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="B3s-CW-evo" customClass="NavigationController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Setting" id="gLW-UL-vsv"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="icon_user" id="gLW-UL-vsv"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="w7R-Kx-PZI">
@@ -51,4 +51,7 @@
             <point key="canvasLocation" x="-198" y="163"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icon_user" width="32" height="32"/>
+    </resources>
 </document>

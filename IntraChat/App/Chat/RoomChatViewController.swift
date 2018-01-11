@@ -15,6 +15,11 @@ import MessageKit
 
 class RoomChatViewController: MessagesViewController {
 
+    @IBOutlet weak var titleView: UIView!
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    
     var room: Room?
     
     var isTyping: Bool = false
@@ -42,7 +47,15 @@ class RoomChatViewController: MessagesViewController {
 
         registerSwipeBack()
         
-        navigationItem.title = room?.name
+        titleView.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        navigationItem.titleView = titleView
+        titleLabel.text = room?.name
+        subtitleLabel.text = room?.users.flatMap({ (uid) -> String? in
+            return FirebaseManager.shared.users.value.filter({ uid == ($0.uid ?? "") }).first?.name
+        }).joined(separator: ",")
+        if let icon = room?.icon, let url = URL(string: icon) {
+            iconImageView.setImage(url: url)
+        }
         
         if "11.0".isVersionLess() { automaticallyAdjustsScrollViewInsets = true }
         

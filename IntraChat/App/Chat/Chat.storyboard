@@ -6,11 +6,12 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Room-->
+        <!--Chat-->
         <scene sceneID="qdG-IA-tse">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="kTC-ki-uvD" customClass="RoomListViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
@@ -32,14 +33,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="WKx-I1-CE2"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Room" id="8F4-wc-gvl">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="wd5-Sx-dtg">
+                    <navigationItem key="navigationItem" title="Chat" id="8F4-wc-gvl">
+                        <barButtonItem key="leftBarButtonItem" title="Logout" image="icon_logout" id="wd5-Sx-dtg">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="logout:" destination="kTC-ki-uvD" id="PPV-EH-7cW"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Add" id="P4x-pi-FNd">
+                        <barButtonItem key="rightBarButtonItem" title="Add" image="icon_new_chat" id="P4x-pi-FNd">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <segue destination="INL-a6-QRR" kind="presentation" id="aX9-yA-HSg"/>
@@ -75,15 +76,58 @@
                         <viewLayoutGuide key="safeArea" id="Tfw-9D-Fbb"/>
                     </view>
                     <navigationItem key="navigationItem" title="Chat" id="ugh-2C-A9E">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="lK4-Mu-JCl">
+                        <barButtonItem key="leftBarButtonItem" title="Back" image="icon_chevron_left" id="lK4-Mu-JCl">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="back:" destination="oOL-Ut-klC" id="Wxi-Ue-hE6"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="iconImageView" destination="Tsw-pv-Dnj" id="vnT-Jl-cFL"/>
+                        <outlet property="subtitleLabel" destination="u1n-zm-juM" id="OOT-fE-oaQ"/>
+                        <outlet property="titleLabel" destination="ker-0Z-x8U" id="nlT-mx-uO9"/>
+                        <outlet property="titleView" destination="x7z-UT-Sae" id="ZRJ-LW-UGT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4I5-SQ-Mvc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="x7z-UT-Sae">
+                    <rect key="frame" x="0.0" y="0.0" width="197" height="53"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tsw-pv-Dnj">
+                            <rect key="frame" x="0.0" y="9" width="35" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="043-km-163"/>
+                                <constraint firstAttribute="width" secondItem="Tsw-pv-Dnj" secondAttribute="height" multiplier="1:1" id="R9K-DS-RCo"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u1n-zm-juM">
+                            <rect key="frame" x="51" y="29" width="146" height="12"/>
+                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="10"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ker-0Z-x8U">
+                            <rect key="frame" x="51" y="9" width="146" height="18"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="u1n-zm-juM" firstAttribute="leading" secondItem="ker-0Z-x8U" secondAttribute="leading" id="92f-Ne-yvf"/>
+                        <constraint firstItem="Tsw-pv-Dnj" firstAttribute="centerY" secondItem="x7z-UT-Sae" secondAttribute="centerY" id="JG1-9u-Rbk"/>
+                        <constraint firstItem="u1n-zm-juM" firstAttribute="trailing" secondItem="ker-0Z-x8U" secondAttribute="trailing" id="Rpb-uR-77m"/>
+                        <constraint firstItem="ker-0Z-x8U" firstAttribute="top" secondItem="Tsw-pv-Dnj" secondAttribute="top" id="UCi-rM-lb7"/>
+                        <constraint firstItem="ker-0Z-x8U" firstAttribute="leading" secondItem="Tsw-pv-Dnj" secondAttribute="trailing" constant="16" id="Vzz-gD-FNR"/>
+                        <constraint firstItem="u1n-zm-juM" firstAttribute="top" secondItem="ker-0Z-x8U" secondAttribute="bottom" constant="2" id="Xni-SU-G4B"/>
+                        <constraint firstItem="7HQ-hn-atg" firstAttribute="trailing" secondItem="ker-0Z-x8U" secondAttribute="trailing" id="eTs-Am-6uu"/>
+                        <constraint firstItem="Tsw-pv-Dnj" firstAttribute="leading" secondItem="7HQ-hn-atg" secondAttribute="leading" id="kKl-kq-ulA"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="7HQ-hn-atg"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="1236" y="125"/>
         </scene>
@@ -91,7 +135,7 @@
         <scene sceneID="9sF-7U-cug">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Mbs-nJ-ft9" customClass="NavigationController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chat" id="wMm-Pm-lSz"/>
+                    <tabBarItem key="tabBarItem" title="Chat" image="icon_chat" id="wMm-Pm-lSz"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="C8r-9d-gcM">
@@ -120,4 +164,10 @@
             <point key="canvasLocation" x="647" y="579"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icon_chat" width="32" height="32"/>
+        <image name="icon_chevron_left" width="16" height="16"/>
+        <image name="icon_logout" width="16" height="16"/>
+        <image name="icon_new_chat" width="16" height="16"/>
+    </resources>
 </document>
