@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Disk
 import RxSwift
 import RxCocoa
 import Firebase
@@ -26,10 +27,6 @@ class FirebaseManager: NSObject {
     let users = Variable<[User]>([])
     
     let userForRoom = Variable<User?>(nil)
-    
-//    let rooms = Variable<[Room]>([])
-    
-    let messages = Variable<[Message]>([])
     
     let roomForMessage = Variable<Room?>(nil)
     
@@ -145,7 +142,6 @@ class FirebaseManager: NSObject {
                     })
                 })
             }else{
-                self.messages.value = []
                 self.messageRef.removeAllObservers()
             }
         }).disposed(by: disposeBag)
@@ -214,8 +210,21 @@ class FirebaseManager: NSObject {
     }
     
     func logout(completion: ((Error?) -> Void)? = nil) {
-        do { try Auth.auth().signOut(); completion?(nil) }
-        catch let error { completion?(error) }
+        guard let user = Auth.auth().currentUser else {return}
+        FirebaseManager.shared.userRef.child(user.uid).updateChildValues(["online": false])
+        Realm.asyncOpen(callback: {realm, _ in
+            guard let realm = realm else {return}
+            print("remove all database")
+            do {
+                try Disk.clear(.caches)
+                try Auth.auth().signOut()
+                try realm.write {
+                    realm.delete(realm.objects(Room.self))
+                    realm.delete(realm.objects(Message.self))
+                    realm.delete(realm.objects(RoomUserString.self))
+                }
+            } catch { completion?(error) }
+        })
     }
     
     // MARK: Application Delegate

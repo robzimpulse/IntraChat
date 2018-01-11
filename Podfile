@@ -7,6 +7,7 @@ target 'IntraChat' do
 
   # Pods for IntraChat
   
+  pod 'Disk'
   pod 'Eureka'
   pod 'Lightbox'
   pod 'MessageKit'

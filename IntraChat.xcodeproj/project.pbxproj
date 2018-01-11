@@ -36,6 +36,7 @@
 		3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7152000D74200D77A8F /* BaseMappable.swift */; };
 		3EE3D71D20016E9E00D77A8F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D71C20016E9E00D77A8F /* Auth.storyboard */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
+		840E058520074D260084AB6F /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E058420074D260084AB6F /* UIImageView.swift */; };
 		842A229D2004D109008AE4A4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229C2004D109008AE4A4 /* Message.swift */; };
 		842A229F2004D2EE008AE4A4 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229E2004D2EE008AE4A4 /* String.swift */; };
 		842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A22A02004E867008AE4A4 /* NavigationController.swift */; };
@@ -77,6 +78,7 @@
 		3EE3D7152000D74200D77A8F /* BaseMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMappable.swift; sourceTree = "<group>"; };
 		3EE3D71C20016E9E00D77A8F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
+		840E058420074D260084AB6F /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		842A229C2004D109008AE4A4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		842A229E2004D2EE008AE4A4 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		842A22A02004E867008AE4A4 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				3EE3D70F2000C34B00D77A8F /* UIViewController.swift */,
 				3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */,
 				3E2090252003D7EA0062BA7C /* UINavigationController.swift */,
+				840E058420074D260084AB6F /* UIImageView.swift */,
 				842A229E2004D2EE008AE4A4 /* String.swift */,
 			);
 			path = Extension;
@@ -390,6 +393,7 @@
 				"${BUILT_PRODUCTS_DIR}/AlamofireImage/AlamofireImage.framework",
 				"${BUILT_PRODUCTS_DIR}/Cache/Cache.framework",
 				"${BUILT_PRODUCTS_DIR}/DACircularProgress/DACircularProgress.framework",
+				"${BUILT_PRODUCTS_DIR}/Disk/Disk.framework",
 				"${BUILT_PRODUCTS_DIR}/EZSwiftExtensions/EZSwiftExtensions.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
@@ -419,6 +423,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cache.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DACircularProgress.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Disk.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EZSwiftExtensions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
@@ -470,6 +475,7 @@
 				3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */,
 				3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */,
 				3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */,
+				840E058520074D260084AB6F /* UIImageView.swift in Sources */,
 				3E6A22EE200064BD006A5607 /* SettingViewController.swift in Sources */,
 				3E6A22FE200087BF006A5607 /* RoomCell.swift in Sources */,
 				8451A0D62005CDE40097BED7 /* Transform.swift in Sources */,

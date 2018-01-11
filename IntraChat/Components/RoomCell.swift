@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Disk
 import AlamofireImage
 
 class RoomCell: UITableViewCell {
@@ -33,8 +34,7 @@ class RoomCell: UITableViewCell {
         lastChatLabel.text = "Last chat \((room.lastChat ?? Date()).timePassed())"
         iconImageView.image = nil
         guard let url = URL(string: room.icon ?? "") else {return}
-        let filter = AspectScaledToFillSizeCircleFilter(size: CGSize(width: 100, height: 100))
-        iconImageView.af_setImage(withURL: url, filter: filter)
+        iconImageView.setPersistentImage(url: url)
     }
     
 }

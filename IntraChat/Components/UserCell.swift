@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Disk
 import AlamofireImage
 
 class UserCell: UITableViewCell {
@@ -30,8 +31,7 @@ class UserCell: UITableViewCell {
         usernameLabel.text = user.name
         profileImageView.image = nil
         guard let photo = user.photo, let url = URL(string: photo) else {return}
-        let filter = AspectScaledToFillSizeCircleFilter(size: CGSize(width: 100, height: 100))
-        profileImageView.af_setImage(withURL: url, filter: filter)
+        profileImageView.setPersistentImage(url: url)
     }
     
 }

@@ -60,11 +60,6 @@ class RoomListViewController: UIViewController {
         
         tableView.rx.didEndScrollingAnimation.bind { self.isScrolled = false }.disposed(by: disposeBag)
         
-//        FirebaseManager.shared.rooms.asObservable().bind(
-//            to: tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
-//            curriedArgument: { row, room, cell in cell.configure(room: room) }
-//        ).disposed(by: disposeBag)
-        
         timer = Timer.runThisEvery(seconds: 1.0, handler: { _ in
             if !self.isScrolled { self.tableView.reloadData() }
         })

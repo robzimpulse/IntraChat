@@ -4,6 +4,7 @@ PODS:
     - Alamofire (~> 4.5)
   - Cache (4.1.2)
   - DACircularProgress (2.3.1)
+  - Disk (0.3.3)
   - Eureka (4.0.1)
   - EZSwiftExtensions (1.11)
   - Firebase/Auth (4.8.0):
@@ -97,6 +98,7 @@ PODS:
 DEPENDENCIES:
   - AlamofireImage
   - DACircularProgress
+  - Disk
   - Eureka
   - EZSwiftExtensions
   - Firebase/Auth
@@ -120,6 +122,7 @@ SPEC CHECKSUMS:
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
+  Disk: d1f55cd61f6ca20f368232d0c6e37e3c3dfcb63e
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   EZSwiftExtensions: 84000042202d9fd574f626cda3064143f27fa767
   Firebase: 710decbbc6d9d48530e9a5dba3209740c3532e05
@@ -151,6 +154,6 @@ SPEC CHECKSUMS:
   RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
   TOCropViewController: a21b39c910d161600a26b6e3f89a58707afaa4f8
 
-PODFILE CHECKSUM: d85fd60abb7370c42c3808fc4139c00f1bf176ee
+PODFILE CHECKSUM: d187b29e10a66eeb6959ca748cc30b0e0fc94e71
 
 COCOAPODS: 1.3.1
