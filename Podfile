@@ -11,6 +11,7 @@ target 'IntraChat' do
   pod 'Eureka'
   pod 'Lightbox'
   pod 'MessageKit'
+  pod 'MenuItemKit'
   pod 'ImagePicker'
   pod 'ObjectMapper'
   pod 'PusherChatkit'

@@ -53,10 +53,6 @@ class ProfileViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let url = FirebaseManager.shared.currentUser()?.photoURL {
-            profileImageView.setImage(url: url )
-        }
-        
         form
             
             +++ Section()
@@ -71,6 +67,9 @@ class ProfileViewController: FormViewController {
                     cell.viewBottomMargin = 0.0
                     cell.height = { return CGFloat(200) }
                     cell.separatorInset.left = 0
+                    if let url = FirebaseManager.shared.currentUser()?.photoURL {
+                        self.profileImageView.setImage(url: url )
+                    }
                 }
                 row.onCellSelection({ cell, _ in
                     self.presentVC(self.imagePicker)
@@ -82,6 +81,9 @@ class ProfileViewController: FormViewController {
                 row.tag = formIndex.email
                 row.disabled = true
                 row.cellUpdate({ cell, _ in
+                    row.value = FirebaseManager.shared.currentUser()?.email
+                })
+                row.cellSetup({ cell, _ in
                     row.value = FirebaseManager.shared.currentUser()?.email
                 })
             }
@@ -97,6 +99,9 @@ class ProfileViewController: FormViewController {
                         row.reload()
                     })
                 })
+                row.cellSetup({ cell, _ in
+                    row.value = FirebaseManager.shared.currentUser()?.displayName
+                })
                 row.cellUpdate({ cell, _ in
                     row.value = FirebaseManager.shared.currentUser()?.displayName
                 })
@@ -106,6 +111,9 @@ class ProfileViewController: FormViewController {
             <<< PhoneRow() { row in
                 row.tag = formIndex.phone
                 row.disabled = true
+                row.cellSetup({ cell, _ in
+                    row.value = FirebaseManager.shared.currentUser()?.phoneNumber
+                })
                 row.cellUpdate({ cell, _ in
                     row.value = FirebaseManager.shared.currentUser()?.phoneNumber
                 })

@@ -12,6 +12,7 @@ import RxCocoa
 import RxRealm
 import RealmSwift
 import MessageKit
+import MenuItemKit
 
 class RoomChatViewController: MessagesViewController {
 
@@ -53,11 +54,7 @@ class RoomChatViewController: MessagesViewController {
         subtitleLabel.text = room?.users.flatMap({ (uid) -> String? in
             return FirebaseManager.shared.users.value.filter({ uid == ($0.uid ?? "") }).first?.name
         }).joined(separator: ",")
-        if let icon = room?.icon, let url = URL(string: icon) {
-            iconImageView.setImage(url: url)
-        }
-        
-        if "11.0".isVersionLess() { automaticallyAdjustsScrollViewInsets = true }
+        if let icon = room?.icon, let url = URL(string: icon) { iconImageView.setImage(url: url) }
         
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
@@ -85,6 +82,21 @@ class RoomChatViewController: MessagesViewController {
             
         })
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(UIMenuControllerDidHide(_:)),
+            name: .UIMenuControllerDidHideMenu,
+            object: nil
+        )
+        
+    }
+    
+    @objc func UIMenuControllerDidHide(_ notification: NSNotification) {
+        UIMenuController.shared.menuItems = []
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .UIMenuControllerDidHideMenu, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -191,7 +203,7 @@ extension RoomChatViewController: MessagesDisplayDelegate {
     }
     
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
-        return isFromCurrentSender(message: message) ? .bubbleTail(.bottomRight, .curved) : .bubbleTail(.bottomLeft, .curved)
+        return .bubbleOutline(.clear)
     }
     
     // MARK: Text Message
@@ -216,7 +228,34 @@ extension RoomChatViewController: MessageCellDelegate {
     }
     
     func didTapMessage(in cell: MessageCollectionViewCell) {
-        print("message tapped")
+        guard let index = messagesCollectionView.indexPath(for: cell) else {return}
+        switch messageList[index.section].data {
+        case .text(let text):
+            print(text)
+//            UIMenuController.shared.menuItems = [
+//                UIMenuItem(title: "Reply", action: { _ in
+//                    print("Reply chat for text \(text)")
+//                }),
+//                UIMenuItem(title: "Forward", action: { _ in
+//                    print("Forward chat for \(text)")
+//                }),
+//                UIMenuItem(title: "Copy", action: { _ in
+//                    UIPasteboard.general.string = text
+//                }),
+//                UIMenuItem(title: "Delete", action: { _ in
+//                    print("Delete chat for text \(text)")
+//                })
+//            ]
+            break
+        default:
+            break
+        }
+        
+//        let cellRect = cell.convert(cell.messageContainerView.frame, to: messagesCollectionView)
+//        UIMenuController.shared.setTargetRect(cellRect, in: messagesCollectionView)
+//        UIMenuController.shared.setMenuVisible(true, animated: true)
     }
+
+    
     
 }
