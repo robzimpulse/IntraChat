@@ -10,7 +10,7 @@ import UIKit
 import Lightbox
 import ImagePicker
 import EZSwiftExtensions
-import DACircularProgress
+import RPCircularProgress
 
 class RoomInfoViewController: UIViewController {
 
@@ -21,16 +21,6 @@ class RoomInfoViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
-    lazy var progressView: DACircularProgressView = {
-        let progress = DACircularProgressView(superView: photoImageView)
-        progress.progressTintColor = .red
-        progress.trackTintColor = .clear
-        progress.innerTintColor = .clear
-        progress.roundedCorners = 1
-        progress.thicknessRatio = 0.05
-        return progress
-    }()
     
     var users: [User] = []
     
@@ -46,13 +36,20 @@ class RoomInfoViewController: UIViewController {
         return imagePickerController
     }()
     
+    lazy var progressView: RPCircularProgress = {
+        let progress = RPCircularProgress()
+        progress.innerTintColor = .clear
+        progress.thicknessRatio = 0.1
+        progress.progressTintColor = .green
+        return progress
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         registerSwipeBack()
         photoImageView.addTapGesture(action: { _ in
             self.presentVC(self.imagePicker)
         })
-//        photoImageView.image = #imageLiteral(resourceName: "icon_group").af_imageAspectScaled(toFill: photoImageView.frame.size).af_imageRoundedIntoCircle()
     }
     
     override func viewDidLayoutSubviews() {
@@ -66,23 +63,24 @@ class RoomInfoViewController: UIViewController {
         guard let name = roomNameTextField.text else {return}
         guard let icon = photoImageView.image else {return}
         guard let user = FirebaseManager.shared.currentUser() else {return}
-        
         photoImageView.addSubview(progressView)
+        progressView.centerInSuperView()
         FirebaseManager.shared.upload(image: icon, handleProgress: { snapshot in
             guard let progress = snapshot.progress?.fractionCompleted.toCGFloat else {return}
-            self.progressView.setProgress(progress, animated: true)
+            self.progressView.updateProgress(progress)
         }, completion: { meta, _ in
-            self.progressView.removeFromSuperview()
-            guard let meta = meta else {return}
-            guard let icon = meta.downloadURL()?.absoluteString else {return}
-            self.users.append(User(user: user))
-            let room = Room(name: name, icon: icon, users: self.users)
-            FirebaseManager.shared.create(room: room, completion: { error in
-                print(error as Any)
-                self.navigationController?.dismissVC(completion: nil)
+            self.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
+                self.progressView.removeFromSuperview()
+                guard let meta = meta else {return}
+                guard let icon = meta.downloadURL()?.absoluteString else {return}
+                self.users.append(User(user: user))
+                let room = Room(name: name, icon: icon, users: self.users)
+                FirebaseManager.shared.create(room: room, completion: { error in
+                    print(error as Any)
+                    self.navigationController?.dismissVC(completion: nil)
+                })
             })
         })
-        
     }
     
 }

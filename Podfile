@@ -17,7 +17,7 @@ target 'IntraChat' do
   pod 'AlamofireImage'
   pod 'IQKeyboardManager'
   pod 'EZSwiftExtensions'
-  pod 'DACircularProgress'
+  pod 'RPCircularProgress'
   pod 'TOCropViewController'
   
   pod 'RxSwift'
