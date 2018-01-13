@@ -2,36 +2,36 @@
 platform :ios, '9.0'
 
 target 'IntraChat' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
-
-  # Pods for IntraChat
-  
-  pod 'Disk'
-  pod 'Eureka'
-  pod 'Lightbox'
-  pod 'MessageKit'
-  pod 'MenuItemKit'
-  pod 'ImagePicker'
-  pod 'ObjectMapper'
-  pod 'PusherChatkit'
-  pod 'AlamofireImage'
-  pod 'IQKeyboardManager'
-  pod 'EZSwiftExtensions'
-  pod 'RPCircularProgress'
-  pod 'TOCropViewController'
-  
-  pod 'RxSwift'
-  pod 'RxCocoa'
-  pod 'RxRealm'
-  
-  pod 'Firebase/Core'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Messaging'
-  pod 'Firebase/Storage'
-  pod 'Firebase/Database'
-  
-  pod 'ViewRow', :git => 'https://github.com/EurekaCommunity/ViewRow'
+    # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+    use_frameworks!
+    
+    # Pods for IntraChat
+    pod 'Hero'
+    pod 'Disk'
+    pod 'Eureka'
+    pod 'Lightbox'
+    pod 'MessageKit'
+    pod 'MenuItemKit'
+    pod 'ImagePicker'
+    pod 'ObjectMapper'
+    pod 'PusherChatkit'
+    pod 'AlamofireImage'
+    pod 'IQKeyboardManager'
+    pod 'EZSwiftExtensions'
+    pod 'RPCircularProgress'
+    pod 'TOCropViewController'
+    
+    pod 'RxSwift'
+    pod 'RxCocoa'
+    pod 'RxRealm'
+    
+    pod 'Firebase/Core'
+    pod 'Firebase/Auth'
+    pod 'Firebase/Messaging'
+    pod 'Firebase/Storage'
+    pod 'Firebase/Database'
+    
+    pod 'ViewRow', :git => 'https://github.com/EurekaCommunity/ViewRow'
 end
 
 post_install do |installer|
@@ -46,3 +46,4 @@ post_install do |installer|
         end
     end
 end
+
