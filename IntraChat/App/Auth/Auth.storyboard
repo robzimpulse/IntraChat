@@ -12,10 +12,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Auth Navigation Controller-->
         <scene sceneID="cIs-tI-7hC">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="AD0-uU-Hhf" customClass="NavigationController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="AD0-uU-Hhf" customClass="AuthNavigationController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="84H-qq-R08">
                         <autoresizingMask key="autoresizingMask"/>
@@ -73,6 +73,9 @@
                                                     <constraint firstAttribute="bottom" secondItem="D9V-m2-CzC" secondAttribute="bottom" constant="1" id="nkq-we-I3f"/>
                                                     <constraint firstAttribute="trailing" secondItem="D9V-m2-CzC" secondAttribute="trailing" constant="1" id="ycc-T0-VZo"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="top"/>
+                                                </userDefinedRuntimeAttributes>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="characterWrap" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YJ3-xV-fwQ">
                                                 <rect key="frame" x="134" y="603" width="107" height="44"/>
@@ -99,6 +102,9 @@
                                                         </fragment>
                                                     </attributedString>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="bottom"/>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <segue destination="1Bc-gf-Ztk" kind="show" id="cRu-UR-2tZ"/>
                                                 </connections>
@@ -137,6 +143,9 @@
                         <viewLayoutGuide key="safeArea" id="OEf-Kj-EPH"/>
                     </view>
                     <navigationItem key="navigationItem" id="pv1-km-oRo"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="signinButton" destination="D9V-m2-CzC" id="DGv-jD-Boa"/>
                         <outlet property="signinContainer" destination="GKE-T4-273" id="6SN-Oq-uuf"/>
@@ -250,6 +259,9 @@
                                                     <constraint firstItem="5AX-at-jhx" firstAttribute="height" secondItem="7zC-h5-YBa" secondAttribute="height" id="wcE-y7-Ciu"/>
                                                 </constraints>
                                                 <viewLayoutGuide key="safeArea" id="dwW-aa-Mgl"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="top"/>
+                                                </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BcH-lm-YgG">
                                                 <rect key="frame" x="40" y="537" width="295" height="46"/>
@@ -272,6 +284,9 @@
                                                     <constraint firstItem="waS-Yq-un1" firstAttribute="leading" secondItem="BcH-lm-YgG" secondAttribute="leading" constant="1" id="aWv-yF-xC0"/>
                                                     <constraint firstItem="waS-Yq-un1" firstAttribute="top" secondItem="BcH-lm-YgG" secondAttribute="top" constant="1" id="jHm-Hy-iUf"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="bottom"/>
+                                                </userDefinedRuntimeAttributes>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0SQ-eR-md6">
                                                 <rect key="frame" x="16" y="44" width="44" height="44"/>
@@ -323,6 +338,9 @@
                         <viewLayoutGuide key="safeArea" id="47k-bf-kPR"/>
                     </view>
                     <navigationItem key="navigationItem" id="jw6-tX-MbW"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="confirmPasswordTextField" destination="5AX-at-jhx" id="QEg-4e-7lw"/>
                         <outlet property="emailTextField" destination="Otj-XB-NmC" id="gGF-vY-x9f"/>
@@ -401,6 +419,9 @@
                                                     <constraint firstAttribute="trailing" secondItem="BdL-vW-48j" secondAttribute="trailing" constant="1" id="icp-O5-DWO"/>
                                                     <constraint firstAttribute="bottom" secondItem="ISI-Jn-7iY" secondAttribute="bottom" constant="1" id="p4a-mX-CNr"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="top"/>
+                                                </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6Y-re-CGR">
                                                 <rect key="frame" x="40" y="537" width="295" height="46"/>
@@ -423,6 +444,9 @@
                                                     <constraint firstAttribute="trailing" secondItem="LfN-DV-U4N" secondAttribute="trailing" constant="1" id="rDU-vn-hAA"/>
                                                     <constraint firstAttribute="bottom" secondItem="LfN-DV-U4N" secondAttribute="bottom" constant="1" id="sik-uK-Xh0"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="heroID" value="bottom"/>
+                                                </userDefinedRuntimeAttributes>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

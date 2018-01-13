@@ -50,6 +50,11 @@ class ProfileViewController: FormViewController {
         return progress
     }()
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        form.allSections.forEach({ $0.reload() })
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -67,6 +72,7 @@ class ProfileViewController: FormViewController {
                     cell.viewBottomMargin = 0.0
                     cell.height = { return CGFloat(200) }
                     cell.separatorInset.left = 0
+                    self.profileImageView.image = nil
                     if let url = FirebaseManager.shared.currentUser()?.photoURL {
                         self.profileImageView.setImage(url: url )
                     }

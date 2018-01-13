@@ -16,6 +16,7 @@
 		3E2090232003D4660062BA7C /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2090212003D4660062BA7C /* UserCell.swift */; };
 		3E2090242003D4660062BA7C /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E2090222003D4660062BA7C /* UserCell.xib */; };
 		3E2090262003D7EA0062BA7C /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2090252003D7EA0062BA7C /* UINavigationController.swift */; };
+		3E2499302009D1920058639B /* AuthNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E24992F2009D1920058639B /* AuthNavigationController.swift */; };
 		3E3487EC1FFFDBD1009ED2E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3487EB1FFFDBD1009ED2E0 /* AppDelegate.swift */; };
 		3E3487F11FFFDBD1009ED2E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E3487EF1FFFDBD1009ED2E0 /* Main.storyboard */; };
 		3E3487F31FFFDBD1009ED2E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E3487F21FFFDBD1009ED2E0 /* Assets.xcassets */; };
@@ -55,6 +56,7 @@
 		3E2090212003D4660062BA7C /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		3E2090222003D4660062BA7C /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		3E2090252003D7EA0062BA7C /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
+		3E24992F2009D1920058639B /* AuthNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigationController.swift; sourceTree = "<group>"; };
 		3E3487E81FFFDBD1009ED2E0 /* IntraChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IntraChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E3487EB1FFFDBD1009ED2E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3E3487F01FFFDBD1009ED2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				3EE3D71C20016E9E00D77A8F /* Auth.storyboard */,
+				3E24992F2009D1920058639B /* AuthNavigationController.swift */,
 				3E1553622002688A007BD985 /* AuthInitialViewController.swift */,
 				3E15536420027082007BD985 /* AuthSignInViewController.swift */,
 				3E15536620027089007BD985 /* AuthSignUpViewController.swift */,
@@ -394,6 +397,7 @@
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Hero/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/Hue/Hue.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
 				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
@@ -426,6 +430,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hue.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
@@ -463,6 +468,7 @@
 				3E3487EC1FFFDBD1009ED2E0 /* AppDelegate.swift in Sources */,
 				842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */,
 				3E2090262003D7EA0062BA7C /* UINavigationController.swift in Sources */,
+				3E2499302009D1920058639B /* AuthNavigationController.swift in Sources */,
 				3E35B93A2006CA0F00AA4125 /* Chat.swift in Sources */,
 				842A229F2004D2EE008AE4A4 /* String.swift in Sources */,
 				3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */,

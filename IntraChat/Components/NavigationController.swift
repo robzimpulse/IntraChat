@@ -14,9 +14,8 @@ class NavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
-        self.interactivePopGestureRecognizer?.delegate = self
     }
-
+    
     func theme(VC: UIViewController){
         navigationBar.shadowImage = UIImage()
         navigationBar.setBackgroundImage(UIImage(), for: .default)
