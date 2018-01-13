@@ -46,8 +46,6 @@ class RoomChatViewController: MessagesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        registerSwipeBack()
-        
         titleView.widthAnchor.constraint(equalToConstant: 250).isActive = true
         navigationItem.titleView = titleView
         titleLabel.text = room?.name

@@ -22,11 +22,6 @@ extension UIViewController: UIGestureRecognizerDelegate {
             self.dismiss(animated: true, completion: nil)
         }
     }
-    @IBAction func registerSwipeBack(){
-        if let validRecognizer = navigationController?.interactivePopGestureRecognizer {
-            validRecognizer.delegate = self
-        }
-    }
     func showAlert(title: String, message: String, actions: [UIAlertAction]? = nil, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title,message: message,preferredStyle: .alert)
         alert.addAction(UIAlertAction.init(title: "OK", style: .default, handler: { _ in

@@ -14,6 +14,7 @@ class NavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
+        self.interactivePopGestureRecognizer?.delegate = self
     }
 
     func theme(VC: UIViewController){
@@ -27,7 +28,11 @@ class NavigationController: UINavigationController {
 }
 
 extension NavigationController: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    func navigationController(
+        _ navigationController: UINavigationController,
+        willShow viewController: UIViewController,
+        animated: Bool
+    ) {
         theme(VC: viewController)
         if let coordinator = navigationController.topViewController?.transitionCoordinator {
             coordinator.notifyWhenInteractionEnds({ (context) in

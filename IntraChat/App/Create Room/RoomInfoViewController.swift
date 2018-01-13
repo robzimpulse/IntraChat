@@ -46,7 +46,6 @@ class RoomInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerSwipeBack()
         photoImageView.addTapGesture(action: { _ in
             self.presentVC(self.imagePicker)
         })

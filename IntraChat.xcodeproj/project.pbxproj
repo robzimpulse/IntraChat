@@ -29,7 +29,6 @@
 		3E6A22FE200087BF006A5607 /* RoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22FC200087BF006A5607 /* RoomCell.swift */; };
 		3E6A22FF200087BF006A5607 /* RoomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22FD200087BF006A5607 /* RoomCell.xib */; };
 		3E6A230120009652006A5607 /* RoomChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A230020009652006A5607 /* RoomChatViewController.swift */; };
-		3EC9025F2003AC1200BEBA71 /* FadeTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9025E2003AC1200BEBA71 /* FadeTransition.swift */; };
 		3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */; };
 		3EE3D7102000C34B00D77A8F /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D70F2000C34B00D77A8F /* UIViewController.swift */; };
 		3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */; };
@@ -71,7 +70,6 @@
 		3E6A22FC200087BF006A5607 /* RoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCell.swift; sourceTree = "<group>"; };
 		3E6A22FD200087BF006A5607 /* RoomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCell.xib; sourceTree = "<group>"; };
 		3E6A230020009652006A5607 /* RoomChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomChatViewController.swift; sourceTree = "<group>"; };
-		3EC9025E2003AC1200BEBA71 /* FadeTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeTransition.swift; sourceTree = "<group>"; };
 		3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardSegue.swift; sourceTree = "<group>"; };
 		3EE3D70F2000C34B00D77A8F /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
@@ -159,7 +157,6 @@
 				3E6A22EF200065E4006A5607 /* Model */,
 				3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */,
 				8451A0D52005CDE40097BED7 /* Transform.swift */,
-				3EC9025E2003AC1200BEBA71 /* FadeTransition.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -472,7 +469,6 @@
 				3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */,
 				3E6A230120009652006A5607 /* RoomChatViewController.swift in Sources */,
 				3E6A22F1200065F0006A5607 /* Room.swift in Sources */,
-				3EC9025F2003AC1200BEBA71 /* FadeTransition.swift in Sources */,
 				3E2090232003D4660062BA7C /* UserCell.swift in Sources */,
 				3E15536720027089007BD985 /* AuthSignUpViewController.swift in Sources */,
 				3E20901E2003CE650062BA7C /* User.swift in Sources */,

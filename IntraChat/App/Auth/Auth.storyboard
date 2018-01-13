@@ -283,7 +283,7 @@
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="back:" destination="1Bc-gf-Ztk" eventType="touchDragInside" id="NFj-oH-I7B"/>
+                                                    <action selector="back:" destination="1Bc-gf-Ztk" eventType="touchUpInside" id="YUG-Yb-zzh"/>
                                                 </connections>
                                             </button>
                                         </subviews>
