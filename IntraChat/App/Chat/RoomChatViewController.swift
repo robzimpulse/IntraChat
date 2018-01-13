@@ -13,6 +13,11 @@ import RxRealm
 import RealmSwift
 import MessageKit
 import MenuItemKit
+import Lightbox
+import ImagePicker
+import RPCircularProgress
+import TOCropViewController
+
 
 class RoomChatViewController: MessagesViewController {
 
@@ -33,12 +38,70 @@ class RoomChatViewController: MessagesViewController {
         return .lightContent
     }
     
+    lazy var imagePicker: ImagePickerController = {
+        var config = Configuration()
+        config.doneButtonTitle = "Next"
+        config.noImagesTitle = "Sorry! There are no images here!"
+        config.recordLocation = true
+        config.allowMultiplePhotoSelection = false
+        config.allowVideoSelection = false
+        let imagePickerController = ImagePickerController(configuration: config)
+        imagePickerController.delegate = self
+        return imagePickerController
+    }()
+    
+    lazy var progressView: RPCircularProgress = {
+        let progress = RPCircularProgress()
+        progress.innerTintColor = .clear
+        progress.thicknessRatio = 0.1
+        progress.progressTintColor = .green
+        return progress
+    }()
+    
     lazy var customInputBar: MessageInputBar = {
+        let height: CGFloat = 34
         let newMessageInputBar = MessageInputBar()
-        newMessageInputBar.backgroundColor = UIColor.black
-        newMessageInputBar.sendButton.tintColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
+        let mediaButton = InputBarButtonItem().configure({
+            $0.spacing = .flexible
+            $0.image = #imageLiteral(resourceName: "icon_add").resizeWithWidth(height - 14).resizeWithHeight(height - 14)
+            $0.setSize(CGSize(width: height, height: height), animated: true)
+        }).onTouchUpInside({ _ in
+            self.showActionSheet(title: nil, actions: [
+                UIAlertAction(title: "Media", style: .default, handler: { _ in
+                    self.presentVC(self.imagePicker)
+                }),
+                UIAlertAction(title: "Document", style: .default, handler: { _ in
+                    self.reloadInputViews()
+                }),
+                UIAlertAction(title: "Location", style: .default, handler: { _ in
+                    self.reloadInputViews()
+                })
+            ], cancel: { self.reloadInputViews() })
+        }).onTextViewDidChange({ button, textView in
+            let width = textView.text.isBlank ? height : 0
+            button.setSize(CGSize(width: width, height: height), animated: true)
+            newMessageInputBar.setLeftStackViewWidthConstant(to: width , animated: true)
+        })
+        newMessageInputBar.isTranslucent = false
+        newMessageInputBar.backgroundView.backgroundColor = UIColor.black
         newMessageInputBar.inputTextView.textContainerInset = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         newMessageInputBar.inputTextView.placeholderLabelInsets = UIEdgeInsets(top: 8, left: 20, bottom: 8, right: 16)
+        newMessageInputBar.inputTextView.layer.borderColor = UIColor.white.cgColor
+        newMessageInputBar.inputTextView.layer.borderWidth = 1.0
+        newMessageInputBar.inputTextView.layer.cornerRadius = height / 2
+        newMessageInputBar.inputTextView.layer.masksToBounds = true
+        newMessageInputBar.inputTextView.autocorrectionType = .no
+        newMessageInputBar.textViewPadding.left = 8
+        newMessageInputBar.textViewPadding.right = 8
+        newMessageInputBar.setRightStackViewWidthConstant(to: height, animated: true)
+        newMessageInputBar.setStackViewItems([newMessageInputBar.sendButton], forStack: .right, animated: true)
+        newMessageInputBar.setStackViewItems([mediaButton], forStack: .left, animated: true)
+        newMessageInputBar.setLeftStackViewWidthConstant(to: height , animated: true)
+        newMessageInputBar.sendButton.setSize(CGSize(width: height, height: height), animated: true)
+        newMessageInputBar.sendButton.image = #imageLiteral(resourceName: "icon_send").resizeWithWidth(height - 14).resizeWithHeight(height - 14)
+        newMessageInputBar.sendButton.title = nil
+        newMessageInputBar.sendButton.backgroundColor = UIColor.darkGray
+        newMessageInputBar.sendButton.layer.cornerRadius = height / 2
         newMessageInputBar.delegate = self
         return newMessageInputBar
     }()
@@ -254,6 +317,59 @@ extension RoomChatViewController: MessageCellDelegate {
 //        UIMenuController.shared.setMenuVisible(true, animated: true)
     }
 
+}
+
+extension RoomChatViewController: ImagePickerDelegate {
+    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+        guard images.count > 0 else {return}
+        let lightboxImages = images.map { LightboxImage(image: $0) }
+        let lightBoxController = LightboxController(images: lightboxImages, startIndex: 0)
+        imagePicker.presentVC(lightBoxController)
+    }
     
+    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
+        guard let image = images.first else {
+            imagePicker.dismissVC(completion: nil)
+            return
+        }
+        let cropViewController = TOCropViewController(croppingStyle: .default, image: image)
+        cropViewController.delegate = self
+        imagePicker.presentVC(cropViewController)
+    }
+    
+    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
+        imagePicker.dismissVC(completion: nil)
+    }
+}
+
+extension RoomChatViewController: TOCropViewControllerDelegate {
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        cropViewController.dismissVC(completion: nil)
+    }
+    func cropViewController(_ cropViewController: TOCropViewController, didCropToImage image: UIImage, rect cropRect: CGRect, angle: Int) {
+        cropViewController.dismissVC(completion: {
+            self.imagePicker.dismissVC(completion: {
+                
+//                self.profileImageView.addSubview(self.progressView)
+//                self.progressView.centerInSuperView()
+//                FirebaseManager.shared.upload(image: image, handleProgress: { snapshot in
+//                    guard let progress = snapshot.progress?.fractionCompleted.toCGFloat else {return}
+//                    self.progressView.updateProgress(progress)
+//                }, completion: { meta, _ in
+//                    self.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
+//                        self.progressView.removeFromSuperview()
+//                        guard let meta = meta else {return}
+//                        guard let url = meta.downloadURL() else {return}
+//                        FirebaseManager.shared.change(photoUrl: url, completion: { error in
+//                            guard error == nil else {return}
+//                            self.profileImageView.setImage(url: url)
+//                        })
+//                    })
+//                })
+            })
+        })
+        
+        
+    }
     
 }

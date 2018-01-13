@@ -40,7 +40,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
         }))
         self.presentVC(refreshAlert)
     }
-    func showActionSheet(title: String, actions: [UIAlertAction], cancel: (() -> Void)? = nil) {
+    func showActionSheet(title: String?, actions: [UIAlertAction], cancel: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: nil, message: title, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(
             title: "Cancel",
@@ -48,6 +48,7 @@ extension UIViewController: UIGestureRecognizerDelegate {
             handler: { _ in cancel?() }
         ))
         actions.forEach({ action in alertController.addAction(action) })
+        self.presentVC(alertController)
     }
     func topMostViewController() -> UIViewController {
         if self.presentedViewController == nil {

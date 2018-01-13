@@ -31,9 +31,6 @@ class AuthSignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        navigationController?.interactivePopGestureRecognizer?.addTarget(self, action: #selector(self.pan(panGR:)))
-
         submitButton.rx.tap.bind(onNext: {
             guard let username = self.usernameTextField.text else {return}
             guard let email = self.emailTextField.text else {return}
@@ -62,24 +59,6 @@ class AuthSignUpViewController: UIViewController {
         signupContainer.roundCorners(.allCorners, radius: 6.0)
         submitContainer.roundCorners(.allCorners, radius: 6.0)
         submitButton.roundCorners(.allCorners, radius: 6.0)
-    }
-
-    @objc func pan(panGR: UIPanGestureRecognizer) {
-        guard let view = panGR.view else { return }
-        let translation = panGR.translation(in: nil)
-        let progress = translation.x / 2 / view.bounds.width
-        switch panGR.state {
-        case .began:
-            hero_dismissViewController()
-        case .changed:
-            Hero.shared.update(progress)
-        default:
-            if progress + panGR.velocity(in: nil).x / view.bounds.width > 0.3 {
-                Hero.shared.finish()
-            } else {
-                Hero.shared.cancel()
-            }
-        }
     }
     
 }
