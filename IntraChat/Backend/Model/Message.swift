@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import Firebase
 import MessageKit
 import RealmSwift
 import ObjectMapper
@@ -19,29 +20,41 @@ class Message: Object, FirebaseModel, Mappable {
     @objc dynamic var sentDate: Date?
     @objc dynamic var roomId: String?
     @objc dynamic var type: String?
-    @objc dynamic var content: String?
+    
+    @objc dynamic var contentText: String?
+    @objc dynamic var contentImage: String?
     
     override static func primaryKey() -> String? { return "messageId" }
-    override static func ignoredProperties() -> [String] { return ["data"] }
+    override static func ignoredProperties() -> [String] {
+        return ["data","task"]
+    }
     
     var data: MessageData? {
         get {
             guard let type = self.type else {return nil}
-            guard let content = self.content else {return nil}
-            if type == "text" {
+            switch type {
+            case "text":
+                guard let content = self.contentText else {return nil}
                 return MessageData.text(content)
-            } else { return nil }
+            case "photo":
+                guard let content = self.contentImage, let image = content.toUIImage() else {return nil}
+                return MessageData.photo(image)
+            default:
+                return nil
+            }
         }
         set {
             guard let value = newValue else {return}
             switch value {
             case .text(let text):
                 self.type = "text"
-                self.content = text
+                self.contentText = text
+                break
+            case .photo(let image):
+                self.type = "photo"
+                self.contentImage = image.toBase64()
                 break
             default:
-                self.type = nil
-                self.content = nil
                 break
             }
         }
@@ -50,9 +63,21 @@ class Message: Object, FirebaseModel, Mappable {
     convenience init(roomId: String, text: String, sender: String, date: Date) {
         self.init()
         self.roomId = roomId
-        self.data = .text(text)
         self.sender = sender
         self.sentDate = date
+        self.contentText = text
+        
+        self.data = .text(text)
+    }
+    
+    convenience init(roomId: String, image: UIImage, sender: String, date: Date) {
+        self.init()
+        self.roomId = roomId
+        self.sender = sender
+        self.sentDate = date
+        self.contentImage = image.toBase64()
+        
+        self.data = .photo(image)
     }
     
     convenience required init?(map: Map) {

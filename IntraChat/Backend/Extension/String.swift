@@ -10,6 +10,11 @@ import UIKit
 
 extension String {
     
+    func toUIImage() -> UIImage? {
+        guard let data = Data(base64Encoded: self, options: .ignoreUnknownCharacters) else {return nil}
+        return UIImage(data: data)
+    }
+    
     func dateFormat(from: String = "yyyy-MM-dd'T'HH:mm:ssZ", to: String) -> String {
         guard let validDate = dateFormat(from: from) else { return self }
         return validDate.toString(format: to)

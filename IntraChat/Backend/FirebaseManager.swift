@@ -315,17 +315,21 @@ class FirebaseManager: NSObject {
         handleUnknown: ((StorageTaskSnapshot) -> Void)? = nil,
         completion: ((StorageMetadata?, Error?) -> Void)? = nil
     ){
-        guard let data = UIImagePNGRepresentation(image) else {return}
-        let filename = UUID().uuidString.appending(".png")
-        let meta = StorageMetadata()
-        meta.contentType = "image/png"
-        let task = storageRef.child(filename).putData(data, metadata: meta, completion: completion)
+        guard let task = upload(image: image, completion: completion) else {return}
         if let handler = handleFailure {task.observe(.failure, handler: handler)}
         if let handler = handlePause {task.observe(.pause, handler: handler)}
         if let handler = handleProgress {task.observe(.progress, handler: handler)}
         if let handler = handleResume {task.observe(.resume, handler: handler)}
         if let handler = handleSuccess {task.observe(.success, handler: handler)}
         if let handler = handleUnknown {task.observe(.unknown, handler: handler)}
+    }
+    
+    func upload(image: UIImage, completion: ((StorageMetadata?, Error?) -> Void)? = nil) -> StorageUploadTask?{
+        guard let data = UIImagePNGRepresentation(image) else {return nil}
+        let filename = UUID().uuidString.appending(".png")
+        let meta = StorageMetadata()
+        meta.contentType = "image/png"
+        return storageRef.child(filename).putData(data, metadata: meta, completion: completion)
     }
     
     private func localNotification(object: Notification, delay: TimeInterval = 0){

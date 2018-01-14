@@ -35,6 +35,7 @@
 		3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */; };
 		3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7152000D74200D77A8F /* BaseMappable.swift */; };
 		3EE3D71D20016E9E00D77A8F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D71C20016E9E00D77A8F /* Auth.storyboard */; };
+		3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78FEC200A5283008E1AEB /* UIImage.swift */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
 		840E058520074D260084AB6F /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E058420074D260084AB6F /* UIImageView.swift */; };
 		842A229D2004D109008AE4A4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229C2004D109008AE4A4 /* Message.swift */; };
@@ -77,6 +78,7 @@
 		3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		3EE3D7152000D74200D77A8F /* BaseMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMappable.swift; sourceTree = "<group>"; };
 		3EE3D71C20016E9E00D77A8F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
+		3EF78FEC200A5283008E1AEB /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
 		840E058420074D260084AB6F /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		842A229C2004D109008AE4A4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */,
 				3E2090252003D7EA0062BA7C /* UINavigationController.swift */,
 				840E058420074D260084AB6F /* UIImageView.swift */,
+				3EF78FEC200A5283008E1AEB /* UIImage.swift */,
 				842A229E2004D2EE008AE4A4 /* String.swift */,
 			);
 			path = Extension;
@@ -471,6 +474,7 @@
 				3E2499302009D1920058639B /* AuthNavigationController.swift in Sources */,
 				3E35B93A2006CA0F00AA4125 /* Chat.swift in Sources */,
 				842A229F2004D2EE008AE4A4 /* String.swift in Sources */,
+				3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */,
 				3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */,
 				3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */,
 				3E6A230120009652006A5607 /* RoomChatViewController.swift in Sources */,

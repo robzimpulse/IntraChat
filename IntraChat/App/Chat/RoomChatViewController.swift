@@ -349,6 +349,27 @@ extension RoomChatViewController: TOCropViewControllerDelegate {
     func cropViewController(_ cropViewController: TOCropViewController, didCropToImage image: UIImage, rect cropRect: CGRect, angle: Int) {
         cropViewController.dismissVC(completion: {
             self.imagePicker.dismissVC(completion: {
+                guard let room = self.room else {return}
+                guard let roomId = room.id else {return}
+                let message = Message(roomId: roomId, image: image, sender: self.currentSender().id, date: Date())
+                
+//                inputBar.inputTextView.text = String()
+//                let message = Message(roomId: roomId, text: text, sender: currentSender().id, date: Date())
+                FirebaseManager.shared.create(message: message, completion: { error in
+                    guard error == nil else {return}
+                    FirebaseManager.shared.updateLastChat(roomId: roomId, date: Date())
+//                    room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
+//                        FirebaseManager.shared.create(notification: Notification(
+//                            title: "\(self.currentSender().displayName) @\(room.name ?? "")",
+//                            body: text,
+//                            receiver: user
+//                        ))
+//                    })
+                })
+                
+                
+                
+                
                 
 //                self.profileImageView.addSubview(self.progressView)
 //                self.progressView.centerInSuperView()

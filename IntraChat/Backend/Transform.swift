@@ -33,10 +33,13 @@ class Transform: NSObject {
     static let messageData = TransformOf<MessageData, [String: Any]>(fromJSON: { (value: [String: Any]?) -> MessageData? in
         // transform value from [String: Any]? to MessageData?
         guard let type = value?["type"] as? String else {return nil}
-        guard let content = value?["content"] as? String else {return nil}
         switch type {
         case "text":
+            guard let content = value?["content"] as? String else {return nil}
             return MessageData.text(content)
+        case "photo":
+            guard let content = value?["content"] as? String, let image = content.toUIImage() else {return nil}
+            return MessageData.photo(image)
         default:
             return nil
         }
@@ -47,6 +50,8 @@ class Transform: NSObject {
         switch value {
         case .text(let text):
             return ["type": "text", "content": text]
+        case .photo(let image):
+            return ["type": "photo", "content": image.toBase64() as Any]
         default:
             return ["type": "unknown", "content": "unknown"]
         }
