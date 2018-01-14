@@ -10,9 +10,16 @@ import UIKit
 
 extension UIImage {
 
+    func thumbnail() -> UIImage {
+        return self.resizeWithWidth(50).resizeWithHeight(50)
+    }
+    
+    func resize(width: CGFloat, height: CGFloat) -> UIImage {
+        return self.resizeWithWidth(width).resizeWithHeight(height)
+    }
+    
     func toBase64() -> String? {
-        let image = self.resizeWithWidth(50).resizeWithHeight(50)
-        return UIImagePNGRepresentation(image)?.base64EncodedString(options: .lineLength64Characters)
+        return UIImagePNGRepresentation(self)?.base64EncodedString(options: .lineLength64Characters)
     }
     
 }

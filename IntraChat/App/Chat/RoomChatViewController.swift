@@ -6,6 +6,7 @@
 //  Copyright © 2018 Personal. All rights reserved.
 //
 
+import Disk
 import UIKit
 import RxSwift
 import RxCocoa
@@ -178,9 +179,9 @@ extension RoomChatViewController: MessageInputBarDelegate {
         guard let roomId = room.id else {return}
         inputBar.inputTextView.text = String()
         let message = Message(roomId: roomId, text: text, sender: currentSender().id, date: Date())
-        FirebaseManager.shared.create(message: message, completion: { error in
+        FirebaseManager.shared.create(message: message, completion: { error, _ in
             guard error == nil else {return}
-            FirebaseManager.shared.updateLastChat(roomId: roomId, date: Date())
+            FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
             room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
                 FirebaseManager.shared.create(notification: Notification(
                     title: "\(self.currentSender().displayName) @\(room.name ?? "")",
@@ -290,7 +291,8 @@ extension RoomChatViewController: MessageCellDelegate {
     
     func didTapMessage(in cell: MessageCollectionViewCell) {
         guard let index = messagesCollectionView.indexPath(for: cell) else {return}
-        switch messageList[index.section].data {
+        let chat = messageList[index.section]
+        switch chat.data {
         case .text(let text):
             print(text)
 //            UIMenuController.shared.menuItems = [
@@ -307,6 +309,12 @@ extension RoomChatViewController: MessageCellDelegate {
 //                    print("Delete chat for text \(text)")
 //                })
 //            ]
+            break
+        case .photo(_):
+            chat.getMessage(completion: { message in
+                guard let message = message else {return}
+                print(message.contentImageUrl)
+            })
             break
         default:
             break
@@ -347,46 +355,32 @@ extension RoomChatViewController: TOCropViewControllerDelegate {
         cropViewController.dismissVC(completion: nil)
     }
     func cropViewController(_ cropViewController: TOCropViewController, didCropToImage image: UIImage, rect cropRect: CGRect, angle: Int) {
+
         cropViewController.dismissVC(completion: {
             self.imagePicker.dismissVC(completion: {
                 guard let room = self.room else {return}
                 guard let roomId = room.id else {return}
+                
                 let message = Message(roomId: roomId, image: image, sender: self.currentSender().id, date: Date())
-                
-//                inputBar.inputTextView.text = String()
-//                let message = Message(roomId: roomId, text: text, sender: currentSender().id, date: Date())
-                FirebaseManager.shared.create(message: message, completion: { error in
-                    guard error == nil else {return}
-                    FirebaseManager.shared.updateLastChat(roomId: roomId, date: Date())
-//                    room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
-//                        FirebaseManager.shared.create(notification: Notification(
-//                            title: "\(self.currentSender().displayName) @\(room.name ?? "")",
-//                            body: text,
-//                            receiver: user
-//                        ))
-//                    })
+                FirebaseManager.shared.create(message: message, completion: { error, ref in
+                    guard let ref = ref else {return}
+                    FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
+                    FirebaseManager.shared.upload(image: image, completion: { meta, _ in
+                        guard let meta = meta else {return}
+                        guard let url = meta.downloadURL() else {return}
+                        message.messageId = ref.key
+                        message.data = .photoAsync(url, image)
+                        FirebaseManager.shared.update(message: message)
+                        FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
+                    })
+                    room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
+                        FirebaseManager.shared.create(notification: Notification(
+                            title: "\(self.currentSender().displayName) @\(room.name ?? "")",
+                            body: "📷 Image",
+                            receiver: user
+                        ))
+                    })
                 })
-                
-                
-                
-                
-                
-//                self.profileImageView.addSubview(self.progressView)
-//                self.progressView.centerInSuperView()
-//                FirebaseManager.shared.upload(image: image, handleProgress: { snapshot in
-//                    guard let progress = snapshot.progress?.fractionCompleted.toCGFloat else {return}
-//                    self.progressView.updateProgress(progress)
-//                }, completion: { meta, _ in
-//                    self.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
-//                        self.progressView.removeFromSuperview()
-//                        guard let meta = meta else {return}
-//                        guard let url = meta.downloadURL() else {return}
-//                        FirebaseManager.shared.change(photoUrl: url, completion: { error in
-//                            guard error == nil else {return}
-//                            self.profileImageView.setImage(url: url)
-//                        })
-//                    })
-//                })
             })
         })
         

@@ -12,7 +12,7 @@ import ObjectMapper
 
 class Transform: NSObject {
 
-    static let messageSender = TransformOf<Sender, String>(fromJSON: { (value: String?) -> Sender? in
+    static let sender = TransformOf<Sender, String>(fromJSON: { (value: String?) -> Sender? in
         // transform value from String? to Sender?
         guard let id = value else {return nil}
         let user = FirebaseManager.shared.users.value.filter({ id == $0.uid }).first
@@ -30,30 +30,37 @@ class Transform: NSObject {
         return value?.toString(format: "yyyy-MM-dd'T'HH:mm:ssZ")
     })
     
-    static let messageData = TransformOf<MessageData, [String: Any]>(fromJSON: { (value: [String: Any]?) -> MessageData? in
-        // transform value from [String: Any]? to MessageData?
+    static let data = TransformOf<MessageData, [String: Any]>(fromJSON: { (value: [String: Any]?) -> MessageData? in
+        // transform value from [String: Any]? to MyMessageData?
         guard let type = value?["type"] as? String else {return nil}
         switch type {
         case "text":
-            guard let content = value?["content"] as? String else {return nil}
-            return MessageData.text(content)
+            guard let content = value?["text"] as? String else {return nil}
+            return .text(content)
+        case "photoAsync":
+            guard let thumbnail = value?["thumbnail"] as? String else {return nil}
+            guard let urlString = value?["original"] as? String else {return nil}
+            guard let image = thumbnail.toUIImage() else {return nil}
+            guard let url = URL(string: urlString) else {return nil}
+            return .photoAsync(url,image)
         case "photo":
-            guard let content = value?["content"] as? String, let image = content.toUIImage() else {return nil}
-            return MessageData.photo(image)
+            guard let thumbnail = value?["image"] as? String else {return nil}
+            guard let image = thumbnail.toUIImage() else {return nil}
+            return .photo(image)
         default:
             return nil
         }
         
     }, toJSON: { (value: MessageData?) -> [String: Any]? in
-        // transform value from MessageData? to [String: Any]?
+        // transform value from MyMessageData? to [String: Any]?
         guard let value = value else {return nil}
         switch value {
         case .text(let text):
-            return ["type": "text", "content": text]
+            return ["type": "text", "text": text]
+        case .photoAsync(let url, let image):
+            return ["type": "photoAsync", "thumbnail": image.toBase64() as Any, "original": url.absoluteString]
         case .photo(let image):
-            return ["type": "photo", "content": image.toBase64() as Any]
-        default:
-            return ["type": "unknown", "content": "unknown"]
+            return ["type": "photo", "image": image.toBase64() as Any]
         }
     })
     

@@ -273,8 +273,13 @@ class FirebaseManager: NSObject {
     
     // MARK: Message
     
-    func create(message: Message, completion: ((Error?) -> Void)? = nil){
-        messageRef.childByAutoId().setValue(message.keyValue(), withCompletionBlock: { error, ref in
+    func create(message: Message, completion: ((Error?, DatabaseReference?) -> Void)? = nil){
+        messageRef.childByAutoId().setValue(message.keyValue(), withCompletionBlock: { completion?($0, $1) })
+    }
+    
+    func update(message: Message, completion: ((Error?) -> Void)? = nil){
+        guard let messageId = message.messageId else {return}
+        messageRef.child(messageId).updateChildValues(message.keyValue() ?? [:], withCompletionBlock: { error, ref in
             completion?(error)
         })
     }
@@ -295,7 +300,7 @@ class FirebaseManager: NSObject {
         })
     }
     
-    func updateLastChat(roomId: String, date: Date, completion: ((Error?) -> Void)? = nil){
+    func updateLastChatTimeStamp(roomId: String, date: Date, completion: ((Error?) -> Void)? = nil){
         roomRef.child(roomId)
             .updateChildValues(
                 ["lastChat": Transform.date.transformToJSON(date) as Any],
@@ -324,6 +329,7 @@ class FirebaseManager: NSObject {
         if let handler = handleUnknown {task.observe(.unknown, handler: handler)}
     }
     
+    @discardableResult
     func upload(image: UIImage, completion: ((StorageMetadata?, Error?) -> Void)? = nil) -> StorageUploadTask?{
         guard let data = UIImagePNGRepresentation(image) else {return nil}
         let filename = UUID().uuidString.appending(".png")
