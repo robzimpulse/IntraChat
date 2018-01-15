@@ -42,11 +42,12 @@ class ListUserViewController: UIViewController {
             .observeOn(MainScheduler.instance)
             .bind(onNext: { text in
                 guard let user = FirebaseManager.shared.currentUser() else {return}
-                self.users.value = text.isBlank ?
-                    FirebaseManager.shared.users.value.filter({$0.uid != user.uid}) :
-                    FirebaseManager.shared.users.value.filter({$0.uid != user.uid}).filter({
-                    $0.name?.contains(text, compareOption: .caseInsensitive) ?? true
-                })
+                print(user)
+//                self.users.value = text.isBlank ?
+//                    FirebaseManager.shared.users.value.filter({$0.uid != user.uid}) :
+//                    FirebaseManager.shared.users.value.filter({$0.uid != user.uid}).filter({
+//                    $0.name?.contains(text, compareOption: .caseInsensitive) ?? true
+//                })
             })
             .disposed(by: disposeBag)
         

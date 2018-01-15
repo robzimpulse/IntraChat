@@ -113,9 +113,12 @@ class RoomChatViewController: MessagesViewController {
         titleView.widthAnchor.constraint(equalToConstant: 250).isActive = true
         navigationItem.titleView = titleView
         titleLabel.text = room?.name
-//        subtitleLabel.text = room?.users.flatMap({ (uid) -> String? in
-//            return FirebaseManager.shared.users.value.filter({ uid == ($0.uid ?? "") }).first?.name
-//        }).joined(separator: ",")
+        User.get(completion: { users in
+            guard let users = users else {return}
+            self.subtitleLabel.text = self.room?.users.flatMap({ (uid) -> String? in
+                return users.filter("uid = '\(uid)'").first?.name
+            }).joined(separator: ",")
+        })
         if let icon = room?.icon, let url = URL(string: icon) { iconImageView.setImage(url: url) }
         
         messagesCollectionView.messagesDataSource = self
@@ -144,21 +147,6 @@ class RoomChatViewController: MessagesViewController {
             
         })
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(UIMenuControllerDidHide(_:)),
-            name: .UIMenuControllerDidHideMenu,
-            object: nil
-        )
-        
-    }
-    
-    @objc func UIMenuControllerDidHide(_ notification: NSNotification) {
-        UIMenuController.shared.menuItems = []
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: .UIMenuControllerDidHideMenu, object: nil)
     }
     
 }
@@ -355,10 +343,8 @@ extension RoomChatViewController: TOCropViewControllerDelegate {
                     guard let ref = ref else {return}
                     FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
                     FirebaseManager.shared.upload(image: image, completion: { meta, _ in
-                        guard let meta = meta else {return}
-                        guard let url = meta.downloadURL() else {return}
                         message.messageId = ref.key
-                        message.data = .photoAsync(url, image)
+                        message.contentImageUrl = meta?.downloadURL()?.absoluteString
                         FirebaseManager.shared.update(message: message)
                         FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
                     })

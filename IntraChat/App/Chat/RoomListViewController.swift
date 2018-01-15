@@ -65,23 +65,15 @@ class RoomListViewController: UIViewController {
         })
      
         authListener = Auth.auth().addStateDidChangeListener({ _, user in
-            if let user = user {
-                FirebaseManager.shared.userForRoom.value = User(user: user)
-            } else {
-                FirebaseManager.shared.userForRoom.value = nil
-                self.performSegue(withIdentifier: "auth", sender: self)
-            }
+            if user == nil { self.performSegue(withIdentifier: "auth", sender: self) }
         })
         
         Realm.asyncOpen(callback: { realm, _ in
             guard let realm = realm else {return}
-            
             Observable.collection(from: realm.objects(Room.self).toAnyCollection()).bind(
                 to: self.tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
                 curriedArgument: { row, room, cell in cell.configure(room: room)}
             ).disposed(by: self.disposeBag)
-            
-            
         })
     }
     

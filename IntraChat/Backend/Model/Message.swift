@@ -13,18 +13,6 @@ import MessageKit
 import RealmSwift
 import ObjectMapper
 
-enum MessageData {
-    /// A standard text message.
-    case text(String)
-    
-    /// A photo message.
-    case photo(UIImage)
-    
-    /// A photo message with url.
-    case photoAsync(URL,UIImage)
-    
-}
-
 class Message: Object, FirebaseModel, Mappable {
     
     @objc dynamic var messageId: String?
@@ -47,12 +35,6 @@ class Message: Object, FirebaseModel, Mappable {
             case "text":
                 guard let content = self.contentText else {return nil}
                 return .text(content)
-            case "photoAsync":
-                guard let thumbnail = self.contentImageThumbnail else {return nil}
-                guard let urlString = self.contentImageUrl else {return nil}
-                guard let image = thumbnail.toUIImage() else {return nil}
-                guard let url = URL(string: urlString) else {return nil}
-                return .photoAsync(url, image)
             case "photo":
                 guard let thumbnail = self.contentImageThumbnail else {return nil}
                 guard let image = thumbnail.toUIImage() else {return nil}
@@ -68,15 +50,12 @@ class Message: Object, FirebaseModel, Mappable {
                 self.type = "text"
                 self.contentText = text
                 break
-            case .photoAsync(let url, let image):
-                self.type = "photoAsync"
-                self.contentImageThumbnail = image.resize(width: 400, height: 400).toBase64()
-                self.contentImageUrl = url.absoluteString
-                break
             case .photo(let image):
                 self.type = "photo"
                 self.contentImageThumbnail = image.resize(width: 400, height: 400).toBase64()
-                self.contentImageUrl = nil
+                break
+            default:
+                break
             }
         }
     }
@@ -102,7 +81,8 @@ class Message: Object, FirebaseModel, Mappable {
         self.roomId = roomId
         self.sender = sender
         self.sentDate = date
-        self.data = .photoAsync(url,image)
+        self.contentImageUrl = url.absoluteString
+        self.data = .photo(image)
     }
     
     convenience required init?(map: Map) {
@@ -114,28 +94,55 @@ class Message: Object, FirebaseModel, Mappable {
         roomId <- map["room"]
         sender <- map["sender"]
         sentDate <- (map["date"], Transform.date)
-        data <- (map["data"], Transform.data)
+        
+        guard let array = map.JSON["data"] as? [String: Any] else {return}
+        guard let type = array["type"] as? String else {return}
+        
+        switch type {
+        case "text":
+            guard let text = array["text"] as? String else {return}
+            data = .text(text)
+            break
+        case "photo":
+            guard let imageString = array["image"] as? String else {return}
+            guard let image = imageString.toUIImage() else {return}
+            contentImageUrl = array["url"] as? String
+            data = .photo(image)
+            break
+        default:
+            break
+        }
     }
     
     func keyValue() -> [AnyHashable : Any]? {
         var array = [AnyHashable: Any]()
-        array["data"] = Transform.data.transformToJSON(data)
         array["date"] = Transform.date.transformToJSON(sentDate)
         array["sender"] = sender
         array["room"] = roomId
+        
+        if let data = data {
+            switch data {
+            case .text(let text):
+                array["data"] = [ "type": "text", "text": text ]
+                break
+            case .photo(_):
+                array["data"] = [ "type": "photo", "image": contentImageThumbnail, "url": contentImageUrl ]
+                break
+            default:
+                break
+            }
+        }
+        
         return array
     }
     
-    func getData() -> MessageKit.MessageData? {
-        guard let data = data else {return nil}
-        switch data {
-        case .text(let text):
-            return MessageKit.MessageData.text(text)
-        case .photo(let image):
-            return MessageKit.MessageData.photo(image)
-        case .photoAsync(_, let image):
-            return MessageKit.MessageData.photo(image)
-        }
+    // Getter
+    
+    static func get(completion: @escaping ((Results<Message>?) -> Void)) {
+        Realm.asyncOpen(callback: { realm, error in
+            guard let realm = realm else {completion(nil); return}
+            completion(realm.objects(Message.self))
+        })
     }
     
     // Updater

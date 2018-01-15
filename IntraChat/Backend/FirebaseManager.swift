@@ -65,16 +65,40 @@ class FirebaseManager: NSObject {
         authListener = Auth.auth().addStateDidChangeListener({ auth, user in
             if let user = user {
                 
+                // Mark: Room Listener
+                
                 self.roomRef.observe(.childAdded, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
                     guard room.users.contains(user.uid) else {return}
                     Room.update(object: room)
+                    
+                    // Mark: User Listener
+                    
+                    guard let id = room.id else {return}
+                    self.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
+                        .observe(.childAdded, with: { snapshot in
+                            guard let message = Message(snapshot: snapshot) else {return}
+                            Message.update(object: message)
+                        })
+                    self.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
+                        .observe(.childChanged, with: { snapshot in
+                            guard let message = Message(snapshot: snapshot) else {return}
+                            Message.update(object: message)
+                        })
+                    self.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
+                        .observe(.childRemoved, with: { snapshot in
+                            guard let message = Message(snapshot: snapshot) else {return}
+                            Message.delete(object: message)
+                        })
                 })
                 
                 self.roomRef.observe(.childRemoved, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
                     guard room.users.contains(user.uid) else {return}
                     Room.delete(object: room)
+                    guard let id = room.id else {return}
+                    self.messageRef.queryEqual(toValue: id, childKey: "roomId")
+                        .removeAllObservers()
                 })
                 
                 self.roomRef.observe(.childChanged, with: { snapshot in
@@ -82,6 +106,8 @@ class FirebaseManager: NSObject {
                     guard room.users.contains(user.uid) else {return}
                     Room.update(object: room)
                 })
+                
+                // Mark: User Listener
                 
                 self.userRef.observe(.childAdded, with: { snapshot in
                     guard let user = User(snapshot: snapshot) else {return}
@@ -96,33 +122,6 @@ class FirebaseManager: NSObject {
                 self.userRef.observe(.childChanged, with: { snapshot in
                     guard let user = User(snapshot: snapshot) else {return}
                     User.update(object: user)
-                })
-                
-                self.messageRef.observe(.childAdded, with: { snapshot in
-                    guard let message = Message(snapshot: snapshot) else {return}
-                    Room.get(completion: { rooms in
-                        guard let rooms = rooms else {return}
-                        guard rooms.contains(where: { $0.id == message.roomId }) else {return}
-                        Message.update(object: message)
-                    })
-                })
-                
-                self.messageRef.observe(.childRemoved, with: { snapshot in
-                    guard let message = Message(snapshot: snapshot) else {return}
-                    Room.get(completion: { rooms in
-                        guard let rooms = rooms else {return}
-                        guard rooms.contains(where: { $0.id == message.roomId }) else {return}
-                        Message.delete(object: message)
-                    })
-                })
-                
-                self.messageRef.observe(.childChanged, with: { snapshot in
-                    guard let message = Message(snapshot: snapshot) else {return}
-                    Room.get(completion: { rooms in
-                        guard let rooms = rooms else {return}
-                        guard rooms.contains(where: { $0.id == message.roomId }) else {return}
-                        Message.update(object: message)
-                    })
                 })
                 
                 self.notificationRef.observe(.childAdded, with: { snapshot in
@@ -170,21 +169,23 @@ class FirebaseManager: NSObject {
     
     func logout(completion: ((Error?) -> Void)? = nil) {
         guard let user = Auth.auth().currentUser else {return}
-        FirebaseManager.shared.userRef.child(user.uid).updateChildValues(["online": false], withCompletionBlock: { _, _ in
-            Realm.asyncOpen(callback: {realm, _ in
-                guard let realm = realm else {return}
-                print("remove all database")
-                do {
-                    try Disk.clear(.caches)
-                    try Auth.auth().signOut()
-                    try realm.write {
-                        realm.delete(realm.objects(Room.self))
-                        realm.delete(realm.objects(Message.self))
-                        realm.delete(realm.objects(RoomUserString.self))
-                    }
-                } catch { completion?(error) }
+        FirebaseManager.shared.userRef.child(user.uid)
+            .updateChildValues(["online": false], withCompletionBlock: { _, _ in
+                Realm.asyncOpen(callback: { realm, _ in
+                    guard let realm = realm else {return}
+                    print("remove all database")
+                    do {
+                        try Disk.clear(.caches)
+                        try Auth.auth().signOut()
+                        try realm.write {
+                            realm.delete(realm.objects(Room.self))
+                            realm.delete(realm.objects(Message.self))
+                            realm.delete(realm.objects(User.self))
+                            realm.delete(realm.objects(RoomUserString.self))
+                        }
+                    } catch { completion?(error) }
+                })
             })
-        })
     }
     
     // MARK: Application Delegate

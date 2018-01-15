@@ -20,10 +20,9 @@ class Chat: MessageType {
         guard let messageId = message.messageId else {return nil}
         guard let sentDate = message.sentDate else {return nil}
         guard let senderId = message.sender else {return nil}
-        guard let username = FirebaseManager.shared
-            .users.value.filter({$0.uid == senderId}).first?.name else {return nil}
+        guard let username = User.get()?.filter("uid = '\(senderId)'").first?.name else {return nil}
+        guard let data = message.data else {return nil}
         let sender = Sender(id: senderId, displayName: username)
-        guard let data = message.getData() else {return nil}
         self.init(data: data, sender: sender, messageId: messageId, date: sentDate)
     }
     
@@ -49,12 +48,6 @@ class Chat: MessageType {
     }
     
     func getMessage(completion: @escaping ((Message?) -> Void) ){
-        Realm.asyncOpen(callback: { realm, _ in
-            guard let realm = realm else { completion(nil); return }
-            let message = realm.objects(Message.self)
-                .filter("messageId = '\(self.messageId)'")
-                .first
-            completion(message)
-        })
+        Message.get(completion: { completion($0?.filter("messageId = '\(self.messageId)'").first) })
     }
 }

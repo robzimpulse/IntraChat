@@ -67,6 +67,22 @@ class User: Object, Mappable, FirebaseModel {
         return array
     }
     
+    // Getter
+    
+    static func get() -> Results<User>? {
+        do {
+            let realm = try Realm()
+            return realm.objects(User.self)
+        } catch { return nil }
+    }
+    
+    static func get(completion: @escaping ((Results<User>?) -> Void)) {
+        Realm.asyncOpen(callback: { realm, error in
+            guard let realm = realm else {completion(nil); return}
+            completion(realm.objects(User.self))
+        })
+    }
+    
     // Updater
     
     static func update(object: User, completion: ((Error?) -> Void)? = nil) {
