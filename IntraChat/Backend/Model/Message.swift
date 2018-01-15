@@ -133,9 +133,29 @@ class Message: Object, FirebaseModel, Mappable {
             return MessageKit.MessageData.text(text)
         case .photo(let image):
             return MessageKit.MessageData.photo(image)
-        case .photoAsync(let url, let image):
+        case .photoAsync(_, let image):
             return MessageKit.MessageData.photo(image)
         }
+    }
+    
+    // Updater
+    
+    static func update(object: Message, completion: ((Error?) -> Void)? = nil) {
+        Realm.asyncOpen(callback: { realm, error in
+            guard let realm = realm else {completion?(error); return}
+            do { try realm.write { realm.add(object, update: true) } }
+            catch let error { completion?(error) }
+        })
+    }
+    
+    // Delete
+    
+    static func delete(object: Message, completion: ((Error?) -> Void)? = nil) {
+        Realm.asyncOpen(callback: { realm, error in
+            guard let realm = realm else {completion?(error); return}
+            do { try realm.write { realm.delete(object) } }
+            catch let error { completion?(error) }
+        })
     }
     
 }

@@ -113,9 +113,9 @@ class RoomChatViewController: MessagesViewController {
         titleView.widthAnchor.constraint(equalToConstant: 250).isActive = true
         navigationItem.titleView = titleView
         titleLabel.text = room?.name
-        subtitleLabel.text = room?.users.flatMap({ (uid) -> String? in
-            return FirebaseManager.shared.users.value.filter({ uid == ($0.uid ?? "") }).first?.name
-        }).joined(separator: ",")
+//        subtitleLabel.text = room?.users.flatMap({ (uid) -> String? in
+//            return FirebaseManager.shared.users.value.filter({ uid == ($0.uid ?? "") }).first?.name
+//        }).joined(separator: ",")
         if let icon = room?.icon, let url = URL(string: icon) { iconImageView.setImage(url: url) }
         
         messagesCollectionView.messagesDataSource = self
@@ -161,16 +161,6 @@ class RoomChatViewController: MessagesViewController {
         NotificationCenter.default.removeObserver(self, name: .UIMenuControllerDidHideMenu, object: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        FirebaseManager.shared.roomForMessage.value = room
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        FirebaseManager.shared.roomForMessage.value = nil
-    }
-    
 }
 
 extension RoomChatViewController: MessageInputBarDelegate {
@@ -211,8 +201,7 @@ extension RoomChatViewController: MessagesDataSource {
     
     func avatar(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> Avatar {
         let senderName = isFromCurrentSender(message: message) ? currentSender().displayName : message.sender.displayName
-        let user = FirebaseManager.shared.users.value.filter({ message.sender.id == $0.uid }).first
-        return Avatar(image: user?.image(), initials: senderName.initials())
+        return Avatar(image: nil, initials: senderName.initials())
     }
     
     func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
@@ -313,7 +302,7 @@ extension RoomChatViewController: MessageCellDelegate {
         case .photo(_):
             chat.getMessage(completion: { message in
                 guard let message = message else {return}
-                print(message.contentImageUrl)
+                print(message.contentImageUrl as Any)
             })
             break
         default:

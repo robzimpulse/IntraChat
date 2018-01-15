@@ -24,11 +24,11 @@ class FirebaseManager: NSObject {
     
     static let shared = FirebaseManager()
     
-    let users = Variable<[User]>([])
+//    let users = Variable<[User]>([])
     
-    let userForRoom = Variable<User?>(nil)
+//    let userForRoom = Variable<User?>(nil)
     
-    let roomForMessage = Variable<Room?>(nil)
+//    let roomForMessage = Variable<Room?>(nil)
     
     let disposeBag = DisposeBag()
     
@@ -62,109 +62,67 @@ class FirebaseManager: NSObject {
         
         Messaging.messaging().delegate = self
         
-        userForRoom.asObservable().bind(onNext: {
-            if let uid = $0?.uid {
+        authListener = Auth.auth().addStateDidChangeListener({ auth, user in
+            if let user = user {
+                
                 self.roomRef.observe(.childAdded, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard room.users.contains(uid) else {return}
-                    Realm.asyncOpen(callback: { realm, _ in
-                        guard let realm = realm else {return}
-                        print("added to realm")
-                        do { try realm.write { realm.add(room, update: true) } }
-                        catch { print("error add to realm") }
-                    })
-                    
+                    guard room.users.contains(user.uid) else {return}
+                    Room.update(object: room)
                 })
                 
                 self.roomRef.observe(.childRemoved, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard room.users.contains(uid) else {return}
-                    Realm.asyncOpen(callback: { realm, _ in
-                        guard let realm = realm else {return}
-                        guard let roomId = room.id else {return}
-                        guard let object = realm.object(ofType: Room.self, forPrimaryKey: roomId) else {return}
-                        print("deleted from realm")
-                        do { try realm.write { realm.delete(object) } }
-                        catch { print("error delete from realm") }
-                    })
+                    guard room.users.contains(user.uid) else {return}
+                    Room.delete(object: room)
                 })
                 
                 self.roomRef.observe(.childChanged, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard room.users.contains(uid) else {return}
-                    Realm.asyncOpen(callback: { realm, _ in
-                        guard let realm = realm else {return}
-                        print("updated to realm")
-                        do { try realm.write { realm.add(room, update: true) } }
-                        catch { print("error update to realm") }
-                    })
+                    guard room.users.contains(user.uid) else {return}
+                    Room.update(object: room)
                 })
-            }else{
-                self.roomRef.removeAllObservers()
-            }
-            
-        }).disposed(by: disposeBag)
-        
-        roomForMessage.asObservable().bind(onNext: {
-            if let room = $0 {
+                
+                self.userRef.observe(.childAdded, with: { snapshot in
+                    guard let user = User(snapshot: snapshot) else {return}
+                    User.update(object: user)
+                })
+                
+                self.userRef.observe(.childRemoved, with: { snapshot in
+                    guard let user = User(snapshot: snapshot) else {return}
+                    User.delete(object: user)
+                })
+                
+                self.userRef.observe(.childChanged, with: { snapshot in
+                    guard let user = User(snapshot: snapshot) else {return}
+                    User.update(object: user)
+                })
+                
                 self.messageRef.observe(.childAdded, with: { snapshot in
                     guard let message = Message(snapshot: snapshot) else {return}
-                    guard message.roomId == room.id else {return}
-                    Realm.asyncOpen(callback: { realm, _ in
-                        guard let realm = realm else {return}
-                        print("add to realm")
-                        do { try realm.write { realm.add(message, update: true) } }
-                        catch { print("error update to realm") }
+                    Room.get(completion: { rooms in
+                        guard let rooms = rooms else {return}
+                        guard rooms.contains(where: { $0.id == message.roomId }) else {return}
+                        Message.update(object: message)
                     })
                 })
                 
                 self.messageRef.observe(.childRemoved, with: { snapshot in
                     guard let message = Message(snapshot: snapshot) else {return}
-                    guard message.roomId == room.id else {return}
-                    Realm.asyncOpen(callback: { realm, _ in
-                        guard let realm = realm else {return}
-                        guard let messageId = message.messageId else {return}
-                        guard let object = realm.object(ofType: Message.self, forPrimaryKey: messageId) else {return}
-                        print("deleted from realm")
-                        do { try realm.write { realm.delete(object) } }
-                        catch { print("error delete from realm") }
+                    Room.get(completion: { rooms in
+                        guard let rooms = rooms else {return}
+                        guard rooms.contains(where: { $0.id == message.roomId }) else {return}
+                        Message.delete(object: message)
                     })
                 })
                 
                 self.messageRef.observe(.childChanged, with: { snapshot in
                     guard let message = Message(snapshot: snapshot) else {return}
-                    guard message.roomId == room.id else {return}
-                    Realm.asyncOpen(callback: { realm, _ in
-                        guard let realm = realm else {return}
-                        print("updated to realm")
-                        do { try realm.write { realm.add(message, update: true) } }
-                        catch { print("error update to realm") }
+                    Room.get(completion: { rooms in
+                        guard let rooms = rooms else {return}
+                        guard rooms.contains(where: { $0.id == message.roomId }) else {return}
+                        Message.update(object: message)
                     })
-                })
-            }else{
-                self.messageRef.removeAllObservers()
-            }
-        }).disposed(by: disposeBag)
-        
-        
-        authListener = Auth.auth().addStateDidChangeListener({ auth, user in
-            if let user = user {
-                
-                self.userRef.observe(.childAdded, with: { snapshot in
-                    guard let user = User(snapshot: snapshot) else {return}
-                    self.users.value.append(user)
-                })
-                
-                self.userRef.observe(.childRemoved, with: { snapshot in
-                    guard let user = User(snapshot: snapshot) else {return}
-                    guard let index = self.users.value.index(where: { user.uid == $0.uid }) else {return}
-                    self.users.value.remove(at: index)
-                })
-                
-                self.userRef.observe(.childChanged, with: { snapshot in
-                    guard let user = User(snapshot: snapshot) else {return}
-                    guard let index = self.users.value.index(where: { user.uid == $0.uid }) else {return}
-                    self.users.value[index] = user
                 })
                 
                 self.notificationRef.observe(.childAdded, with: { snapshot in
@@ -183,7 +141,8 @@ class FirebaseManager: NSObject {
                 
             }else{
                 
-                self.users.value = []
+                self.messageRef.removeAllObservers()
+                self.roomRef.removeAllObservers()
                 self.userRef.removeAllObservers()
                 self.notificationRef.removeAllObservers()
                 if let uid = self.lastUid {

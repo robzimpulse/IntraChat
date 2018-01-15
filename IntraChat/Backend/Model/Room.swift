@@ -14,7 +14,6 @@ class RoomUserString: Object {
     @objc dynamic var value = ""
 }
 
-
 class Room: Object, Mappable, FirebaseModel {
     
     @objc dynamic var id: String?
@@ -64,6 +63,33 @@ class Room: Object, Mappable, FirebaseModel {
         array["icon"] = icon
         array["users"] = users
         return array
+    }
+    
+    static func get(completion: @escaping ((Results<Room>?) -> Void)) {
+        Realm.asyncOpen(callback: { realm, error in
+            guard let realm = realm else {completion(nil); return}
+            completion(realm.objects(Room.self))
+        })
+    }
+    
+    // Updater
+    
+    static func update(object: Room, completion: ((Error?) -> Void)? = nil) {
+        Realm.asyncOpen(callback: { realm, error in
+            guard let realm = realm else {completion?(error); return}
+            do { try realm.write { realm.add(object, update: true) } }
+            catch let error { completion?(error) }
+        })
+    }
+    
+    // Delete
+    
+    static func delete(object: Room, completion: ((Error?) -> Void)? = nil) {
+        Realm.asyncOpen(callback: { realm, error in
+            guard let realm = realm else {completion?(error); return}
+            do { try realm.write { realm.delete(object) } }
+            catch let error { completion?(error) }
+        })
     }
     
 }

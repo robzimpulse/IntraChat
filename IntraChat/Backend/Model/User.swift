@@ -8,16 +8,23 @@
 
 import UIKit
 import Firebase
+import RealmSwift
 import ObjectMapper
 
-class User: Mappable, FirebaseModel {
+class User: Object, Mappable, FirebaseModel {
 
-    var uid: String?
-    var name: String?
-    var email: String?
-    var photo: String?
-    var phone: String?
-    var online: Bool = false
+    @objc dynamic var uid: String?
+    @objc dynamic var name: String?
+    @objc dynamic var email: String?
+    @objc dynamic var photo: String?
+    @objc dynamic var phone: String?
+    @objc dynamic var online: Bool = false
+    
+    override static func primaryKey() -> String? { return "uid" }
+    
+    override static func ignoredProperties() -> [String] {
+        return ["imageView"]
+    }
     
     private let imageView = UIImageView()
     
@@ -60,4 +67,23 @@ class User: Mappable, FirebaseModel {
         return array
     }
     
+    // Updater
+    
+    static func update(object: User, completion: ((Error?) -> Void)? = nil) {
+        Realm.asyncOpen(callback: { realm, error in
+            guard let realm = realm else {completion?(error); return}
+            do { try realm.write { realm.add(object, update: true) } }
+            catch let error { completion?(error) }
+        })
+    }
+    
+    // Delete
+    
+    static func delete(object: User, completion: ((Error?) -> Void)? = nil) {
+        Realm.asyncOpen(callback: { realm, error in
+            guard let realm = realm else {completion?(error); return}
+            do { try realm.write { realm.delete(object) } }
+            catch let error { completion?(error) }
+        })
+    }
 }
