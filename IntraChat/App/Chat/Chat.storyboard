@@ -83,6 +83,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isHeroEnabled" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="iconImageView" destination="Tsw-pv-Dnj" id="vnT-Jl-cFL"/>
                         <outlet property="subtitleLabel" destination="u1n-zm-juM" id="OOT-fE-oaQ"/>

@@ -6,6 +6,7 @@
 //  Copyright © 2018 Personal. All rights reserved.
 //
 
+import Hero
 import Disk
 import UIKit
 import RxSwift
@@ -288,9 +289,11 @@ extension RoomChatViewController: MessageCellDelegate {
 //            ]
             break
         case .photo(_):
+            let subviews = cell.messageContainerView.subviews
             chat.getMessage(completion: { message in
                 guard let message = message else {return}
-                print(message.contentImageUrl as Any)
+                guard let image = subviews.flatMap({ $0 as? UIImageView }).first else {return}
+//                print(message.contentImageUrl as Any)
             })
             break
         default:
