@@ -188,8 +188,8 @@ extension RoomChatViewController: MessagesDataSource {
     }
     
     func avatar(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> Avatar {
-        let senderName = isFromCurrentSender(message: message) ? currentSender().displayName : message.sender.displayName
-        return Avatar(image: nil, initials: senderName.initials())
+        let image = FirebaseManager.shared.images[message.sender.id]?.image
+        return Avatar(image: image, initials: message.sender.displayName.initials())
     }
     
     func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {

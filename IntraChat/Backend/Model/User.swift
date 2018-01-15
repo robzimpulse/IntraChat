@@ -22,12 +22,6 @@ class User: Object, Mappable, FirebaseModel {
     
     override static func primaryKey() -> String? { return "uid" }
     
-    override static func ignoredProperties() -> [String] {
-        return ["imageView"]
-    }
-    
-    private let imageView = UIImageView()
-    
     convenience init(user: Firebase.User) {
         self.init()
         uid = user.uid
@@ -36,8 +30,6 @@ class User: Object, Mappable, FirebaseModel {
         photo = user.photoURL?.absoluteString
         phone = user.phoneNumber
     }
-    
-    func image() -> UIImage? { return imageView.image }
     
     // MARK: Mappable
     
@@ -52,10 +44,6 @@ class User: Object, Mappable, FirebaseModel {
         photo <- map["photo"]
         phone <- map["phone"]
         online <- map["online"]
-        
-        guard let value = photo else {return}
-        guard let url = URL(string: value) else {return}
-        imageView.af_setImage(withURL: url)
     }
     
     func keyValue() -> [AnyHashable : Any]? {

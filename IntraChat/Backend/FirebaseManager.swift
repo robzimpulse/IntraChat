@@ -24,11 +24,7 @@ class FirebaseManager: NSObject {
     
     static let shared = FirebaseManager()
     
-//    let users = Variable<[User]>([])
-    
-//    let userForRoom = Variable<User?>(nil)
-    
-//    let roomForMessage = Variable<Room?>(nil)
+    var images = [String:UIImageView]()
     
     let disposeBag = DisposeBag()
     
@@ -112,16 +108,28 @@ class FirebaseManager: NSObject {
                 self.userRef.observe(.childAdded, with: { snapshot in
                     guard let user = User(snapshot: snapshot) else {return}
                     User.update(object: user)
+                    guard let uid = user.uid else {return}
+                    guard let urlString = user.photo, let url = URL(string: urlString) else {return}
+                    let image = UIImageView()
+                    image.setPersistentImage(url: url)
+                    self.images[uid] = image
                 })
                 
                 self.userRef.observe(.childRemoved, with: { snapshot in
                     guard let user = User(snapshot: snapshot) else {return}
                     User.delete(object: user)
+                    guard let uid = user.uid else {return}
+                    self.images[uid] = nil
                 })
                 
                 self.userRef.observe(.childChanged, with: { snapshot in
                     guard let user = User(snapshot: snapshot) else {return}
                     User.update(object: user)
+                    guard let uid = user.uid else {return}
+                    guard let urlString = user.photo, let url = URL(string: urlString) else {return}
+                    let image = UIImageView()
+                    image.setPersistentImage(url: url)
+                    self.images[uid] = image
                 })
                 
                 self.notificationRef.observe(.childAdded, with: { snapshot in
