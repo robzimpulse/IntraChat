@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Gallery
 import Lightbox
-import ImagePicker
 import EZSwiftExtensions
 import RPCircularProgress
+import TOCropViewController
 
 class RoomInfoViewController: UIViewController {
 
@@ -24,18 +25,6 @@ class RoomInfoViewController: UIViewController {
     
     var users: [User] = []
     
-    lazy var imagePicker: ImagePickerController = {
-        var config = Configuration()
-        config.doneButtonTitle = "Finish"
-        config.noImagesTitle = "Sorry! There are no images here!"
-        config.recordLocation = true
-        config.allowMultiplePhotoSelection = false
-        config.allowVideoSelection = false
-        let imagePickerController = ImagePickerController(configuration: config)
-        imagePickerController.delegate = self
-        return imagePickerController
-    }()
-    
     lazy var progressView: RPCircularProgress = {
         let progress = RPCircularProgress()
         progress.innerTintColor = .clear
@@ -44,11 +33,17 @@ class RoomInfoViewController: UIViewController {
         return progress
     }()
     
+    lazy var galleryController: GalleryController = {
+        Config.tabsToShow = [.cameraTab, .imageTab]
+        Config.Camera.imageLimit = 1
+        let galleryController = GalleryController()
+        galleryController.delegate = self
+        return galleryController
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        photoImageView.addTapGesture(action: { _ in
-            self.presentVC(self.imagePicker)
-        })
+        photoImageView.addTapGesture(action: { _ in self.presentVC(self.galleryController) })
     }
     
     override func viewDidLayoutSubviews() {
@@ -58,7 +53,6 @@ class RoomInfoViewController: UIViewController {
     }
     
     @IBAction func create(_ sender: Any) {
-        
         guard let name = roomNameTextField.text else {return}
         guard let icon = photoImageView.image else {return}
         guard let user = FirebaseManager.shared.currentUser() else {return}
@@ -91,19 +85,36 @@ class RoomInfoViewController: UIViewController {
     
 }
 
-extension RoomInfoViewController: ImagePickerDelegate {
-    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-        let lightboxImages = images.map { LightboxImage(image: $0) }
-        let lightBoxController = LightboxController(images: lightboxImages, startIndex: 0)
-        imagePicker.presentVC(lightBoxController)
-    }
+extension RoomInfoViewController: GalleryControllerDelegate {
     
-    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-        photoImageView.image = images.first?.af_imageAspectScaled(toFill: photoImageView.frame.size).af_imageRoundedIntoCircle()
-        imagePicker.dismissVC(completion: nil)
-    }
+    func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {}
     
-    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
-        imagePicker.dismissVC(completion: nil)
+    func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
+        Image.resolve(images: images, completion: {
+            guard let image = $0.flatMap({ $0 }).first else {return}
+            let cropController = TOCropViewController(croppingStyle: .circular, image: image)
+            cropController.delegate = self
+            controller.presentVC(cropController)
+        })
+    }
+    func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
+        Image.resolve(images: images, completion: {
+            let lightboxImages = $0.flatMap({ $0 }).map({ LightboxImage(image: $0) })
+            let lightboxController = LightboxController(images: lightboxImages, startIndex: 0)
+            controller.presentVC(lightboxController)
+        })
+    }
+    func galleryControllerDidCancel(_ controller: GalleryController) {
+        controller.dismissVC(completion: nil)
+    }
+}
+
+extension RoomInfoViewController: TOCropViewControllerDelegate {
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        cropViewController.dismissVC(completion: nil)
+    }
+    func cropViewController(_ cropViewController: TOCropViewController, didCropToCircleImage image: UIImage, rect cropRect: CGRect, angle: Int) {
+        self.photoImageView.image = image
+        cropViewController.dismissVC(completion: { self.galleryController.dismissVC(completion: nil) })
     }
 }

@@ -8,9 +8,9 @@
 
 import UIKit
 import Eureka
+import Gallery
 import ViewRow
 import Lightbox
-import ImagePicker
 import Firebase
 import RPCircularProgress
 import TOCropViewController
@@ -30,24 +30,20 @@ class ProfileViewController: FormViewController {
         static let phone = "phone"
     }
     
-    lazy var imagePicker: ImagePickerController = {
-        var config = Configuration()
-        config.doneButtonTitle = "Next"
-        config.noImagesTitle = "Sorry! There are no images here!"
-        config.recordLocation = true
-        config.allowMultiplePhotoSelection = false
-        config.allowVideoSelection = false
-        let imagePickerController = ImagePickerController(configuration: config)
-        imagePickerController.delegate = self
-        return imagePickerController
-    }()
-    
     lazy var progressView: RPCircularProgress = {
         let progress = RPCircularProgress()
         progress.innerTintColor = .clear
         progress.thicknessRatio = 0.1
         progress.progressTintColor = .green
         return progress
+    }()
+    
+    lazy var galleryController: GalleryController = {
+        Config.tabsToShow = [.cameraTab, .imageTab]
+        Config.Camera.imageLimit = 1
+        let galleryController = GalleryController()
+        galleryController.delegate = self
+        return galleryController
     }()
     
     override func viewDidAppear(_ animated: Bool) {
@@ -74,12 +70,10 @@ class ProfileViewController: FormViewController {
                     cell.separatorInset.left = 0
                     self.profileImageView.image = nil
                     if let url = FirebaseManager.shared.currentUser()?.photoURL {
-                        self.profileImageView.setImage(url: url )
+                        self.profileImageView.setPersistentImage(url: url )
                     }
                 }
-                row.onCellSelection({ cell, _ in
-                    self.presentVC(self.imagePicker)
-                })
+                row.onCellSelection({ cell, _ in self.presentVC(self.galleryController) })
             }
             
             +++ Section("Email")
@@ -124,31 +118,30 @@ class ProfileViewController: FormViewController {
                     row.value = FirebaseManager.shared.currentUser()?.phoneNumber
                 })
             }
-        
     }
-
 }
 
-extension ProfileViewController: ImagePickerDelegate {
-    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-        guard images.count > 0 else {return}
-        let lightboxImages = images.map { LightboxImage(image: $0) }
-        let lightBoxController = LightboxController(images: lightboxImages, startIndex: 0)
-        imagePicker.presentVC(lightBoxController)
-    }
+extension ProfileViewController: GalleryControllerDelegate {
     
-    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-        guard let image = images.first else {
-            imagePicker.dismissVC(completion: nil)
-            return
-        }
-        let cropViewController = TOCropViewController(croppingStyle: .default, image: image)
-        cropViewController.delegate = self
-        imagePicker.presentVC(cropViewController)
-    }
+    func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {}
     
-    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
-        imagePicker.dismissVC(completion: nil)
+    func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
+        Image.resolve(images: images, completion: {
+            guard let image = $0.flatMap({ $0 }).first else {return}
+            let cropController = TOCropViewController(image: image)
+            cropController.delegate = self
+            controller.presentVC(cropController)
+        })
+    }
+    func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
+        Image.resolve(images: images, completion: {
+            let lightboxImages = $0.flatMap({ $0 }).map({ LightboxImage(image: $0) })
+            let lightboxController = LightboxController(images: lightboxImages, startIndex: 0)
+            controller.presentVC(lightboxController)
+        })
+    }
+    func galleryControllerDidCancel(_ controller: GalleryController) {
+        controller.dismissVC(completion: nil)
     }
 }
 
@@ -158,7 +151,7 @@ extension ProfileViewController: TOCropViewControllerDelegate {
     }
     func cropViewController(_ cropViewController: TOCropViewController, didCropToImage image: UIImage, rect cropRect: CGRect, angle: Int) {
         cropViewController.dismissVC(completion: {
-            self.imagePicker.dismissVC(completion: {
+            self.galleryController.dismissVC(completion: {
                 self.profileImageView.addSubview(self.progressView)
                 self.progressView.centerInSuperView()
                 FirebaseManager.shared.upload(image: image, handleProgress: { snapshot in
@@ -171,14 +164,12 @@ extension ProfileViewController: TOCropViewControllerDelegate {
                         guard let url = meta.downloadURL() else {return}
                         FirebaseManager.shared.change(photoUrl: url, completion: { error in
                             guard error == nil else {return}
-                            self.profileImageView.setImage(url: url)
+                            self.profileImageView.setPersistentImage(url: url)
                         })
                     })
                 })
             })
         })
-        
-        
     }
     
 }

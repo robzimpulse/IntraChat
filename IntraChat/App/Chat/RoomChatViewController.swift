@@ -9,17 +9,17 @@
 import Hero
 import Disk
 import UIKit
+import AVKit
 import RxSwift
 import RxCocoa
 import RxRealm
+import Gallery
+import Lightbox
 import RealmSwift
 import MessageKit
 import MenuItemKit
-import Lightbox
-import ImagePicker
 import RPCircularProgress
 import TOCropViewController
-
 
 class RoomChatViewController: MessagesViewController {
 
@@ -40,16 +40,12 @@ class RoomChatViewController: MessagesViewController {
         return .lightContent
     }
     
-    lazy var imagePicker: ImagePickerController = {
-        var config = Configuration()
-        config.doneButtonTitle = "Next"
-        config.noImagesTitle = "Sorry! There are no images here!"
-        config.recordLocation = true
-        config.allowMultiplePhotoSelection = false
-        config.allowVideoSelection = false
-        let imagePickerController = ImagePickerController(configuration: config)
-        imagePickerController.delegate = self
-        return imagePickerController
+    lazy var galleryController: GalleryController = {
+        Config.tabsToShow = [.cameraTab, .imageTab, .videoTab]
+        Config.Camera.imageLimit = 1
+        let galleryController = GalleryController()
+        galleryController.delegate = self
+        return galleryController
     }()
     
     lazy var progressView: RPCircularProgress = {
@@ -70,7 +66,7 @@ class RoomChatViewController: MessagesViewController {
         }).onTouchUpInside({ _ in
             self.showActionSheet(title: nil, actions: [
                 UIAlertAction(title: "Media", style: .default, handler: { _ in
-                    self.presentVC(self.imagePicker)
+                    self.presentVC(self.galleryController)
                 }),
                 UIAlertAction(title: "Document", style: .default, handler: { _ in
                     self.reloadInputViews()
@@ -120,7 +116,7 @@ class RoomChatViewController: MessagesViewController {
                 return users.filter("uid = '\(uid)'").first?.name
             }).joined(separator: ",")
         })
-        if let icon = room?.icon, let url = URL(string: icon) { iconImageView.setImage(url: url) }
+        if let icon = room?.icon, let url = URL(string: icon) { iconImageView.setPersistentImage(url: url) }
         
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
@@ -273,60 +269,121 @@ extension RoomChatViewController: MessageCellDelegate {
         switch chat.data {
         case .text(let text):
             print(text)
-//            UIMenuController.shared.menuItems = [
-//                UIMenuItem(title: "Reply", action: { _ in
-//                    print("Reply chat for text \(text)")
-//                }),
-//                UIMenuItem(title: "Forward", action: { _ in
-//                    print("Forward chat for \(text)")
-//                }),
-//                UIMenuItem(title: "Copy", action: { _ in
-//                    UIPasteboard.general.string = text
-//                }),
-//                UIMenuItem(title: "Delete", action: { _ in
-//                    print("Delete chat for text \(text)")
-//                })
-//            ]
             break
-        case .photo(_):
-            let subviews = cell.messageContainerView.subviews
-            chat.getMessage(completion: { message in
-                guard let message = message else {return}
-                guard let image = subviews.flatMap({ $0 as? UIImageView }).first else {return}
-//                print(message.contentImageUrl as Any)
-            })
+        case .photo(let image):
+            print(image)
             break
+        case .video(file: let url, thumbnail: let thumbnail):
+            print(url.absoluteString, thumbnail)
         default:
             break
         }
-        
-//        let cellRect = cell.convert(cell.messageContainerView.frame, to: messagesCollectionView)
-//        UIMenuController.shared.setTargetRect(cellRect, in: messagesCollectionView)
-//        UIMenuController.shared.setMenuVisible(true, animated: true)
     }
 
 }
 
-extension RoomChatViewController: ImagePickerDelegate {
-    func wrapperDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-        guard images.count > 0 else {return}
-        let lightboxImages = images.map { LightboxImage(image: $0) }
-        let lightBoxController = LightboxController(images: lightboxImages, startIndex: 0)
-        imagePicker.presentVC(lightBoxController)
+extension RoomChatViewController: GalleryControllerDelegate {
+    func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
+        Image.resolve(images: images, completion: {
+            guard let image = $0.flatMap({ $0 }).first else {return}
+            let cropViewController = TOCropViewController(image: image)
+            cropViewController.delegate = self
+            controller.presentVC(cropViewController)
+        })
     }
     
-    func doneButtonDidPress(_ imagePicker: ImagePickerController, images: [UIImage]) {
-        guard let image = images.first else {
-            imagePicker.dismissVC(completion: nil)
-            return
+    func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {
+        VideoEditor().edit(video: video) { _, url in
+            guard let url = url else {return}
+            DispatchQueue.main.async {
+                guard UIVideoEditorController.canEditVideo(atPath: url.path) else {return}
+                let editorController = UIVideoEditorController()
+                editorController.videoPath = url.path
+                editorController.delegate = self
+                editorController.videoQuality = .typeHigh
+                controller.presentVC(editorController)
+            }
         }
-        let cropViewController = TOCropViewController(croppingStyle: .default, image: image)
-        cropViewController.delegate = self
-        imagePicker.presentVC(cropViewController)
     }
     
-    func cancelButtonDidPress(_ imagePicker: ImagePickerController) {
-        imagePicker.dismissVC(completion: nil)
+    func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
+        Image.resolve(images: images, completion: {
+            let lightboxImages = $0.flatMap({ $0 }).map({ LightboxImage(image: $0) })
+            let lightboxController = LightboxController(images: lightboxImages, startIndex: 0)
+            controller.presentVC(lightboxController)
+        })
+    }
+    
+    func galleryControllerDidCancel(_ controller: GalleryController) {
+        controller.dismissVC(completion: nil)
+    }
+    
+}
+
+extension RoomChatViewController: UINavigationControllerDelegate, UIVideoEditorControllerDelegate {
+    func videoEditorControllerDidCancel(_ editor: UIVideoEditorController) {
+        editor.dismissVC(completion: nil)
+    }
+    func videoEditorController(_ editor: UIVideoEditorController, didFailWithError error: Error) {
+        editor.dismissVC(completion: { print(error) })
+    }
+    func videoEditorController(_ editor: UIVideoEditorController, didSaveEditedVideoToPath editedVideoPath: String) {
+        editor.dismissVC(completion: {
+            self.galleryController.dismissVC(completion: {
+                let manager = VideoManager(url: URL(fileURLWithPath: editedVideoPath))
+                
+                manager.getThumbnail(completion: { image in
+                    manager.convertToMp4(quality: AVAssetExportPresetHighestQuality, handler: { session in
+                        switch session.status {
+                        case .completed:
+                            guard let room = self.room else {return}
+                            guard let roomId = room.id else {return}
+                            guard let convertedUrl = session.outputURL else {return}
+                            let message = Message(
+                                roomId: roomId,
+                                thumbnail: image,
+                                video: convertedUrl,
+                                sender: self.currentSender().id,
+                                date: Date()
+                            )
+                            FirebaseManager.shared.create(message: message, completion: { error, ref in
+                                guard let ref = ref else {return}
+                                FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
+                                FirebaseManager.shared.upload(video: convertedUrl, completion: { meta, _ in
+                                    message.messageId = ref.key
+                                    message.contentVideoUrl = meta?.downloadURL()?.absoluteString
+                                    FirebaseManager.shared.update(message: message)
+                                    FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
+                                })
+                                room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
+                                    FirebaseManager.shared.create(notification: Notification(
+                                        title: "\(self.currentSender().displayName) @\(room.name ?? "")",
+                                        body: "📷 Video",
+                                        receiver: user
+                                    ))
+                                })
+                            })
+                            break
+                        case .exporting:
+                            print("exporting: \(session.progress)")
+                            break
+                        case .failed:
+                            print("failed: \(session.error as Any)")
+                            break
+                        case .cancelled:
+                            print("cancelled")
+                            break
+                        case .waiting:
+                            print("waiting")
+                            break
+                        case .unknown:
+                            print("unknown")
+                        }
+                        
+                    })
+                })
+            })
+        })
     }
 }
 
@@ -335,12 +392,10 @@ extension RoomChatViewController: TOCropViewControllerDelegate {
         cropViewController.dismissVC(completion: nil)
     }
     func cropViewController(_ cropViewController: TOCropViewController, didCropToImage image: UIImage, rect cropRect: CGRect, angle: Int) {
-
         cropViewController.dismissVC(completion: {
-            self.imagePicker.dismissVC(completion: {
+            self.galleryController.dismissVC(completion: {
                 guard let room = self.room else {return}
                 guard let roomId = room.id else {return}
-                
                 let message = Message(roomId: roomId, image: image, sender: self.currentSender().id, date: Date())
                 FirebaseManager.shared.create(message: message, completion: { error, ref in
                     guard let ref = ref else {return}
@@ -361,8 +416,6 @@ extension RoomChatViewController: TOCropViewControllerDelegate {
                 })
             })
         })
-        
-        
     }
-    
 }
+

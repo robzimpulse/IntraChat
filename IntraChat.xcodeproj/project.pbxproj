@@ -38,6 +38,7 @@
 		3EF838FA200CEDAC008993A4 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF838F9200CEDAC008993A4 /* Chat.swift */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
 		840E058520074D260084AB6F /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E058420074D260084AB6F /* UIImageView.swift */; };
+		841F762D200E10D900D5BDAD /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841F762C200E10D900D5BDAD /* VideoManager.swift */; };
 		842A229D2004D109008AE4A4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229C2004D109008AE4A4 /* Message.swift */; };
 		842A229F2004D2EE008AE4A4 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229E2004D2EE008AE4A4 /* String.swift */; };
 		842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A22A02004E867008AE4A4 /* NavigationController.swift */; };
@@ -81,6 +82,7 @@
 		3EF838F9200CEDAC008993A4 /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
 		840E058420074D260084AB6F /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		841F762C200E10D900D5BDAD /* VideoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
 		842A229C2004D109008AE4A4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		842A229E2004D2EE008AE4A4 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		842A22A02004E867008AE4A4 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				3EE3D70E2000C33D00D77A8F /* Extension */,
 				3E6A22EF200065E4006A5607 /* Model */,
 				3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */,
+				841F762C200E10D900D5BDAD /* VideoManager.swift */,
 				8451A0D52005CDE40097BED7 /* Transform.swift */,
 			);
 			path = Backend;
@@ -399,11 +402,11 @@
 				"${BUILT_PRODUCTS_DIR}/EZSwiftExtensions/EZSwiftExtensions.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/Gallery/Gallery.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Hero/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/Hue/Hue.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
-				"${BUILT_PRODUCTS_DIR}/ImagePicker/ImagePicker.framework",
 				"${BUILT_PRODUCTS_DIR}/Imaginary/Imaginary.framework",
 				"${BUILT_PRODUCTS_DIR}/Lightbox/Lightbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MenuItemKit/MenuItemKit.framework",
@@ -432,11 +435,11 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EZSwiftExtensions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gallery.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hue.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImagePicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Imaginary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lightbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MenuItemKit.framework",
@@ -471,6 +474,7 @@
 				3E3487EC1FFFDBD1009ED2E0 /* AppDelegate.swift in Sources */,
 				842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */,
 				3E2090262003D7EA0062BA7C /* UINavigationController.swift in Sources */,
+				841F762D200E10D900D5BDAD /* VideoManager.swift in Sources */,
 				3E2499302009D1920058639B /* AuthNavigationController.swift in Sources */,
 				842A229F2004D2EE008AE4A4 /* String.swift in Sources */,
 				3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */,

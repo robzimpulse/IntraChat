@@ -12,11 +12,10 @@ import AlamofireImage
 
 extension UIImageView {
 
-    func setPersistentImage(url: URL) {
+    func setPersistentImage(url: URL, filter: CompositeImageFilter? = nil) {
         do {
             image = try Disk.retrieve(url.absoluteString, from: .caches, as: UIImage.self)
         }catch {
-            let filter = AspectScaledToFillSizeCircleFilter(size: CGSize(width: 100, height: 100))
             af_setImage(withURL: url, filter: filter, completion: { response in
                 guard let image = response.value else {return}
                 guard !Disk.exists(url.absoluteString, in: .caches) else {return}

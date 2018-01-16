@@ -297,6 +297,25 @@ class FirebaseManager: NSObject {
         if let handler = handleUnknown {task.observe(.unknown, handler: handler)}
     }
     
+    func upload(
+        video: URL,
+        handleFailure: ((StorageTaskSnapshot) -> Void)? = nil,
+        handlePause: ((StorageTaskSnapshot) -> Void)? = nil,
+        handleProgress: ((StorageTaskSnapshot) -> Void)? = nil,
+        handleResume: ((StorageTaskSnapshot) -> Void)? = nil,
+        handleSuccess: ((StorageTaskSnapshot) -> Void)? = nil,
+        handleUnknown: ((StorageTaskSnapshot) -> Void)? = nil,
+        completion: ((StorageMetadata?, Error?) -> Void)? = nil
+    ){
+        guard let task = upload(video: video, completion: completion) else {return}
+        if let handler = handleFailure {task.observe(.failure, handler: handler)}
+        if let handler = handlePause {task.observe(.pause, handler: handler)}
+        if let handler = handleProgress {task.observe(.progress, handler: handler)}
+        if let handler = handleResume {task.observe(.resume, handler: handler)}
+        if let handler = handleSuccess {task.observe(.success, handler: handler)}
+        if let handler = handleUnknown {task.observe(.unknown, handler: handler)}
+    }
+    
     @discardableResult
     func upload(image: UIImage, completion: ((StorageMetadata?, Error?) -> Void)? = nil) -> StorageUploadTask?{
         guard let data = UIImagePNGRepresentation(image) else {return nil}
@@ -304,6 +323,14 @@ class FirebaseManager: NSObject {
         let meta = StorageMetadata()
         meta.contentType = "image/png"
         return storageRef.child(filename).putData(data, metadata: meta, completion: completion)
+    }
+    
+    @discardableResult
+    func upload(video: URL, completion: ((StorageMetadata?, Error?) -> Void)? = nil) -> StorageUploadTask?{
+        let filename = UUID().uuidString.appending(".mp4")
+        let meta = StorageMetadata()
+        meta.contentType = "video/mp4"
+        return storageRef.child(filename).putFile(from: video, metadata: meta, completion: completion)
     }
     
     private func localNotification(object: Notification, delay: TimeInterval = 0){

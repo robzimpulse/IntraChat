@@ -9,10 +9,10 @@ target 'IntraChat' do
     pod 'Hero'
     pod 'Disk'
     pod 'Eureka'
+    pod 'Gallery'
     pod 'Lightbox'
     pod 'MessageKit'
     pod 'MenuItemKit'
-    pod 'ImagePicker'
     pod 'ObjectMapper'
     pod 'PusherChatkit'
     pod 'AlamofireImage'
@@ -35,7 +35,7 @@ target 'IntraChat' do
 end
 
 post_install do |installer|
-    myExcludedTargets = ['MessageKit','ILLoginKit','ImagePicker','Lightbox','Eureka']
+    myExcludedTargets = ['MessageKit','ILLoginKit','Gallery','Lightbox','Eureka']
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             if myExcludedTargets.include? target.name

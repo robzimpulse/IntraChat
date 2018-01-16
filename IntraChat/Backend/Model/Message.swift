@@ -24,7 +24,8 @@ class Message: Object, FirebaseModel, Mappable {
     @objc dynamic var contentText: String?
     @objc dynamic var contentImageUrl: String?
     @objc dynamic var contentImageThumbnail: String?
-    
+    @objc dynamic var contentVideoUrl: String?
+    @objc dynamic var contentVideoThumbnail: String?
     override static func primaryKey() -> String? { return "messageId" }
     override static func ignoredProperties() -> [String] { return ["data"] }
     
@@ -39,6 +40,12 @@ class Message: Object, FirebaseModel, Mappable {
                 guard let thumbnail = self.contentImageThumbnail else {return nil}
                 guard let image = thumbnail.toUIImage() else {return nil}
                 return .photo(image)
+            case "video":
+                guard let thumbnail = self.contentVideoThumbnail else {return nil}
+                guard let image = thumbnail.toUIImage() else {return nil}
+                guard let urlString = contentVideoUrl else {return nil}
+                guard let url = URL(string: urlString) else {return nil}
+                return .video(file: url, thumbnail: image)
             default:
                 return nil
             }
@@ -53,6 +60,11 @@ class Message: Object, FirebaseModel, Mappable {
             case .photo(let image):
                 self.type = "photo"
                 self.contentImageThumbnail = image.resize(width: 400, height: 400).toBase64()
+                break
+            case .video(file: let file, thumbnail: let image):
+                self.type = "video"
+                self.contentVideoThumbnail = image.resize(width: 400, height: 400).toBase64()
+                self.contentVideoUrl = file.absoluteString
                 break
             default:
                 break
@@ -85,6 +97,14 @@ class Message: Object, FirebaseModel, Mappable {
         self.data = .photo(image)
     }
     
+    convenience init(roomId: String, thumbnail: UIImage, video: URL, sender: String, date: Date) {
+        self.init()
+        self.roomId = roomId
+        self.sender = sender
+        self.sentDate = date
+        self.data = .video(file: video, thumbnail: thumbnail)
+    }
+    
     convenience required init?(map: Map) {
         self.init()
     }
@@ -109,6 +129,12 @@ class Message: Object, FirebaseModel, Mappable {
             contentImageUrl = array["url"] as? String
             data = .photo(image)
             break
+        case "video":
+            guard let thumbnail = array["image"] as? String else {return}
+            guard let urlString = array["url"] as? String else {return}
+            guard let image = thumbnail.toUIImage() else {return}
+            guard let url = URL(string: urlString) else {return}
+            data = .video(file: url, thumbnail: image)
         default:
             break
         }
@@ -122,12 +148,14 @@ class Message: Object, FirebaseModel, Mappable {
         
         if let data = data {
             switch data {
-            case .text(let text):
-                array["data"] = [ "type": "text", "text": text ]
+            case .text(_):
+                array["data"] = [ "type": "text", "text": contentText ]
                 break
             case .photo(_):
                 array["data"] = [ "type": "photo", "image": contentImageThumbnail, "url": contentImageUrl ]
                 break
+            case .video(file: _, thumbnail: _):
+                array["data"] = [ "type": "video", "image": contentVideoThumbnail, "url": contentVideoUrl]
             default:
                 break
             }

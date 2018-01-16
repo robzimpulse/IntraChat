@@ -40,7 +40,7 @@ class Chat: MessageType {
         self.sentDate = date
     }
     
-    init(data: MessageKit.MessageData, sender: Sender, messageId: String, date: Date) {
+    init(data: MessageData, sender: Sender, messageId: String, date: Date) {
         self.data = data
         self.sender = sender
         self.messageId = messageId
