@@ -318,6 +318,7 @@ extension RoomChatViewController: MessageCellDelegate {
                 let lightboxController = LightboxController(images: [lightboxImage], startIndex: 0)
                 self.presentVC(lightboxController)
             case .location(let location):
+                self.pushVC(LocationViewController(senderName: chat.sender.displayName,location: location))
                 print(location.coordinate.latitude, location.coordinate.longitude)
                 break
             default:
