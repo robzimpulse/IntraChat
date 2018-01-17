@@ -22,10 +22,22 @@ class Message: Object, FirebaseModel, Mappable {
     @objc dynamic var type: String?
     
     @objc dynamic var contentText: String?
+    
     @objc dynamic var contentImageUrl: String?
     @objc dynamic var contentImageThumbnail: String?
+    
     @objc dynamic var contentVideoUrl: String?
     @objc dynamic var contentVideoThumbnail: String?
+    
+    let contentLocationHorizontalAccuracy = RealmOptional<Double>(nil)
+    let contentLocationVerticalAccuracy = RealmOptional<Double>(nil)
+    let contentLocationLatitude = RealmOptional<Double>(nil)
+    let contentLocationLongitude = RealmOptional<Double>(nil)
+    @objc dynamic var contentLocationTimestamp: String?
+    let contentLocationAltitude = RealmOptional<Double>(nil)
+    let contentLocationCourse = RealmOptional<Double>(nil)
+    let contentLocationSpeed = RealmOptional<Double>(nil)
+    
     override static func primaryKey() -> String? { return "messageId" }
     override static func ignoredProperties() -> [String] { return ["data"] }
     
@@ -46,6 +58,25 @@ class Message: Object, FirebaseModel, Mappable {
                 guard let urlString = contentVideoUrl else {return nil}
                 guard let url = URL(string: urlString) else {return nil}
                 return .video(file: url, thumbnail: image)
+            case "location":
+                guard let latitude = self.contentLocationLatitude.value else {return nil}
+                guard let longitude = self.contentLocationLongitude.value else {return nil}
+                guard let altitude = self.contentLocationAltitude.value else {return nil}
+                guard let horizontalAccuracy = self.contentLocationHorizontalAccuracy.value else {return nil}
+                guard let verticalAccuracy = self.contentLocationVerticalAccuracy.value else {return nil}
+                guard let course = self.contentLocationCourse.value else {return nil}
+                guard let speed = self.contentLocationSpeed.value else {return nil}
+                guard let timestamp = Transform.date.transformFromJSON(self.contentLocationTimestamp) else {return nil}
+                let location = CLLocation(
+                    coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+                    altitude: altitude,
+                    horizontalAccuracy: horizontalAccuracy,
+                    verticalAccuracy: verticalAccuracy,
+                    course: course,
+                    speed: speed,
+                    timestamp: timestamp
+                )
+                return .location(location)
             default:
                 return nil
             }
@@ -65,6 +96,17 @@ class Message: Object, FirebaseModel, Mappable {
                 self.type = "video"
                 self.contentVideoThumbnail = image.resize(width: 400, height: 400).toBase64()
                 self.contentVideoUrl = file.absoluteString
+                break
+            case .location(let location):
+                self.type = "location"
+                self.contentLocationLatitude.value = location.coordinate.latitude
+                self.contentLocationLongitude.value = location.coordinate.longitude
+                self.contentLocationAltitude.value = location.altitude
+                self.contentLocationHorizontalAccuracy.value = location.horizontalAccuracy
+                self.contentLocationVerticalAccuracy.value = location.verticalAccuracy
+                self.contentLocationCourse.value = location.course
+                self.contentLocationSpeed.value = location.speed
+                self.contentLocationTimestamp = Transform.date.transformToJSON(location.timestamp)
                 break
             default:
                 break
@@ -105,6 +147,14 @@ class Message: Object, FirebaseModel, Mappable {
         self.data = .video(file: video, thumbnail: thumbnail)
     }
     
+    convenience init(roomId: String, location: CLLocation, sender: String, date: Date) {
+        self.init()
+        self.roomId = roomId
+        self.sender = sender
+        self.sentDate = date
+        self.data = .location(location)
+    }
+    
     convenience required init?(map: Map) {
         self.init()
     }
@@ -135,19 +185,26 @@ class Message: Object, FirebaseModel, Mappable {
             guard let image = thumbnail.toUIImage() else {return}
             guard let url = URL(string: urlString) else {return}
             data = .video(file: url, thumbnail: image)
-//        case "location":
-//            guard let latitude = array["latitude"] as? Double else {return}
-//            guard let longitude = array["longitude"] as? Double else {return}
-//
-//            let location = CLLocation(
-//                coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
-//                altitude: <#T##CLLocationDistance#>,
-//                horizontalAccuracy: <#T##CLLocationAccuracy#>,
-//                verticalAccuracy: <#T##CLLocationAccuracy#>,
-//                course: <#T##CLLocationDirection#>,
-//                speed: <#T##CLLocationSpeed#>,
-//                timestamp: <#T##Date#>
-//            )
+            break
+        case "location":
+            guard let latitude = array["latitude"] as? Double else {return}
+            guard let longitude = array["longitude"] as? Double else {return}
+            guard let altitude = array["altitude"] as? Double else {return}
+            guard let horizontalAccuracy = array["horizontalAccuracy"] as? Double else {return}
+            guard let verticalAccuracy = array["verticalAccuracy"] as? Double else {return}
+            guard let course = array["course"] as? Double else {return}
+            guard let speed = array["speed"] as? Double else {return}
+            guard let timestamp = Transform.date.transformFromJSON(array["timestamp"] as? String) else {return}
+            data = .location(CLLocation(
+                coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+                altitude: altitude,
+                horizontalAccuracy: horizontalAccuracy,
+                verticalAccuracy: verticalAccuracy,
+                course: course,
+                speed: speed,
+                timestamp: timestamp
+            ))
+            break
         default:
             break
         }
@@ -180,18 +237,18 @@ class Message: Object, FirebaseModel, Mappable {
                     "image": contentVideoThumbnail,
                     "url": contentVideoUrl
                 ]
-//            case .location(let location):
-//                array["data"] = [
-//                    "type": "location",
-//                    "latitude": location.coordinate.latitude,
-//                    "longitude": location.coordinate.longitude,
-//                    "altitude": location.altitude,
-//                    "horizontalAccuracy": location.horizontalAccuracy,
-//                    "verticalAccuracy": location.verticalAccuracy,
-//                    "course": location.course,
-//                    "speed": location.speed,
-//                    "timestamp": Transform.date.transformToJSON(location.timestamp) ?? ""
-//                ]
+            case .location(_):
+                array["data"] = [
+                    "type": "location",
+                    "latitude": contentLocationLatitude,
+                    "longitude": contentLocationLongitude,
+                    "altitude": contentLocationAltitude,
+                    "horizontalAccuracy": contentLocationHorizontalAccuracy,
+                    "verticalAccuracy": contentLocationVerticalAccuracy,
+                    "course": contentLocationCourse,
+                    "speed": contentLocationSpeed,
+                    "timestamp": contentLocationTimestamp ?? ""
+                ]
             default:
                 break
             }

@@ -45,18 +45,30 @@ class RoomChatViewController: MessagesViewController {
         return (presentedViewController == nil) ? messageInputBar : nil
     }
     
-    lazy var locationPicker: LocationPickerViewController = {
+    lazy var locationPicker: UINavigationController = {
         let locationPicker = LocationPickerViewController()
         locationPicker.useCurrentLocationAsHint = true
         locationPicker.searchBarPlaceholder = "Search or Enter an address"
         locationPicker.searchHistoryLabel = "Previously searched"
         locationPicker.completion = { location in
+            guard let room = self.room else {return}
+            guard let roomId = room.id else {return}
             guard let location = location else {return}
-            
-            print(location)
-//            Chat(location: location, sender: self.currentSender(), messageId: UUID().uuidString, date: Date())
+            let message = Message(roomId: roomId, location: location.location, sender: self.currentSender().id, date: Date())
+            FirebaseManager.shared.create(message: message, completion: { error, _ in
+                guard error == nil else {return}
+                FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
+                room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
+                    FirebaseManager.shared.create(notification: Notification(
+                        title: "\(self.currentSender().displayName) @\(room.name ?? "")",
+                        body: "📍Location",
+                        receiver: user
+                    ))
+                })
+            })
         }
-        return locationPicker
+        let picker = UINavigationController(rootViewController: locationPicker)
+        return picker
     }()
     
     lazy var galleryController: GalleryController = {
@@ -91,7 +103,7 @@ class RoomChatViewController: MessagesViewController {
                     self.reloadInputViews()
                 }),
                 UIAlertAction(title: "Location", style: .default, handler: { _ in
-                    self.pushVC(self.locationPicker)
+                    self.presentVC(self.locationPicker)
                 })
             ], cancel: { self.reloadInputViews() })
         }).onTextViewDidChange({ button, textView in
@@ -305,6 +317,9 @@ extension RoomChatViewController: MessageCellDelegate {
                 let lightboxImage = LightboxImage(image: thumbnail, text: "", videoURL: url)
                 let lightboxController = LightboxController(images: [lightboxImage], startIndex: 0)
                 self.presentVC(lightboxController)
+            case .location(let location):
+                print(location.coordinate.latitude, location.coordinate.longitude)
+                break
             default:
                 break
             }
