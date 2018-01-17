@@ -188,7 +188,9 @@ class Message: Object, FirebaseModel, Mappable {
     static func delete(object: Message, completion: ((Error?) -> Void)? = nil) {
         Realm.asyncOpen(callback: { realm, error in
             guard let realm = realm else {completion?(error); return}
-            do { try realm.write { realm.delete(object) } }
+            let data = realm.object(ofType: Message.self, forPrimaryKey: object.messageId)
+            guard let message = data else {completion?(error); return}
+            do { try realm.write { realm.delete(message) } }
             catch let error { completion?(error) }
         })
     }
