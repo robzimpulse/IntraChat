@@ -9,6 +9,7 @@
 import UIKit
 import RxCocoa
 import RxSwift
+import RxRealm
 
 class ListUserViewController: UIViewController {
 
@@ -16,6 +17,8 @@ class ListUserViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
     let users = Variable<[User]>([])
+    
+    let filteredUsers = Variable<[User]>([])
     
     let disposeBag = DisposeBag()
     
@@ -35,21 +38,30 @@ class ListUserViewController: UIViewController {
             forCellReuseIdentifier: "UserCell"
         )
         
-        searchBar.rx.text.orEmpty
-            .throttle(0.3, scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .map({ return $0 })
-            .observeOn(MainScheduler.instance)
-            .bind(onNext: { text in
+        User.get(completion: { realmUsers in
+            guard let realmUsers = realmUsers else {return}
+            
+            Observable.changeset(from: realmUsers).bind(onNext: { results, _ in
                 guard let user = FirebaseManager.shared.currentUser() else {return}
-                print(user)
-//                self.users.value = text.isBlank ?
-//                    FirebaseManager.shared.users.value.filter({$0.uid != user.uid}) :
-//                    FirebaseManager.shared.users.value.filter({$0.uid != user.uid}).filter({
-//                    $0.name?.contains(text, compareOption: .caseInsensitive) ?? true
-//                })
-            })
-            .disposed(by: disposeBag)
+                self.users.value = results.toArray().filter({ $0.uid != user.uid })
+            }).disposed(by: self.disposeBag)
+            
+            self.searchBar.rx.text.orEmpty
+                .throttle(0.3, scheduler: MainScheduler.instance)
+                .distinctUntilChanged()
+                .map({ return $0 })
+                .observeOn(MainScheduler.instance)
+                .bind(onNext: { text in
+                    guard let user = FirebaseManager.shared.currentUser() else {return}
+                    self.filteredUsers.value = text.isBlank ?
+                        self.users.value.filter({$0.uid != user.uid}) :
+                        self.users.value.filter({$0.uid != user.uid}).filter({
+                            $0.name?.contains(text, compareOption: .caseInsensitive) ?? true
+                        })
+                })
+                .disposed(by: self.disposeBag)
+
+        })
         
         searchBar.rx.textDidBeginEditing.bind(onNext: {
             self.searchBar.setShowsCancelButton(true, animated: true)
@@ -63,7 +75,7 @@ class ListUserViewController: UIViewController {
             self.searchBar.endEditing(true)
         }).disposed(by: disposeBag)
         
-        users.asObservable().bind(
+        filteredUsers.asObservable().bind(
             to: tableView.rx.items(cellIdentifier: "UserCell", cellType: UserCell.self),
             curriedArgument: { row, user, cell in cell.configure(user: user) }
         ).disposed(by: disposeBag)

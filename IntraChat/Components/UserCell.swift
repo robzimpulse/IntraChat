@@ -32,6 +32,7 @@ class UserCell: UITableViewCell {
         profileImageView.image = nil
         guard let photo = user.photo, let url = URL(string: photo) else {return}
         profileImageView.setPersistentImage(url: url)
+        profileImageView.roundSquareImage()
     }
     
 }
