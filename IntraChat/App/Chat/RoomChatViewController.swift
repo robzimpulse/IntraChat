@@ -18,6 +18,7 @@ import Lightbox
 import RealmSwift
 import MessageKit
 import MenuItemKit
+import LocationPicker
 import RPCircularProgress
 import TOCropViewController
 
@@ -43,6 +44,20 @@ class RoomChatViewController: MessagesViewController {
     override var inputAccessoryView: UIView? {
         return (presentedViewController == nil) ? messageInputBar : nil
     }
+    
+    lazy var locationPicker: LocationPickerViewController = {
+        let locationPicker = LocationPickerViewController()
+        locationPicker.useCurrentLocationAsHint = true
+        locationPicker.searchBarPlaceholder = "Search or Enter an address"
+        locationPicker.searchHistoryLabel = "Previously searched"
+        locationPicker.completion = { location in
+            guard let location = location else {return}
+            
+            print(location)
+//            Chat(location: location, sender: self.currentSender(), messageId: UUID().uuidString, date: Date())
+        }
+        return locationPicker
+    }()
     
     lazy var galleryController: GalleryController = {
         Config.tabsToShow = [.cameraTab, .imageTab, .videoTab]
@@ -76,7 +91,7 @@ class RoomChatViewController: MessagesViewController {
                     self.reloadInputViews()
                 }),
                 UIAlertAction(title: "Location", style: .default, handler: { _ in
-                    self.reloadInputViews()
+                    self.pushVC(self.locationPicker)
                 })
             ], cancel: { self.reloadInputViews() })
         }).onTextViewDidChange({ button, textView in

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 import RealmSwift
 import MessageKit
 
@@ -35,6 +36,13 @@ class Chat: MessageType {
     
     init(image: UIImage, sender: Sender, messageId: String, date: Date) {
         self.data = .photo(image)
+        self.sender = sender
+        self.messageId = messageId
+        self.sentDate = date
+    }
+    
+    init(location: CLLocation, sender: Sender, messageId: String, date: Date) {
+        self.data = .location(location)
         self.sender = sender
         self.messageId = messageId
         self.sentDate = date

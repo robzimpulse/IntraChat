@@ -135,6 +135,19 @@ class Message: Object, FirebaseModel, Mappable {
             guard let image = thumbnail.toUIImage() else {return}
             guard let url = URL(string: urlString) else {return}
             data = .video(file: url, thumbnail: image)
+//        case "location":
+//            guard let latitude = array["latitude"] as? Double else {return}
+//            guard let longitude = array["longitude"] as? Double else {return}
+//
+//            let location = CLLocation(
+//                coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+//                altitude: <#T##CLLocationDistance#>,
+//                horizontalAccuracy: <#T##CLLocationAccuracy#>,
+//                verticalAccuracy: <#T##CLLocationAccuracy#>,
+//                course: <#T##CLLocationDirection#>,
+//                speed: <#T##CLLocationSpeed#>,
+//                timestamp: <#T##Date#>
+//            )
         default:
             break
         }
@@ -149,13 +162,36 @@ class Message: Object, FirebaseModel, Mappable {
         if let data = data {
             switch data {
             case .text(_):
-                array["data"] = [ "type": "text", "text": contentText ]
+                array["data"] = [
+                    "type": "text",
+                    "text": contentText
+                ]
                 break
             case .photo(_):
-                array["data"] = [ "type": "photo", "image": contentImageThumbnail, "url": contentImageUrl ]
+                array["data"] = [
+                    "type": "photo",
+                    "image": contentImageThumbnail,
+                    "url": contentImageUrl
+                ]
                 break
             case .video(file: _, thumbnail: _):
-                array["data"] = [ "type": "video", "image": contentVideoThumbnail, "url": contentVideoUrl]
+                array["data"] = [
+                    "type": "video",
+                    "image": contentVideoThumbnail,
+                    "url": contentVideoUrl
+                ]
+//            case .location(let location):
+//                array["data"] = [
+//                    "type": "location",
+//                    "latitude": location.coordinate.latitude,
+//                    "longitude": location.coordinate.longitude,
+//                    "altitude": location.altitude,
+//                    "horizontalAccuracy": location.horizontalAccuracy,
+//                    "verticalAccuracy": location.verticalAccuracy,
+//                    "course": location.course,
+//                    "speed": location.speed,
+//                    "timestamp": Transform.date.transformToJSON(location.timestamp) ?? ""
+//                ]
             default:
                 break
             }
