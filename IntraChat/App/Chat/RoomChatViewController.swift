@@ -40,6 +40,10 @@ class RoomChatViewController: MessagesViewController {
         return .lightContent
     }
     
+    override var inputAccessoryView: UIView? {
+        return (presentedViewController == nil) ? messageInputBar : nil
+    }
+    
     lazy var galleryController: GalleryController = {
         Config.tabsToShow = [.cameraTab, .imageTab, .videoTab]
         Config.Camera.imageLimit = 1
@@ -103,6 +107,11 @@ class RoomChatViewController: MessagesViewController {
         newMessageInputBar.delegate = self
         return newMessageInputBar
     }()
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        reloadInputViews()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -266,18 +275,25 @@ extension RoomChatViewController: MessageCellDelegate {
     func didTapMessage(in cell: MessageCollectionViewCell) {
         guard let index = messagesCollectionView.indexPath(for: cell) else {return}
         let chat = messageList[index.section]
-        switch chat.data {
-        case .text(let text):
-            print(text)
-            break
-        case .photo(let image):
-            print(image)
-            break
-        case .video(file: let url, thumbnail: let thumbnail):
-            print(url.absoluteString, thumbnail)
-        default:
-            break
-        }
+        chat.getMessage(completion: { message in
+            guard let message = message else {return}
+            switch chat.data {
+            case .text(let text):
+                print(text)
+                break
+            case .photo(_):
+                guard let imageUrl = message.contentImageUrl, let url = URL(string: imageUrl) else {return}
+                let lightboxController = LightboxController(images: [LightboxImage(imageURL: url)], startIndex: 0)
+                self.presentVC(lightboxController)
+                break
+            case .video(file: let url, thumbnail: let thumbnail):
+                let lightboxImage = LightboxImage(image: thumbnail, text: "", videoURL: url)
+                let lightboxController = LightboxController(images: [lightboxImage], startIndex: 0)
+                self.presentVC(lightboxController)
+            default:
+                break
+            }
+        })
     }
 
 }
