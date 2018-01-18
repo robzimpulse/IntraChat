@@ -100,24 +100,51 @@ class LocationViewController: UIViewController {
         self.mapView = nil
     }
     
+    @objc func map(_ sender: Any) {
+        print("open map")
+    }
+    
+    @IBAction func share(_ sender: Any) {
+        print("share")
+    }
+    
+    @IBAction func search(_ sender: Any) {
+        print("search")
+    }
+    
+    @IBAction func changedValue(_ sender: Any) {
+        guard let sender = sender as? UISegmentedControl else {return}
+        
+        switch sender.selectedSegmentIndex {
+        case 0:
+            mapView.mapType = .standard
+            break
+        case 1:
+            mapView.mapType = .hybrid
+            break
+        case 2:
+            mapView.mapType = .satellite
+            break
+        default:
+            break
+        }
+    }
+    
 }
 
 extension LocationViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard !(annotation is MKUserLocation) else {return nil}
         guard let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "pin") else {
-            if #available(iOS 11.0, *) {
-                let annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "pin")
-                annotationView.canShowCallout = true
-                annotationView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-                annotationView.leftCalloutAccessoryView = UIButton(type: .contactAdd)
-                annotationView.calloutOffset = CGPoint(x: -5, y: 5)
-                return annotationView
-            } else {
-                let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
-                annotationView.animatesDrop = true
-                return annotationView
-            }
+            let button = UIButton(x: 0, y: 0, w: 50, h: 50, target: self, action: #selector(map(_:)))
+            button.setImage(#imageLiteral(resourceName: "icon_car"), for: .normal)
+            button.setBackgroundColor(button.tintColor, forState: .normal)
+            let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+            annotationView.animatesDrop = true
+            annotationView.canShowCallout = true
+            annotationView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            annotationView.leftCalloutAccessoryView = button
+            return annotationView
         }
         annotationView.annotation = annotation
         return annotationView
