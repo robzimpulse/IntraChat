@@ -17,6 +17,7 @@ target 'IntraChat' do
     pod 'PusherChatkit'
     pod 'LocationPicker'
     pod 'AlamofireImage'
+    pod 'LocationViewer'
     pod 'IQKeyboardManager'
     pod 'EZSwiftExtensions'
     pod 'RPCircularProgress'

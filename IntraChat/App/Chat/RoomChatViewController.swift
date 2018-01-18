@@ -19,6 +19,7 @@ import RealmSwift
 import MessageKit
 import MenuItemKit
 import LocationPicker
+import LocationViewer
 import RPCircularProgress
 import TOCropViewController
 
@@ -318,8 +319,8 @@ extension RoomChatViewController: MessageCellDelegate {
                 let lightboxController = LightboxController(images: [lightboxImage], startIndex: 0)
                 self.presentVC(lightboxController)
             case .location(let location):
-                self.pushVC(LocationViewController(senderName: chat.sender.displayName,location: location))
-                print(location.coordinate.latitude, location.coordinate.longitude)
+                let controller = LocationViewerController(location: location, forName: chat.sender.displayName)
+                self.pushVC(controller)
                 break
             default:
                 break

@@ -34,8 +34,6 @@
 		3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */; };
 		3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7152000D74200D77A8F /* BaseMappable.swift */; };
 		3EE3D71D20016E9E00D77A8F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D71C20016E9E00D77A8F /* Auth.storyboard */; };
-		3EE8EEFA200F7D2F008288B2 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE8EEF8200F7D2F008288B2 /* LocationViewController.swift */; };
-		3EE8EEFB200F7D2F008288B2 /* LocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EE8EEF9200F7D2F008288B2 /* LocationViewController.xib */; };
 		3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78FEC200A5283008E1AEB /* UIImage.swift */; };
 		3EF838FA200CEDAC008993A4 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF838F9200CEDAC008993A4 /* Chat.swift */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
@@ -80,8 +78,6 @@
 		3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		3EE3D7152000D74200D77A8F /* BaseMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMappable.swift; sourceTree = "<group>"; };
 		3EE3D71C20016E9E00D77A8F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
-		3EE8EEF8200F7D2F008288B2 /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
-		3EE8EEF9200F7D2F008288B2 /* LocationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocationViewController.xib; sourceTree = "<group>"; };
 		3EF78FEC200A5283008E1AEB /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		3EF838F9200CEDAC008993A4 /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
@@ -230,7 +226,6 @@
 		3E6A22FA2000878E006A5607 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				3EE8EEF7200F7CF6008288B2 /* LocationViewer */,
 				3EE8EEF6200F7CE7008288B2 /* RoomCell */,
 				3EE8EEF5200F7CDA008288B2 /* UserCell */,
 				842A22A02004E867008AE4A4 /* NavigationController.swift */,
@@ -280,15 +275,6 @@
 				3E6A22FD200087BF006A5607 /* RoomCell.xib */,
 			);
 			path = RoomCell;
-			sourceTree = "<group>";
-		};
-		3EE8EEF7200F7CF6008288B2 /* LocationViewer */ = {
-			isa = PBXGroup;
-			children = (
-				3EE8EEF8200F7D2F008288B2 /* LocationViewController.swift */,
-				3EE8EEF9200F7D2F008288B2 /* LocationViewController.xib */,
-			);
-			path = LocationViewer;
 			sourceTree = "<group>";
 		};
 		F97BC68FA94894FB96CD72F9 /* Frameworks */ = {
@@ -375,7 +361,6 @@
 				3E6A22FF200087BF006A5607 /* RoomCell.xib in Resources */,
 				3E2090242003D4660062BA7C /* UserCell.xib in Resources */,
 				3E6A22EC200064B4006A5607 /* Profile.storyboard in Resources */,
-				3EE8EEFB200F7D2F008288B2 /* LocationViewController.xib in Resources */,
 				3E3487F11FFFDBD1009ED2E0 /* Main.storyboard in Resources */,
 				8451A0D92005E5A60097BED7 /* GoogleService-Info.plist in Resources */,
 				3E6A22E720005DF0006A5607 /* Chat.storyboard in Resources */,
@@ -441,6 +426,7 @@
 				"${BUILT_PRODUCTS_DIR}/Imaginary/Imaginary.framework",
 				"${BUILT_PRODUCTS_DIR}/Lightbox/Lightbox.framework",
 				"${BUILT_PRODUCTS_DIR}/LocationPicker/LocationPicker.framework",
+				"${BUILT_PRODUCTS_DIR}/LocationViewer/LocationViewer.framework",
 				"${BUILT_PRODUCTS_DIR}/MenuItemKit/MenuItemKit.framework",
 				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
 				"${BUILT_PRODUCTS_DIR}/ObjectMapper/ObjectMapper.framework",
@@ -475,6 +461,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Imaginary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lightbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LocationPicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LocationViewer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MenuItemKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectMapper.framework",
@@ -519,7 +506,6 @@
 				3E15536720027089007BD985 /* AuthSignUpViewController.swift in Sources */,
 				3E20901E2003CE650062BA7C /* User.swift in Sources */,
 				3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */,
-				3EE8EEFA200F7D2F008288B2 /* LocationViewController.swift in Sources */,
 				3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */,
 				3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */,
 				840E058520074D260084AB6F /* UIImageView.swift in Sources */,
