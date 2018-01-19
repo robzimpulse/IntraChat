@@ -72,7 +72,7 @@ PODS:
     - Hue (~> 3.0)
     - Imaginary (~> 3.0)
   - LocationPicker (1.0.3)
-  - LocationViewer (0.1.3)
+  - LocationViewer (0.1.4)
   - MenuItemKit (3.0.0)
   - MessageKit (0.13.0)
   - nanopb (0.3.8):
@@ -162,7 +162,7 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   Lightbox: 2dc267df8be2285bc7724cb11cbbf4aaaf59dced
   LocationPicker: d54d59c9d14d52496e3e8167e67f13440d6bcf1e
-  LocationViewer: 37ea64ab9e60987593b4a71faf65d17979e3e596
+  LocationViewer: 3a50ccf51e1299836db8e08596fcc4f9ad3bf839
   MenuItemKit: d9b539b28fdbbd7980d6f3668b9cd6daefeabd9b
   MessageKit: 41c7e6dcb8f528413d00a0abebea7811cfa194c0
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
@@ -181,4 +181,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 550163758d9f56f8209021785c1b79780463f379
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.3.1

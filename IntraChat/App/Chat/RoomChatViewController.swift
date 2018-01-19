@@ -331,7 +331,7 @@ extension RoomChatViewController: MessageCellDelegate {
             case .location(let location):
                 let backButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_chevron_left"), style: .plain, target: self, action: #selector(self.back(_:)))
                 backButton.tintColor = UIColor.white
-                let controller = LocationViewerController(location: location, forName: chat.sender.displayName)
+                let controller = ICLocationViewerController(location: location, forName: chat.sender.displayName)
                 controller.titleColor = UIColor.white
                 controller.subtitleColor = UIColor.lightGray
                 controller.leftCallOutAction = { print("left callout") }
