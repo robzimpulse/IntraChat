@@ -319,7 +319,14 @@ extension RoomChatViewController: MessageCellDelegate {
                 let lightboxController = LightboxController(images: [lightboxImage], startIndex: 0)
                 self.presentVC(lightboxController)
             case .location(let location):
+                let backButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_chevron_left"), style: .plain, target: self, action: #selector(self.back(_:)))
+                backButton.tintColor = UIColor.white
                 let controller = LocationViewerController(location: location, forName: chat.sender.displayName)
+                controller.titleColor = UIColor.white
+                controller.subtitleColor = UIColor.lightGray
+                controller.leftCallOutAction = { print("left callout") }
+                controller.shareAction = { location in print("share \(location.coordinate)") }
+                controller.backButton = backButton
                 self.pushVC(controller)
                 break
             default:
