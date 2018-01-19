@@ -221,10 +221,10 @@ extension RoomChatViewController: MessagesDataSource {
         return messageList.count
     }
     
-    func avatar(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> Avatar {
-        let image = FirebaseManager.shared.images[message.sender.id]?.image
-        return Avatar(image: image, initials: message.sender.displayName.initials())
-    }
+//    func avatar(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> Avatar {
+//        let image = FirebaseManager.shared.images[message.sender.id]?.image
+//        return Avatar(image: image, initials: message.sender.displayName.initials())
+//    }
     
     func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         return NSAttributedString(
@@ -290,6 +290,16 @@ extension RoomChatViewController: MessagesDisplayDelegate {
     
     func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
         return [.url, .address, .phoneNumber, .date]
+    }
+    
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        avatarView.initials = message.sender.displayName.initials()
+        User.get(completion: { users in
+            guard let users = users else {return}
+            guard let photo = users.filter("uid = '\(message.sender.id)'").first?.photo else {return}
+            guard let url = URL(string: photo) else {return}
+            avatarView.setPersistentImage(url: url)
+        })
     }
     
 }
