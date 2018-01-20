@@ -15,6 +15,8 @@ class ListUserViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var selectedUserCollectionView: UICollectionView!
+    @IBOutlet weak var selectedUserCollectionViewHeight: NSLayoutConstraint!
     
     let users = Variable<[User]>([])
     
@@ -88,6 +90,9 @@ class ListUserViewController: UIViewController {
                     title: "Add Participant",
                     subtitle: " \($0.count) / 256"
                 )
+                self.navigationItem.rightBarButtonItem?.isEnabled = ($0.count > 0)
+                self.selectedUserCollectionViewHeight.constant = ($0.count > 0) ? 80 : 0
+                UIView.animate(withDuration: 0.2, animations: { self.view.layoutIfNeeded() })
             })
             .disposed(by: disposeBag)
         

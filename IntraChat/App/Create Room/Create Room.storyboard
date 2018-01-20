@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="akP-Wo-7pV">
-                                <rect key="frame" x="0.0" y="56" width="375" height="547"/>
+                                <rect key="frame" x="0.0" y="136" width="375" height="467"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="YDL-2I-Ho5">
@@ -29,15 +29,41 @@
                                 <color key="barTintColor" red="0.0084150675679999995" green="0.015765907240000002" blue="0.0028606951239999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="adS-Kl-M12">
+                                <rect key="frame" x="0.0" y="56" width="375" height="80"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="kEa-lu-ohG"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="rpx-Ci-8hR">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Jxy-dx-tn1">
+                                        <rect key="frame" x="0.0" y="15" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="YDL-2I-Ho5" firstAttribute="top" secondItem="xL3-DD-elA" secondAttribute="top" id="3nu-Xq-scl"/>
                             <constraint firstItem="akP-Wo-7pV" firstAttribute="leading" secondItem="xL3-DD-elA" secondAttribute="leading" id="52n-UP-JDH"/>
+                            <constraint firstItem="xL3-DD-elA" firstAttribute="trailing" secondItem="adS-Kl-M12" secondAttribute="trailing" id="9hK-uc-71v"/>
                             <constraint firstItem="YDL-2I-Ho5" firstAttribute="leading" secondItem="xL3-DD-elA" secondAttribute="leading" id="DLo-pg-eC3"/>
                             <constraint firstItem="xL3-DD-elA" firstAttribute="bottom" secondItem="akP-Wo-7pV" secondAttribute="bottom" id="F7O-oC-hf0"/>
-                            <constraint firstItem="akP-Wo-7pV" firstAttribute="top" secondItem="YDL-2I-Ho5" secondAttribute="bottom" id="GGh-pA-gQN"/>
+                            <constraint firstItem="akP-Wo-7pV" firstAttribute="top" secondItem="adS-Kl-M12" secondAttribute="bottom" id="J22-l6-ENX"/>
+                            <constraint firstItem="adS-Kl-M12" firstAttribute="top" secondItem="YDL-2I-Ho5" secondAttribute="bottom" id="NBn-zB-r2F"/>
                             <constraint firstAttribute="trailing" secondItem="YDL-2I-Ho5" secondAttribute="trailing" id="Umv-zz-I0z"/>
+                            <constraint firstItem="adS-Kl-M12" firstAttribute="leading" secondItem="xL3-DD-elA" secondAttribute="leading" id="crw-E5-0o9"/>
                             <constraint firstItem="xL3-DD-elA" firstAttribute="trailing" secondItem="akP-Wo-7pV" secondAttribute="trailing" id="xC0-Gm-Itl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xL3-DD-elA"/>
@@ -58,6 +84,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="YDL-2I-Ho5" id="uyW-ER-2vT"/>
+                        <outlet property="selectedUserCollectionView" destination="adS-Kl-M12" id="KvT-N0-uXs"/>
+                        <outlet property="selectedUserCollectionViewHeight" destination="kEa-lu-ohG" id="pg2-m9-dfu"/>
                         <outlet property="tableView" destination="akP-Wo-7pV" id="WGJ-TK-FOD"/>
                     </connections>
                 </viewController>
