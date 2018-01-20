@@ -12,7 +12,7 @@ import RxSwift
 import RxRealm
 
 class ListUserViewController: UIViewController {
-
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var selectedUserCollectionView: UICollectionView!
@@ -22,7 +22,7 @@ class ListUserViewController: UIViewController {
     
     let filteredUsers = Variable<[User]>([])
     
-    let selectedUser = Variable<[User]>([])
+    let selectedUsers = Variable<[User]>([])
     
     let disposeBag = DisposeBag()
     
@@ -40,6 +40,11 @@ class ListUserViewController: UIViewController {
         tableView.register(
             UINib(nibName: "UserCell", bundle: nil),
             forCellReuseIdentifier: "UserCell"
+        )
+        
+        selectedUserCollectionView.register(
+            UINib(nibName: "SelectedUserCell", bundle: nil),
+            forCellWithReuseIdentifier: "SelectedUserCell"
         )
         
         User.get(completion: { realmUsers in
@@ -84,7 +89,12 @@ class ListUserViewController: UIViewController {
             curriedArgument: { row, user, cell in cell.configure(user: user) }
         ).disposed(by: disposeBag)
         
-        selectedUser.asObservable()
+        selectedUsers.asObservable().bind(
+            to: selectedUserCollectionView.rx.items(cellIdentifier: "SelectedUserCell", cellType: SelectedUserCell.self),
+            curriedArgument: { row, user, cell in cell.configure(user: user) }
+        ).disposed(by: disposeBag)
+        
+        selectedUsers.asObservable()
             .bind(onNext: {
                 self.navigationItem.titleView = self.setTitle(
                     title: "Add Participant",
@@ -96,16 +106,31 @@ class ListUserViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        selectedUserCollectionView.rx
+            .modelSelected(User.self)
+            .bind(onNext: { user in
+                guard let index = self.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
+                self.selectedUsers.value.remove(at: index)
+
+                guard let rows = self.tableView.indexPathsForSelectedRows else {return}
+                guard let userIndex = rows.index(where: {
+                    guard let cell = self.tableView.cellForRow(at: $0) as? UserCell else {return false}
+                    return user.uid == cell.user?.uid
+                }) else {return}
+                self.tableView.deselectRow(at: rows[userIndex], animated: false)
+            })
+            .disposed(by: disposeBag)
+        
         tableView.rx
             .modelSelected(User.self)
-            .bind(onNext: { self.selectedUser.value.append($0) })
+            .bind(onNext: { self.selectedUsers.value.append($0) })
             .disposed(by: disposeBag)
         
         tableView.rx
             .modelDeselected(User.self)
             .bind(onNext: { user in
-                guard let index = self.selectedUser.value.index(where: { $0.uid == user.uid }) else {return}
-                self.selectedUser.value.remove(at: index)
+                guard let index = self.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
+                self.selectedUsers.value.remove(at: index)
             })
             .disposed(by: disposeBag)
     }
@@ -140,7 +165,7 @@ class ListUserViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? RoomInfoViewController {
-            destination.users = selectedUser.value
+            destination.users = selectedUsers.value
         }
     }
     
