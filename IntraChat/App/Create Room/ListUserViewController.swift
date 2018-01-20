@@ -20,6 +20,8 @@ class ListUserViewController: UIViewController {
     
     let filteredUsers = Variable<[User]>([])
     
+    let selectedUser = Variable<[User]>([])
+    
     let disposeBag = DisposeBag()
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -80,15 +82,60 @@ class ListUserViewController: UIViewController {
             curriedArgument: { row, user, cell in cell.configure(user: user) }
         ).disposed(by: disposeBag)
         
+        selectedUser.asObservable()
+            .bind(onNext: {
+                self.navigationItem.titleView = self.setTitle(
+                    title: "Add Participant",
+                    subtitle: " \($0.count) / 256"
+                )
+            })
+            .disposed(by: disposeBag)
+        
+        tableView.rx
+            .modelSelected(User.self)
+            .bind(onNext: { self.selectedUser.value.append($0) })
+            .disposed(by: disposeBag)
+        
+        tableView.rx
+            .modelDeselected(User.self)
+            .bind(onNext: { user in
+                guard let index = self.selectedUser.value.index(where: { $0.uid == user.uid }) else {return}
+                self.selectedUser.value.remove(at: index)
+            })
+            .disposed(by: disposeBag)
     }
 
+    private func setTitle(title: String?, subtitle: String?) -> UIView {
+        let titleLabel = UILabel(frame: CGRect(x:0, y:-5, width:0, height:0))
+        
+        titleLabel.backgroundColor = UIColor.clear
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        titleLabel.text = title
+        titleLabel.sizeToFit()
+        
+        let subtitleLabel = UILabel(frame: CGRect(x:0, y:18, width:0, height:0))
+        subtitleLabel.backgroundColor = UIColor.clear
+        subtitleLabel.textColor = .lightGray
+        subtitleLabel.font = UIFont.systemFont(ofSize: 12)
+        subtitleLabel.text = subtitle
+        subtitleLabel.sizeToFit()
+        
+        let width = max(titleLabel.frame.size.width, subtitleLabel.frame.size.width)
+        let titleView = UIView(frame: CGRect(x:0, y:0, width:width, height:30))
+        titleView.addSubview(titleLabel)
+        titleView.addSubview(subtitleLabel)
+        
+        let widthDiff = subtitleLabel.frame.size.width - titleLabel.frame.size.width
+        let newX = widthDiff / 2
+        if widthDiff < 0 { subtitleLabel.frame.origin.x = abs(newX) }
+        else { titleLabel.frame.origin.x = newX }
+        return titleView
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? RoomInfoViewController {
-            guard let selectedIndex = tableView.indexPathsForSelectedRows else {return}
-            destination.users = selectedIndex.flatMap({ (index) -> User? in
-                guard let cell = self.tableView.cellForRow(at: index) as? UserCell else {return nil}
-                return cell.user
-            })
+            destination.users = selectedUser.value
         }
     }
     
