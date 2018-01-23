@@ -22,20 +22,34 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hjI-Cd-7rC">
                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                     </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_cancel" translatesAutoresizingMaskIntoConstraints="NO" id="OCg-EN-V5d">
+                        <rect key="frame" x="40" y="0.0" width="10" height="10"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="10" id="5VR-xr-d8f"/>
+                            <constraint firstAttribute="width" constant="10" id="vmE-hZ-Ai1"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="hjI-Cd-7rC" secondAttribute="trailing" id="IXA-ck-dkG"/>
+                <constraint firstItem="OCg-EN-V5d" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="iYL-mW-bfT"/>
                 <constraint firstItem="hjI-Cd-7rC" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="j2L-yd-bxf"/>
                 <constraint firstItem="hjI-Cd-7rC" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="j8O-H6-ORE"/>
                 <constraint firstAttribute="bottom" secondItem="hjI-Cd-7rC" secondAttribute="bottom" id="lCV-Zh-1jn"/>
+                <constraint firstAttribute="trailing" secondItem="OCg-EN-V5d" secondAttribute="trailing" id="pjb-xH-BX1"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="50" height="50"/>
             <connections>
+                <outlet property="cancelImageView" destination="OCg-EN-V5d" id="mr1-Ky-nOn"/>
                 <outlet property="profileImageView" destination="hjI-Cd-7rC" id="sFW-LG-fc3"/>
             </connections>
-            <point key="canvasLocation" x="34" y="77"/>
+            <point key="canvasLocation" x="34" y="87"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="icon_cancel" width="16" height="16"/>
+    </resources>
 </document>

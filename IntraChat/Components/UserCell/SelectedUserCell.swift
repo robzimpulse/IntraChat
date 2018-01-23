@@ -11,6 +11,7 @@ import UIKit
 class SelectedUserCell: UICollectionViewCell {
 
     @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var cancelImageView: UIImageView!
     
     var user: User?
     
@@ -25,5 +26,6 @@ class SelectedUserCell: UICollectionViewCell {
         guard let photo = user.photo, let url = URL(string: photo) else {return}
         profileImageView.setPersistentImage(url: url)
         profileImageView.roundSquareImage()
+        cancelImageView.roundSquareImage()
     }
 }
