@@ -10,6 +10,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 import RxRealm
+import RxDataSources
 
 class ListUserViewController: UIViewController {
     
@@ -23,6 +24,8 @@ class ListUserViewController: UIViewController {
     let filteredUsers = Variable<[User]>([])
     
     let selectedUsers = Variable<[User]>([])
+    
+    let sectionedUser = Variable<[MultipleSectionModel]>([])
     
     let disposeBag = DisposeBag()
     
@@ -83,11 +86,15 @@ class ListUserViewController: UIViewController {
         searchBar.rx.cancelButtonClicked.bind(onNext: {
             self.searchBar.endEditing(true)
         }).disposed(by: disposeBag)
+
+        let datasource = ListUserViewController.datasource()
         
-        filteredUsers.asObservable().bind(
-            to: tableView.rx.items(cellIdentifier: "UserCell", cellType: UserCell.self),
-            curriedArgument: { row, user, cell in cell.configure(user: user) }
-        ).disposed(by: disposeBag)
+        sectionedUser.asObservable().bind(to: tableView.rx.items(dataSource: datasource)).disposed(by: disposeBag)
+        
+//        filteredUsers.asObservable().bind(
+//            to: tableView.rx.items(cellIdentifier: "UserCell", cellType: UserCell.self),
+//            curriedArgument: { row, user, cell in cell.configure(user: user) }
+//        ).disposed(by: disposeBag)
         
         selectedUsers.asObservable().bind(
             to: selectedUserCollectionView.rx.items(cellIdentifier: "SelectedUserCell", cellType: SelectedUserCell.self),
@@ -122,17 +129,39 @@ class ListUserViewController: UIViewController {
             .disposed(by: disposeBag)
         
         tableView.rx
-            .modelSelected(User.self)
-            .bind(onNext: { self.selectedUsers.value.append($0) })
-            .disposed(by: disposeBag)
-        
-        tableView.rx
-            .modelDeselected(User.self)
-            .bind(onNext: { user in
-                guard let index = self.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
-                self.selectedUsers.value.remove(at: index)
+            .modelSelected(SectionItem.self)
+            .bind(onNext: { model in
+                switch model {
+                case .UserSectionItem(user: let user):
+                    self.selectedUsers.value.append(user)
+                    break
+                }
             })
             .disposed(by: disposeBag)
+
+        tableView.rx
+            .modelDeselected(SectionItem.self)
+            .bind(onNext: { model in
+                switch model {
+                case .UserSectionItem(user: let user):
+                    guard let index = self.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
+                    self.selectedUsers.value.remove(at: index)
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        filteredUsers.asObservable().bind(onNext: { users in
+            self.sectionedUser.value = users.sorted(by: {
+                guard let name1 = $0.name, let name2 = $1.name else {return false}
+                return name1 < name2
+            }).categorise({ $0.name?.first ?? Character("") }).map({ key, items in
+                return MultipleSectionModel.UserSection(
+                    title: String(key),
+                    items: items.map({ SectionItem.UserSectionItem(user: $0) })
+                )
+            })
+        }).disposed(by: disposeBag)
     }
 
     private func setTitle(title: String?, subtitle: String?) -> UIView {
@@ -170,3 +199,19 @@ class ListUserViewController: UIViewController {
     }
     
 }
+
+extension ListUserViewController {
+    static func datasource() -> RxTableViewSectionedReloadDataSource<MultipleSectionModel> {
+        return RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: { datasource, table, indexPath, _ in
+            switch datasource[indexPath] {
+            case .UserSectionItem(user: let user):
+                let cell: UserCell = table.dequeueReusableCell(forIndexPath: indexPath)
+                cell.configure(user: user)
+                return cell
+            }
+        }, titleForHeaderInSection: { datasource, indexPath in
+            return datasource[indexPath].title
+        })
+    }
+}
+

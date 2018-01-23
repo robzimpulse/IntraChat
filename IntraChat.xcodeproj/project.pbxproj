@@ -29,6 +29,7 @@
 		3E6A22FE200087BF006A5607 /* RoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22FC200087BF006A5607 /* RoomCell.swift */; };
 		3E6A22FF200087BF006A5607 /* RoomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22FD200087BF006A5607 /* RoomCell.xib */; };
 		3E6A230120009652006A5607 /* RoomChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A230020009652006A5607 /* RoomChatViewController.swift */; };
+		3E987DC9201778030073069E /* UserSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E987DC8201778030073069E /* UserSectionModel.swift */; };
 		3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */; };
 		3EDA595020127C1900D0F32B /* LocationViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDA594F20127C1900D0F32B /* LocationViewer.swift */; };
 		3EE3D7102000C34B00D77A8F /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D70F2000C34B00D77A8F /* UIViewController.swift */; };
@@ -76,6 +77,7 @@
 		3E6A22FC200087BF006A5607 /* RoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCell.swift; sourceTree = "<group>"; };
 		3E6A22FD200087BF006A5607 /* RoomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCell.xib; sourceTree = "<group>"; };
 		3E6A230020009652006A5607 /* RoomChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomChatViewController.swift; sourceTree = "<group>"; };
+		3E987DC8201778030073069E /* UserSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSectionModel.swift; sourceTree = "<group>"; };
 		3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardSegue.swift; sourceTree = "<group>"; };
 		3EDA594F20127C1900D0F32B /* LocationViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewer.swift; sourceTree = "<group>"; };
 		3EE3D70F2000C34B00D77A8F /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 				3EE8EEF5200F7CDA008288B2 /* UserCell */,
 				842A22A02004E867008AE4A4 /* NavigationController.swift */,
 				3EDA594F20127C1900D0F32B /* LocationViewer.swift */,
+				3E987DC8201778030073069E /* UserSectionModel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -506,6 +509,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E3487EC1FFFDBD1009ED2E0 /* AppDelegate.swift in Sources */,
+				3E987DC9201778030073069E /* UserSectionModel.swift in Sources */,
 				842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */,
 				3EDA595020127C1900D0F32B /* LocationViewer.swift in Sources */,
 				3E2090262003D7EA0062BA7C /* UINavigationController.swift in Sources */,
