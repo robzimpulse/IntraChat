@@ -9,6 +9,9 @@
 import UIKit
 import Gallery
 import Lightbox
+import RxCocoa
+import RxSwift
+import UserNotifications
 import EZSwiftExtensions
 import RPCircularProgress
 import TOCropViewController
@@ -24,7 +27,9 @@ class RoomInfoViewController: UIViewController {
         return .lightContent
     }
     
-    var users: [User] = []
+    var users = Variable<[User]>([])
+    
+    let disposeBag = DisposeBag()
     
     lazy var progressView: RPCircularProgress = {
         let progress = RPCircularProgress()
@@ -46,10 +51,25 @@ class RoomInfoViewController: UIViewController {
         super.viewDidLoad()
         photoImageView.image = #imageLiteral(resourceName: "icon_camera_black").resize(width: 30, height: 30)
         photoImageView.addTapGesture(action: { _ in self.presentVC(self.galleryController) })
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+        
+        collectionView.register(
+            UINib(nibName: "SelectedUserCell", bundle: nil),
+            forCellWithReuseIdentifier: "SelectedUserCell"
+        )
+        
+        users.asObservable().bind(
+            to: collectionView.rx.items(cellIdentifier: "SelectedUserCell", cellType: SelectedUserCell.self),
+            curriedArgument: { row, user, cell in cell.configure(user: user) }
+        ).disposed(by: disposeBag)
+        
+        collectionView.rx
+            .modelSelected(User.self)
+            .bind(onNext: { user in
+                guard let index = self.users.value.index(where: { $0.uid == user.uid }) else {return}
+                self.users.value.remove(at: index)
+                NotificationCenter.default.post(name: .didChangeSelectedUser, object: self.users.value)
+            })
+            .disposed(by: disposeBag)
     }
     
     @IBAction func create(_ sender: Any) {
@@ -66,8 +86,8 @@ class RoomInfoViewController: UIViewController {
                 self.progressView.removeFromSuperview()
                 guard let meta = meta else {return}
                 guard let icon = meta.downloadURL()?.absoluteString else {return}
-                self.users.append(User(user: user))
-                let room = Room(name: name, icon: icon, users: self.users)
+                self.users.value.append(User(user: user))
+                let room = Room(name: name, icon: icon, users: self.users.value)
                 FirebaseManager.shared.create(room: room, completion: { error in
                     guard error == nil else {return}
                     room.users.filter({ user.uid != $0 }).forEach({

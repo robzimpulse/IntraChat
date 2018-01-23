@@ -3,6 +3,7 @@ PODS:
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
   - Cache (4.1.2)
+  - Diff (0.5.3)
   - Differentiator (3.0.2)
   - Disk (0.3.3)
   - Eureka (4.0.1)
@@ -74,7 +75,6 @@ PODS:
     - Imaginary (~> 3.0)
   - LocationPicker (1.0.3)
   - LocationViewer (0.1.4)
-  - MenuItemKit (3.0.0)
   - MessageKit (0.13.0)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
@@ -108,6 +108,7 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage
+  - Diff
   - Disk
   - Eureka
   - EZSwiftExtensions
@@ -122,7 +123,6 @@ DEPENDENCIES:
   - Lightbox
   - LocationPicker
   - LocationViewer
-  - MenuItemKit
   - MessageKit
   - ObjectMapper
   - PusherChatkit
@@ -147,6 +147,7 @@ SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
+  Diff: befa1d19c32726b2b36ce915d98793e2fbde8dcc
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   Disk: d1f55cd61f6ca20f368232d0c6e37e3c3dfcb63e
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
@@ -170,7 +171,6 @@ SPEC CHECKSUMS:
   Lightbox: 2dc267df8be2285bc7724cb11cbbf4aaaf59dced
   LocationPicker: d54d59c9d14d52496e3e8167e67f13440d6bcf1e
   LocationViewer: 3a50ccf51e1299836db8e08596fcc4f9ad3bf839
-  MenuItemKit: d9b539b28fdbbd7980d6f3668b9cd6daefeabd9b
   MessageKit: 41c7e6dcb8f528413d00a0abebea7811cfa194c0
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
@@ -187,6 +187,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 6d972f2c609372312648f96758e13a7f689efbc0
   ViewRow: e278428ff53da5eab18b191d3e19a16f3e299fc1
 
-PODFILE CHECKSUM: da70a45b4c2b3b269c54cf315548994846fd87fc
+PODFILE CHECKSUM: a38a1e5763af21816ad5632dd870bb7dd82ff369
 
 COCOAPODS: 1.4.0

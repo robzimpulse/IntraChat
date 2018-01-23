@@ -17,7 +17,6 @@ import Gallery
 import Lightbox
 import RealmSwift
 import MessageKit
-import MenuItemKit
 import LocationPicker
 import LocationViewer
 import RPCircularProgress
@@ -220,11 +219,6 @@ extension RoomChatViewController: MessagesDataSource {
     func numberOfMessages(in messagesCollectionView: MessagesCollectionView) -> Int {
         return messageList.count
     }
-    
-//    func avatar(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> Avatar {
-//        let image = FirebaseManager.shared.images[message.sender.id]?.image
-//        return Avatar(image: image, initials: message.sender.displayName.initials())
-//    }
     
     func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         return NSAttributedString(

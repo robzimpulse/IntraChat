@@ -6,6 +6,7 @@
 //  Copyright © 2018 Personal. All rights reserved.
 //
 
+import Diff
 import UIKit
 import RxCocoa
 import RxSwift
@@ -31,6 +32,10 @@ class ListUserViewController: UIViewController {
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .didChangeSelectedUser, object: nil)
     }
     
     override func viewDidLoad() {
@@ -157,8 +162,15 @@ class ListUserViewController: UIViewController {
                 )
             })
         }).disposed(by: disposeBag)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeSelectedUser(_:)), name: .didChangeSelectedUser, object: nil)
     }
 
+    @objc func didChangeSelectedUser(_ notification: NSNotification) {
+        guard let users = notification.object as? [User] else {return}
+        self.selectedUsers.value = users
+    }
+    
     private func setTitle(title: String?, subtitle: String?) -> UIView {
         let titleLabel = UILabel(frame: CGRect(x:0, y:-5, width:0, height:0))
         
@@ -189,7 +201,7 @@ class ListUserViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? RoomInfoViewController {
-            destination.users = selectedUsers.value
+            destination.users.value = selectedUsers.value
         }
     }
     

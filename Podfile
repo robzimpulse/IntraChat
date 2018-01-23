@@ -6,13 +6,13 @@ target 'IntraChat' do
     use_frameworks!
     
     # Pods for IntraChat
+    pod 'Diff'
     pod 'Hero'
     pod 'Disk'
     pod 'Eureka'
     pod 'Gallery'
     pod 'Lightbox'
     pod 'MessageKit'
-    pod 'MenuItemKit'
     pod 'ObjectMapper'
     pod 'PusherChatkit'
     pod 'LocationPicker'
