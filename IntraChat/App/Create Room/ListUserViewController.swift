@@ -91,11 +91,6 @@ class ListUserViewController: UIViewController {
         
         sectionedUser.asObservable().bind(to: tableView.rx.items(dataSource: datasource)).disposed(by: disposeBag)
         
-//        filteredUsers.asObservable().bind(
-//            to: tableView.rx.items(cellIdentifier: "UserCell", cellType: UserCell.self),
-//            curriedArgument: { row, user, cell in cell.configure(user: user) }
-//        ).disposed(by: disposeBag)
-        
         selectedUsers.asObservable().bind(
             to: selectedUserCollectionView.rx.items(cellIdentifier: "SelectedUserCell", cellType: SelectedUserCell.self),
             curriedArgument: { row, user, cell in cell.configure(user: user) }
