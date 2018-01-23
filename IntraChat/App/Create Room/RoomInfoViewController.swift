@@ -15,6 +15,7 @@ import TOCropViewController
 
 class RoomInfoViewController: UIViewController {
 
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var roomNameContainer: UIView!
     @IBOutlet weak var roomNameTextField: UITextField!
@@ -43,13 +44,12 @@ class RoomInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        photoImageView.image = #imageLiteral(resourceName: "icon_camera_black").resize(width: 30, height: 30)
         photoImageView.addTapGesture(action: { _ in self.presentVC(self.galleryController) })
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        roomNameContainer.roundCorners(.allCorners, radius: 6.0)
-        roomNameTextField.roundCorners(.allCorners, radius: 6.0)
     }
     
     @IBAction func create(_ sender: Any) {
