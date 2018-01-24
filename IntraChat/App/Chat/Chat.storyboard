@@ -104,21 +104,31 @@
                                 <constraint firstAttribute="height" constant="35" id="043-km-163"/>
                                 <constraint firstAttribute="width" secondItem="Tsw-pv-Dnj" secondAttribute="height" multiplier="1:1" id="R9K-DS-RCo"/>
                             </constraints>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="onY-Gn-r7H" appends="YES" id="ECC-cn-k86"/>
+                            </connections>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u1n-zm-juM">
                             <rect key="frame" x="51" y="29" width="146" height="12"/>
                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="10"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="onY-Gn-r7H" appends="YES" id="ta0-bl-1ss"/>
+                            </connections>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ker-0Z-x8U">
                             <rect key="frame" x="51" y="9" width="146" height="18"/>
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="onY-Gn-r7H" appends="YES" id="5Q1-kO-uzi"/>
+                            </connections>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
                     <constraints>
                         <constraint firstItem="u1n-zm-juM" firstAttribute="leading" secondItem="ker-0Z-x8U" secondAttribute="leading" id="92f-Ne-yvf"/>
                         <constraint firstItem="Tsw-pv-Dnj" firstAttribute="centerY" secondItem="x7z-UT-Sae" secondAttribute="centerY" id="JG1-9u-Rbk"/>
@@ -130,7 +140,15 @@
                         <constraint firstItem="Tsw-pv-Dnj" firstAttribute="leading" secondItem="7HQ-hn-atg" secondAttribute="leading" id="kKl-kq-ulA"/>
                     </constraints>
                     <viewLayoutGuide key="safeArea" id="7HQ-hn-atg"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="onY-Gn-r7H" appends="YES" id="gSz-3D-tUu"/>
+                    </connections>
                 </view>
+                <tapGestureRecognizer id="onY-Gn-r7H">
+                    <connections>
+                        <segue destination="BGK-VA-lM8" kind="show" id="Bgq-8s-47i"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1236" y="125"/>
         </scene>
@@ -165,6 +183,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HBN-pG-IqN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="647" y="579"/>
+        </scene>
+        <!--Detail Room-->
+        <scene sceneID="yyq-rk-DWb">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Detail Room" id="BGK-VA-lM8" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sAL-s3-C5t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1848" y="124"/>
         </scene>
     </scenes>
     <resources>

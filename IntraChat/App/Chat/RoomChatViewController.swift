@@ -165,7 +165,7 @@ class RoomChatViewController: MessagesViewController {
             }).joined(separator: ",")
         })
         if let icon = room?.icon, let url = URL(string: icon) { iconImageView.setPersistentImage(url: url) }
-        
+      
         messagesCollectionView.messagesDataSource = self
         messagesCollectionView.messagesLayoutDelegate = self
         messagesCollectionView.messagesDisplayDelegate = self
@@ -193,7 +193,13 @@ class RoomChatViewController: MessagesViewController {
         })
         
     }
-    
+  
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+      if let destination = segue.destination as? DetailRoomViewController {
+          destination.roomId = room?.id
+      }
+  }
+  
 }
 
 extension RoomChatViewController: MessageInputBarDelegate {
