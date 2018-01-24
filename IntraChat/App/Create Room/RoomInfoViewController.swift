@@ -49,7 +49,6 @@ class RoomInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        photoImageView.image = #imageLiteral(resourceName: "icon_camera_black").resize(width: 30, height: 30)
         photoImageView.addTapGesture(action: { _ in self.presentVC(self.galleryController) })
         
         collectionView.register(
@@ -134,6 +133,7 @@ extension RoomInfoViewController: TOCropViewControllerDelegate {
         cropViewController.dismissVC(completion: nil)
     }
     func cropViewController(_ cropViewController: TOCropViewController, didCropToCircleImage image: UIImage, rect cropRect: CGRect, angle: Int) {
+        self.photoImageView.contentMode = .scaleAspectFill
         self.photoImageView.image = image
         cropViewController.dismissVC(completion: { self.galleryController.dismissVC(completion: nil) })
     }

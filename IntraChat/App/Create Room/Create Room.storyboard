@@ -104,7 +104,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VeL-Y9-qJu">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="137"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xjQ-Hm-idb">
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_camera_black" translatesAutoresizingMaskIntoConstraints="NO" id="xjQ-Hm-idb">
                                         <rect key="frame" x="16" y="24" width="50" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="SrL-j3-P64"/>
@@ -242,6 +242,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="icon_camera_black" width="32" height="32"/>
         <image name="icon_cancel" width="16" height="16"/>
         <image name="icon_chevron_left" width="16" height="16"/>
         <image name="icon_chevron_right" width="16" height="16"/>
