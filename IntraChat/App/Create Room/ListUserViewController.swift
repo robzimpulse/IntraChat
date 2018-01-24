@@ -45,6 +45,8 @@ class ListUserViewController: UIViewController {
         
         tableView.allowsMultipleSelection = true
         
+        tableView.sectionIndexColor = UIColor.black
+        
         tableView.register(
             UINib(nibName: "UserCell", bundle: nil),
             forCellReuseIdentifier: "UserCell"
@@ -139,6 +141,8 @@ class ListUserViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
+        
+        
         tableView.rx
             .modelDeselected(SectionItem.self)
             .bind(onNext: { model in
@@ -218,6 +222,8 @@ extension ListUserViewController {
             }
         }, titleForHeaderInSection: { datasource, indexPath in
             return datasource[indexPath].title
+        }, sectionIndexTitles: { datasource in
+            return datasource.sectionModels.map { $0.title }
         })
     }
 }
