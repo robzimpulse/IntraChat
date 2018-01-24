@@ -3,11 +3,11 @@ PODS:
   - AlamofireImage (3.3.0):
     - Alamofire (~> 4.5)
   - Cache (4.1.2)
-  - Diff (0.5.3)
   - Differentiator (3.0.2)
   - Disk (0.3.3)
   - Eureka (4.0.1)
   - EZSwiftExtensions (1.11)
+  - FileBrowser (1.0.0)
   - Firebase/Auth (4.8.1):
     - Firebase/Core
     - FirebaseAuth (= 4.4.2)
@@ -108,10 +108,10 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage
-  - Diff
   - Disk
   - Eureka
   - EZSwiftExtensions
+  - FileBrowser
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -147,11 +147,11 @@ SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
-  Diff: befa1d19c32726b2b36ce915d98793e2fbde8dcc
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   Disk: d1f55cd61f6ca20f368232d0c6e37e3c3dfcb63e
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   EZSwiftExtensions: 84000042202d9fd574f626cda3064143f27fa767
+  FileBrowser: 2ca91ff61c9ea09665eb3b8f9e64a7a77e66a0bf
   Firebase: 2721056b8885eef90233b03f37be64358d35d262
   FirebaseAnalytics: 617afa8c26b57a0c3f11361b248bc9e17bfd8dfd
   FirebaseAuth: bd2738c5c1e92b108ba5f7f7335908097a4e50bb
@@ -187,6 +187,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 6d972f2c609372312648f96758e13a7f689efbc0
   ViewRow: e278428ff53da5eab18b191d3e19a16f3e299fc1
 
-PODFILE CHECKSUM: a38a1e5763af21816ad5632dd870bb7dd82ff369
+PODFILE CHECKSUM: c8f27b4679d87d9c86a970824479ac5f0bf803e5
 
 COCOAPODS: 1.4.0

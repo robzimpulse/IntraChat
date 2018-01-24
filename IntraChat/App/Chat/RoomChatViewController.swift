@@ -17,6 +17,7 @@ import Gallery
 import Lightbox
 import RealmSwift
 import MessageKit
+import FileBrowser
 import LocationPicker
 import LocationViewer
 import RPCircularProgress
@@ -44,6 +45,17 @@ class RoomChatViewController: MessagesViewController {
     override var inputAccessoryView: UIView? {
         return (presentedViewController == nil) ? messageInputBar : nil
     }
+    
+    lazy var filePicker: FileBrowser = {
+        let filePicker = FileBrowser()
+        filePicker.didSelectFile = { (file: FBFile) -> Void in
+            print(file.filePath)
+            self.showAlert(title: "Sorry", message: "This feature is not implemented yet.", completion: {
+                self.reloadInputViews()
+            })
+        }
+        return filePicker
+    }()
     
     lazy var locationPicker: UINavigationController = {
         let locationPicker = LocationPickerViewController()
@@ -100,7 +112,7 @@ class RoomChatViewController: MessagesViewController {
                     self.presentVC(self.galleryController)
                 }),
                 UIAlertAction(title: "Document", style: .default, handler: { _ in
-                    self.reloadInputViews()
+                    self.presentVC(self.filePicker)
                 }),
                 UIAlertAction(title: "Location", style: .default, handler: { _ in
                     self.presentVC(self.locationPicker)

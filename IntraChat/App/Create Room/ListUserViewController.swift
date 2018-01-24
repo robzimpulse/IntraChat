@@ -6,7 +6,6 @@
 //  Copyright © 2018 Personal. All rights reserved.
 //
 
-import Diff
 import UIKit
 import RxCocoa
 import RxSwift
