@@ -33,6 +33,8 @@
 	<string>This application require to access your gallery</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This application require to access your location</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This application require to access your location</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

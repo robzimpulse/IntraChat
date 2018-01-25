@@ -98,7 +98,7 @@ class RoomChatViewController: MessagesViewController {
         progress.progressTintColor = .green
         return progress
     }()
-    
+  
     lazy var customInputBar: MessageInputBar = {
         let height: CGFloat = 34
         let newMessageInputBar = MessageInputBar()
@@ -154,16 +154,11 @@ class RoomChatViewController: MessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+      
         titleView.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        navigationItem.titleView = titleView
         titleLabel.text = room?.name
-        User.get(completion: { users in
-            guard let users = users else {return}
-            self.subtitleLabel.text = self.room?.users.flatMap({ (uid) -> String? in
-                return users.filter("uid = '\(uid)'").first?.name
-            }).joined(separator: ",")
-        })
+        navigationItem.titleView = titleView
+      
         if let icon = room?.icon, let url = URL(string: icon) { iconImageView.setPersistentImage(url: url) }
       
         messagesCollectionView.messagesDataSource = self
@@ -183,23 +178,29 @@ class RoomChatViewController: MessagesViewController {
             Observable
                 .changeset(from: realm.objects(Message.self).filter("roomId = '\(roomId)'"))
                 .throttle(1.0, scheduler: MainScheduler.instance)
-                .subscribe(onNext: { results, changes in
+                .bind(onNext: { results, changes in
                     self.messageList = results.flatMap({ Chat(message: $0) })
                     self.messagesCollectionView.reloadData()
                     self.messagesCollectionView.scrollToBottom(animated: changes != nil)
                 })
                 .disposed(by: self.disposeBag)
-            
+          
+            guard let users = self.room?.users else {return}
+            Observable
+                .changeset(from: realm.objects(User.self).filter("uid IN %@", users).filter("online = true"))
+                .throttle(1.0, scheduler: MainScheduler.instance)
+                .bind(onNext: { results, _ in
+                    self.subtitleLabel.text = " \(users.count) Member, \(results.count) Online"
+                })
+                .disposed(by: self.disposeBag)
+          
         })
-        
     }
   
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      if let destination = segue.destination as? DetailRoomViewController {
-          destination.roomId = room?.id
-      }
-  }
-  
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? DetailRoomViewController { destination.roomId = room?.id }
+    }
+
 }
 
 extension RoomChatViewController: MessageInputBarDelegate {
