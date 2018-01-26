@@ -22,6 +22,7 @@
 		3E3487F31FFFDBD1009ED2E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E3487F21FFFDBD1009ED2E0 /* Assets.xcassets */; };
 		3E3487F61FFFDBD1009ED2E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E3487F41FFFDBD1009ED2E0 /* LaunchScreen.storyboard */; };
 		3E36AEDE2017A7FC0083B45B /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E36AEDD2017A7FC0083B45B /* Constant.swift */; };
+		3E46DF05201B497D002962D7 /* RoomInviteUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E46DF04201B497D002962D7 /* RoomInviteUserViewController.swift */; };
 		3E6A22E720005DF0006A5607 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22E620005DF0006A5607 /* Chat.storyboard */; };
 		3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22E820005EA4006A5607 /* RoomListViewController.swift */; };
 		3E6A22EC200064B4006A5607 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22EB200064B4006A5607 /* Profile.storyboard */; };
@@ -39,8 +40,7 @@
 		3EE3D71D20016E9E00D77A8F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D71C20016E9E00D77A8F /* Auth.storyboard */; };
 		3EE98595201321C60013D4F4 /* SelectedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE98593201321C60013D4F4 /* SelectedUserCell.swift */; };
 		3EE98596201321C60013D4F4 /* SelectedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98594201321C60013D4F4 /* SelectedUserCell.xib */; };
-		3EF5343F2018D09400D72AE5 /* Detail Room.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EF5343E2018D09400D72AE5 /* Detail Room.storyboard */; };
-		3EF534412018D10600D72AE5 /* DetailRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF534402018D10600D72AE5 /* DetailRoomViewController.swift */; };
+		3EF534412018D10600D72AE5 /* RoomDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF534402018D10600D72AE5 /* RoomDetailViewController.swift */; };
 		3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78FEC200A5283008E1AEB /* UIImage.swift */; };
 		3EF838FA200CEDAC008993A4 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF838F9200CEDAC008993A4 /* Chat.swift */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
@@ -73,6 +73,7 @@
 		3E3487F51FFFDBD1009ED2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3E3487F71FFFDBD1009ED2E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E36AEDD2017A7FC0083B45B /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		3E46DF04201B497D002962D7 /* RoomInviteUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInviteUserViewController.swift; sourceTree = "<group>"; };
 		3E6A22E620005DF0006A5607 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		3E6A22E820005EA4006A5607 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
 		3E6A22EB200064B4006A5607 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
@@ -90,8 +91,7 @@
 		3EE3D71C20016E9E00D77A8F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		3EE98593201321C60013D4F4 /* SelectedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedUserCell.swift; sourceTree = "<group>"; };
 		3EE98594201321C60013D4F4 /* SelectedUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectedUserCell.xib; sourceTree = "<group>"; };
-		3EF5343E2018D09400D72AE5 /* Detail Room.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Detail Room.storyboard"; sourceTree = "<group>"; };
-		3EF534402018D10600D72AE5 /* DetailRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRoomViewController.swift; sourceTree = "<group>"; };
+		3EF534402018D10600D72AE5 /* RoomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewController.swift; sourceTree = "<group>"; };
 		3EF78FEC200A5283008E1AEB /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		3EF838F9200CEDAC008993A4 /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
@@ -186,7 +186,6 @@
 		3E6A22E320005D20006A5607 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				3EF5343D2018D08700D72AE5 /* Detail Room */,
 				3E2090152003BBC10062BA7C /* Create Room */,
 				3EE3D71B20016E8A00D77A8F /* Auth */,
 				3E6A22EA200064AA006A5607 /* Profile */,
@@ -214,6 +213,8 @@
 				3E6A22E620005DF0006A5607 /* Chat.storyboard */,
 				3E6A22E820005EA4006A5607 /* RoomListViewController.swift */,
 				3E6A230020009652006A5607 /* RoomChatViewController.swift */,
+				3EF534402018D10600D72AE5 /* RoomDetailViewController.swift */,
+				3E46DF04201B497D002962D7 /* RoomInviteUserViewController.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -295,15 +296,6 @@
 				3E6A22FD200087BF006A5607 /* RoomCell.xib */,
 			);
 			path = RoomCell;
-			sourceTree = "<group>";
-		};
-		3EF5343D2018D08700D72AE5 /* Detail Room */ = {
-			isa = PBXGroup;
-			children = (
-				3EF5343E2018D09400D72AE5 /* Detail Room.storyboard */,
-				3EF534402018D10600D72AE5 /* DetailRoomViewController.swift */,
-			);
-			path = "Detail Room";
 			sourceTree = "<group>";
 		};
 		F97BC68FA94894FB96CD72F9 /* Frameworks */ = {
@@ -389,7 +381,6 @@
 				3E3487F31FFFDBD1009ED2E0 /* Assets.xcassets in Resources */,
 				3E6A22FF200087BF006A5607 /* RoomCell.xib in Resources */,
 				3E2090242003D4660062BA7C /* UserCell.xib in Resources */,
-				3EF5343F2018D09400D72AE5 /* Detail Room.storyboard in Resources */,
 				3E6A22EC200064B4006A5607 /* Profile.storyboard in Resources */,
 				3E3487F11FFFDBD1009ED2E0 /* Main.storyboard in Resources */,
 				8451A0D92005E5A60097BED7 /* GoogleService-Info.plist in Resources */,
@@ -537,9 +528,10 @@
 				3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */,
 				3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */,
 				3EE98595201321C60013D4F4 /* SelectedUserCell.swift in Sources */,
-				3EF534412018D10600D72AE5 /* DetailRoomViewController.swift in Sources */,
+				3EF534412018D10600D72AE5 /* RoomDetailViewController.swift in Sources */,
 				3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */,
 				3E6A230120009652006A5607 /* RoomChatViewController.swift in Sources */,
+				3E46DF05201B497D002962D7 /* RoomInviteUserViewController.swift in Sources */,
 				3E6A22F1200065F0006A5607 /* Room.swift in Sources */,
 				3E2090232003D4660062BA7C /* UserCell.swift in Sources */,
 				3E15536720027089007BD985 /* AuthSignUpViewController.swift in Sources */,

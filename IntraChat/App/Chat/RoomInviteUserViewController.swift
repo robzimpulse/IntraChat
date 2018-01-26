@@ -1,8 +1,8 @@
 //
-//  ListUserViewController.swift
+//  RoomInviteUserViewController.swift
 //  IntraChat
 //
-//  Created by Robyarta on 1/8/18.
+//  Created by Robyarta Haruli Ruci on 26/01/18.
 //  Copyright © 2018 Personal. All rights reserved.
 //
 
@@ -12,12 +12,14 @@ import RxSwift
 import RxRealm
 import RxDataSources
 
-class ListUserViewController: UIViewController {
+class RoomInviteUserViewController: UIViewController {
   
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var searchBar: UISearchBar!
   @IBOutlet weak var selectedUserCollectionView: UICollectionView!
   @IBOutlet weak var selectedUserCollectionViewHeight: NSLayoutConstraint!
+  
+  var roomId: String?
   
   let users = Variable<[User]>([])
   
@@ -212,7 +214,7 @@ class ListUserViewController: UIViewController {
   
 }
 
-extension ListUserViewController {
+extension RoomInviteUserViewController {
   func datasource() -> RxTableViewSectionedReloadDataSource<MultipleSectionModel> {
     return RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: { datasource, table, indexPath, _ in
       switch datasource[indexPath] {
@@ -229,4 +231,3 @@ extension ListUserViewController {
     })
   }
 }
-

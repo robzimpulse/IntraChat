@@ -120,7 +120,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZQT-eG-oiE">
                             <rect key="frame" x="0.0" y="-0.5" width="197" height="53"/>
                             <connections>
-                                <segue destination="BGK-VA-lM8" kind="show" id="Nrf-HN-DQd"/>
+                                <segue destination="hGk-cy-ZGh" kind="show" id="f7U-oe-7BD"/>
                             </connections>
                         </button>
                     </subviews>
@@ -177,13 +177,107 @@
             </objects>
             <point key="canvasLocation" x="647" y="579"/>
         </scene>
-        <!--Detail Room-->
-        <scene sceneID="yyq-rk-DWb">
+        <!--Room Info-->
+        <scene sceneID="4Sj-jh-kLm">
             <objects>
-                <viewControllerPlaceholder storyboardName="Detail Room" id="BGK-VA-lM8" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sAL-s3-C5t" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="hGk-cy-ZGh" customClass="RoomDetailViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="K7m-AQ-raA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Tje-wu-z8T"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Room Info" id="vU9-ux-wGT">
+                        <barButtonItem key="leftBarButtonItem" title="Back" image="icon_chevron_left" id="ZDr-VP-kBg">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="back:" destination="hGk-cy-ZGh" id="Geo-Rg-q6r"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="QLZ-0g-45n" kind="show" identifier="invite" id="iHp-zI-Db9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hOY-1S-XN4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1848" y="124"/>
+            <point key="canvasLocation" x="2039" y="125"/>
+        </scene>
+        <!--Invite Users-->
+        <scene sceneID="5Cd-K8-2aG">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="QLZ-0g-45n" customClass="RoomInviteUserViewController" customModule="IntraChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yrj-hg-uZ8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="V9z-yu-w6b">
+                                <rect key="frame" x="0.0" y="136" width="375" height="467"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Nt7-Y5-FsP">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="barTintColor" red="0.0084150675679999995" green="0.015765907240000002" blue="0.0028606951239999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4Nc-5r-MgH">
+                                <rect key="frame" x="0.0" y="56" width="375" height="80"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="gdE-aa-tGl"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1GQ-9r-CDx">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="NtK-Xy-5pF">
+                                        <rect key="frame" x="16" y="15" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="uQS-Ja-754" firstAttribute="trailing" secondItem="4Nc-5r-MgH" secondAttribute="trailing" id="BQy-FB-RVg"/>
+                            <constraint firstItem="V9z-yu-w6b" firstAttribute="top" secondItem="4Nc-5r-MgH" secondAttribute="bottom" id="F9f-xt-VSa"/>
+                            <constraint firstItem="4Nc-5r-MgH" firstAttribute="top" secondItem="Nt7-Y5-FsP" secondAttribute="bottom" id="ZKK-CX-CZR"/>
+                            <constraint firstItem="Nt7-Y5-FsP" firstAttribute="top" secondItem="uQS-Ja-754" secondAttribute="top" id="ZXd-9B-DC9"/>
+                            <constraint firstItem="uQS-Ja-754" firstAttribute="trailing" secondItem="V9z-yu-w6b" secondAttribute="trailing" id="Zx3-XS-oVd"/>
+                            <constraint firstItem="Nt7-Y5-FsP" firstAttribute="leading" secondItem="uQS-Ja-754" secondAttribute="leading" id="b1a-Ko-P3j"/>
+                            <constraint firstItem="4Nc-5r-MgH" firstAttribute="leading" secondItem="uQS-Ja-754" secondAttribute="leading" id="jYL-Gt-dYf"/>
+                            <constraint firstItem="V9z-yu-w6b" firstAttribute="leading" secondItem="uQS-Ja-754" secondAttribute="leading" id="mlj-HR-9DW"/>
+                            <constraint firstItem="uQS-Ja-754" firstAttribute="bottom" secondItem="V9z-yu-w6b" secondAttribute="bottom" id="rB1-up-L6k"/>
+                            <constraint firstAttribute="trailing" secondItem="Nt7-Y5-FsP" secondAttribute="trailing" id="xOJ-0o-JrE"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="uQS-Ja-754"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Invite Users" id="opF-yp-LOm">
+                        <barButtonItem key="leftBarButtonItem" title="Back" image="icon_chevron_left" id="faR-yw-R8c">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="back:" destination="QLZ-0g-45n" id="gHN-Le-Hp3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="Nt7-Y5-FsP" id="eAI-dl-Fw7"/>
+                        <outlet property="selectedUserCollectionView" destination="4Nc-5r-MgH" id="MQd-xe-foe"/>
+                        <outlet property="selectedUserCollectionViewHeight" destination="gdE-aa-tGl" id="QQb-Lb-sBG"/>
+                        <outlet property="tableView" destination="V9z-yu-w6b" id="Xcp-wE-l7x"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="14T-9j-0mW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2881" y="125"/>
         </scene>
     </scenes>
     <resources>

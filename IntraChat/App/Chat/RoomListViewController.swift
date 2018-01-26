@@ -15,77 +15,77 @@ import FirebaseAuth
 import FirebaseDatabase
 
 class RoomListViewController: UIViewController {
-    
-    @IBOutlet weak var tableView: UITableView!
-    
-    let disposeBag = DisposeBag()
-    
-    var selectedRoom: Room?
-    
-    var isScrolled = false
-    
-    var timer: Timer?
-    
-    var authListener: AuthStateDidChangeListenerHandle?
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+  
+  @IBOutlet weak var tableView: UITableView!
+  
+  let disposeBag = DisposeBag()
+  
+  var selectedRoom: Room?
+  
+  var isScrolled = false
+  
+  var timer: Timer?
+  
+  var authListener: AuthStateDidChangeListenerHandle?
+  
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+  
+  deinit {
+    timer?.invalidate()
+    if let listener = authListener {
+      Auth.auth().removeStateDidChangeListener(listener)
     }
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
     
-    deinit {
-        timer?.invalidate()
-        if let listener = authListener {
-            Auth.auth().removeStateDidChangeListener(listener)
-        }
+    tableView.tableFooterView = UIView()
+    
+    tableView.register(
+      UINib(nibName: "RoomCell", bundle: nil),
+      forCellReuseIdentifier: "RoomCell"
+    )
+    
+    tableView.rx.modelSelected(Room.self).bind(onNext: { room in
+      self.selectedRoom = room
+      self.performSegue(withIdentifier: "chat", sender: self)
+    }).disposed(by: disposeBag)
+    
+    tableView.rx.willBeginDragging.bind { self.isScrolled = true }.disposed(by: disposeBag)
+    
+    tableView.rx.didEndDragging.bind { self.isScrolled = !$0 }.disposed(by: disposeBag)
+    
+    tableView.rx.didEndScrollingAnimation.bind { self.isScrolled = false }.disposed(by: disposeBag)
+    
+    timer = Timer.runThisEvery(seconds: 1.0, handler: { _ in
+      if !self.isScrolled { self.tableView.reloadData() }
+    })
+    
+    authListener = Auth.auth().addStateDidChangeListener({ _, user in
+      if user == nil { self.performSegue(withIdentifier: "auth", sender: self) }
+    })
+    
+    Realm.asyncOpen(callback: { realm, _ in
+      guard let realm = realm else {return}
+      guard let currentUser = FirebaseManager.shared.currentUser() else {return}
+      Observable.collection(from: realm.objects(Room.self).filter("_users CONTAINS '\(currentUser.uid)'").toAnyCollection()).bind(
+        to: self.tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
+        curriedArgument: { row, room, cell in cell.configure(room: room)}
+        ).disposed(by: self.disposeBag)
+    })
+  }
+  
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if let destination = segue.destination as? RoomChatViewController {
+      destination.room = selectedRoom
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.tableFooterView = UIView()
-        
-        tableView.register(
-            UINib(nibName: "RoomCell", bundle: nil),
-            forCellReuseIdentifier: "RoomCell"
-        )
-
-        tableView.rx.modelSelected(Room.self).bind(onNext: { room in
-            self.selectedRoom = room
-            self.performSegue(withIdentifier: "chat", sender: self)
-        }).disposed(by: disposeBag)
-        
-        tableView.rx.willBeginDragging.bind { self.isScrolled = true }.disposed(by: disposeBag)
-        
-        tableView.rx.didEndDragging.bind { self.isScrolled = !$0 }.disposed(by: disposeBag)
-        
-        tableView.rx.didEndScrollingAnimation.bind { self.isScrolled = false }.disposed(by: disposeBag)
-        
-        timer = Timer.runThisEvery(seconds: 1.0, handler: { _ in
-            if !self.isScrolled { self.tableView.reloadData() }
-        })
-     
-        authListener = Auth.auth().addStateDidChangeListener({ _, user in
-            if user == nil { self.performSegue(withIdentifier: "auth", sender: self) }
-        })
-        
-        Realm.asyncOpen(callback: { realm, _ in
-            guard let realm = realm else {return}
-            guard let currentUser = FirebaseManager.shared.currentUser() else {return}
-            Observable.collection(from: realm.objects(Room.self).filter("_users CONTAINS '\(currentUser.uid)'").toAnyCollection()).bind(
-                to: self.tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
-                curriedArgument: { row, room, cell in cell.configure(room: room)}
-            ).disposed(by: self.disposeBag)
-        })
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? RoomChatViewController {
-            destination.room = selectedRoom
-        }
-    }
-    
-    @IBAction func logout(_ sender: Any){
-        FirebaseManager.shared.logout()
-    }
-    
+  }
+  
+  @IBAction func logout(_ sender: Any){
+    FirebaseManager.shared.logout()
+  }
+  
 }

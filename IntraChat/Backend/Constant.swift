@@ -9,7 +9,7 @@
 import UIKit
 
 extension NSNotification.Name {
-    
-    static let didChangeSelectedUser = NSNotification.Name("didChangeSelectedUser")
-    
+  
+  static let didChangeSelectedUser = NSNotification.Name("didChangeSelectedUser")
+  
 }
