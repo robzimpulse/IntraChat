@@ -77,7 +77,11 @@ class DetailRoomViewController: FormViewController {
                     cell.contentView.addSubview(indicator)
                     cell.isUserInteractionEnabled = false
                     cell.textLabel?.alpha = 0
-                    FirebaseManager.shared.exit(roomId: self.roomId ?? "", completion: { _ in self.popToRootVC() })
+                    Room.get(completion: { rooms in
+                        guard let rooms = rooms else {return}
+                        guard let room = rooms.toArray().first(where: { $0.id == self.roomId }) else {return}
+                        FirebaseManager.shared.exit(room: room, completion: { _ in self.popToRootVC() })
+                    })
                 })
             }
     }

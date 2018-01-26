@@ -64,12 +64,11 @@ class RoomChatViewController: MessagesViewController {
         locationPicker.searchHistoryLabel = "Previously searched"
         locationPicker.completion = { location in
             guard let room = self.room else {return}
-            guard let roomId = room.id else {return}
             guard let location = location else {return}
-            let message = Message(roomId: roomId, location: location.location, sender: self.currentSender().id, date: Date())
-            FirebaseManager.shared.create(message: message, completion: { error, _ in
+            let message = Message(roomId: room.id ?? "", location: location.location, sender: self.currentSender().id, date: Date())
+            FirebaseManager.shared.create(message: message, room: room, completion: { error, _ in
                 guard error == nil else {return}
-                FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
+                FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
                 room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
                     FirebaseManager.shared.create(notification: Notification(
                         title: "\(self.currentSender().displayName) @\(room.name ?? "")",
@@ -215,16 +214,9 @@ extension RoomChatViewController: MessageInputBarDelegate {
         guard let roomId = room.id else {return}
         inputBar.inputTextView.text = String()
         let message = Message(roomId: roomId, text: text, sender: currentSender().id, date: Date())
-        FirebaseManager.shared.create(message: message, completion: { error, _ in
+        FirebaseManager.shared.create(message: message, room: room, completion: { error, _ in
             guard error == nil else {return}
-            FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
-            room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
-                FirebaseManager.shared.create(notification: Notification(
-                    title: "\(self.currentSender().displayName) @\(room.name ?? "")",
-                    body: text,
-                    receiver: user
-                ))
-            })
+            FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
         })
     }
 }
@@ -430,21 +422,14 @@ extension RoomChatViewController: UINavigationControllerDelegate, UIVideoEditorC
                                 sender: self.currentSender().id,
                                 date: Date()
                             )
-                            FirebaseManager.shared.create(message: message, completion: { error, ref in
+                            FirebaseManager.shared.create(message: message, room: room, completion: { error, ref in
                                 guard let ref = ref else {return}
-                                FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
+                                FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
                                 FirebaseManager.shared.upload(video: convertedUrl, completion: { meta, _ in
                                     message.messageId = ref.key
                                     message.contentVideoUrl = meta?.downloadURL()?.absoluteString
                                     FirebaseManager.shared.update(message: message)
-                                    FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
-                                })
-                                room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
-                                    FirebaseManager.shared.create(notification: Notification(
-                                        title: "\(self.currentSender().displayName) @\(room.name ?? "")",
-                                        body: "📷 Video",
-                                        receiver: user
-                                    ))
+                                    FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
                                 })
                             })
                             break
@@ -481,21 +466,14 @@ extension RoomChatViewController: TOCropViewControllerDelegate {
                 guard let room = self.room else {return}
                 guard let roomId = room.id else {return}
                 let message = Message(roomId: roomId, image: image, sender: self.currentSender().id, date: Date())
-                FirebaseManager.shared.create(message: message, completion: { error, ref in
+                FirebaseManager.shared.create(message: message, room: room, completion: { error, ref in
                     guard let ref = ref else {return}
-                    FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
+                    FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
                     FirebaseManager.shared.upload(image: image, completion: { meta, _ in
                         message.messageId = ref.key
                         message.contentImageUrl = meta?.downloadURL()?.absoluteString
                         FirebaseManager.shared.update(message: message)
-                        FirebaseManager.shared.updateLastChatTimeStamp(roomId: roomId, date: Date())
-                    })
-                    room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
-                        FirebaseManager.shared.create(notification: Notification(
-                            title: "\(self.currentSender().displayName) @\(room.name ?? "")",
-                            body: "📷 Image",
-                            receiver: user
-                        ))
+                        FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
                     })
                 })
             })

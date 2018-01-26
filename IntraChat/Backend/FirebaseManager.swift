@@ -222,8 +222,40 @@ class FirebaseManager: NSObject {
     
     // MARK: Message
     
-    func create(message: Message, completion: ((Error?, DatabaseReference?) -> Void)? = nil){
+    func create(message: Message, room: Room, completion: ((Error?, DatabaseReference?) -> Void)? = nil){
         messageRef.childByAutoId().setValue(message.keyValue(), withCompletionBlock: { completion?($0, $1) })
+        guard let type = message.data else {return}
+        switch type {
+        case .photo:
+          room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
+              FirebaseManager.shared.create(notification: Notification(
+                  title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
+                  body: "📷 Image",
+                  receiver: user
+              ))
+          })
+          break
+        case .text(let text):
+          room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
+              FirebaseManager.shared.create(notification: Notification(
+                  title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
+                  body: text,
+                  receiver: user
+              ))
+          })
+          break
+        case .video:
+          room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
+              FirebaseManager.shared.create(notification: Notification(
+                  title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
+                  body: "📷 Video",
+                  receiver: user
+              ))
+          })
+          break
+        default:
+          break
+        }
     }
     
     func update(message: Message, completion: ((Error?) -> Void)? = nil){
@@ -249,31 +281,26 @@ class FirebaseManager: NSObject {
         })
     }
   
-    func invite(userId: String, to roomId: String, completion: ((Error?) -> Void)? = nil){
-        Room.get(completion: { rooms in
-            guard let currentUser = self.currentUser() else {return}
-            guard let rooms = rooms else { completion?(nil); return}
-            guard let room = rooms.first(where: { $0.id == roomId }) else { completion?(nil); return }
-            let users = room.users + [currentUser.uid]
-            self.roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
-              completion?(error)
-            })
+    func invite(user: User, to room: Room, completion: ((Error?) -> Void)? = nil){
+      guard let currentUser = self.currentUser() else {completion?(nil);return}
+        guard let roomId = room.id else {completion?(nil);return}
+        let users = room.users + [currentUser.uid]
+        self.roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
+          completion?(error)
         })
     }
   
-    func exit(roomId: String, completion: ((Error?) -> Void)? = nil){
-        Room.get(completion: { rooms in
-            guard let currentUser = self.currentUser() else {return}
-            guard let rooms = rooms else { completion?(nil); return}
-            guard let room = rooms.first(where: { $0.id == roomId }) else { completion?(nil); return }
-            let users = room.users.filter({ $0 != currentUser.uid })
-            self.roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
-              completion?(error)
-            })
+    func exit(room: Room, completion: ((Error?) -> Void)? = nil){
+        guard let currentUser = self.currentUser() else {completion?(nil);return}
+        guard let roomId = room.id else {completion?(nil);return}
+        let users = room.users.filter({ $0 != currentUser.uid })
+        self.roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
+            completion?(error)
         })
     }
   
-    func updateLastChatTimeStamp(roomId: String, date: Date, completion: ((Error?) -> Void)? = nil){
+    func updateLastChatTimeStamp(room: Room, date: Date, completion: ((Error?) -> Void)? = nil){
+        guard let roomId = room.id else {completion?(nil);return}
         roomRef.child(roomId).updateChildValues(
             ["lastChat": Transform.date.transformToJSON(date) as Any],
             withCompletionBlock: { error, _ in completion?(error) }
