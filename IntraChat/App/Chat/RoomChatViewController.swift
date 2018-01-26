@@ -38,6 +38,8 @@ class RoomChatViewController: MessagesViewController {
   
   let disposeBag = DisposeBag()
   
+  let users = Variable<[String]>([])
+  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -171,6 +173,15 @@ class RoomChatViewController: MessagesViewController {
     messageInputBar = customInputBar
     reloadInputViews()
     
+    users.asObservable().bind(onNext: { strings in
+      User.get(completion: { users in
+        guard let users = users else {return}
+        let totalUsers = users.filter("uid IN %@", strings)
+        let totalOnline = totalUsers.filter("online = true")
+        self.subtitleLabel.text = " \(totalUsers.count) Member, \(totalOnline.count) Online"
+      })
+    }).disposed(by: disposeBag)
+    
     Realm.asyncOpen(callback: { realm, _ in
       guard let realm = realm else {return}
       
@@ -185,19 +196,17 @@ class RoomChatViewController: MessagesViewController {
         })
         .disposed(by: self.disposeBag)
       
-      //            Observable
-      //              .from(optional: realm.object(ofType: Room.self, forPrimaryKey: roomId))
-      //              .bind(onNext: { self.subtitleLabel.text = " \($0.users.count) Member, \(0) Online" })
-      //              .disposed(by: self.disposeBag)
-      
-      guard let users = self.room?.users else {return}
       Observable
-        .changeset(from: realm.objects(User.self).filter("uid IN %@", users).filter("online = true"))
-        .throttle(1.0, scheduler: MainScheduler.instance)
+        .changeset(from: realm.objects(Room.self).filter("id = '\(roomId)'"))
         .bind(onNext: { results, _ in
-          self.subtitleLabel.text = " \(users.count) Member, \(results.count) Online"
+          User.get(completion: { users in
+            guard let users = users else {return}
+            self.users.value = users.flatMap({ $0.uid })
+          })
         })
         .disposed(by: self.disposeBag)
+      
+      // TODO: Trigger from user state
       
     })
   }
