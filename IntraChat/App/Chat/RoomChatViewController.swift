@@ -174,6 +174,7 @@ class RoomChatViewController: MessagesViewController {
         
         Realm.asyncOpen(callback: { realm, _ in
             guard let realm = realm else {return}
+          
             guard let roomId = self.room?.id else {return}
             Observable
                 .changeset(from: realm.objects(Message.self).filter("roomId = '\(roomId)'"))
@@ -184,6 +185,11 @@ class RoomChatViewController: MessagesViewController {
                     self.messagesCollectionView.scrollToBottom(animated: changes != nil)
                 })
                 .disposed(by: self.disposeBag)
+          
+//            Observable
+//              .from(optional: realm.object(ofType: Room.self, forPrimaryKey: roomId))
+//              .bind(onNext: { self.subtitleLabel.text = " \($0.users.count) Member, \(0) Online" })
+//              .disposed(by: self.disposeBag)
           
             guard let users = self.room?.users else {return}
             Observable

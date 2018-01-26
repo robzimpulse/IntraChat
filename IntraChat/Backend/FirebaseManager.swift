@@ -249,6 +249,18 @@ class FirebaseManager: NSObject {
         })
     }
   
+    func invite(userId: String, to roomId: String, completion: ((Error?) -> Void)? = nil){
+        Room.get(completion: { rooms in
+            guard let currentUser = self.currentUser() else {return}
+            guard let rooms = rooms else { completion?(nil); return}
+            guard let room = rooms.first(where: { $0.id == roomId }) else { completion?(nil); return }
+            let users = room.users + [currentUser.uid]
+            self.roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
+              completion?(error)
+            })
+        })
+    }
+  
     func exit(roomId: String, completion: ((Error?) -> Void)? = nil){
         Room.get(completion: { rooms in
             guard let currentUser = self.currentUser() else {return}
@@ -259,7 +271,6 @@ class FirebaseManager: NSObject {
               completion?(error)
             })
         })
-
     }
   
     func updateLastChatTimeStamp(roomId: String, date: Date, completion: ((Error?) -> Void)? = nil){
