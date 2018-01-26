@@ -9,6 +9,7 @@
 import UIKit
 import Eureka
 import RealmSwift
+import AlamofireImage
 
 class DetailRoomViewController: FormViewController {
 
@@ -20,7 +21,7 @@ class DetailRoomViewController: FormViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+
         form
             +++ Section()
             <<< LabelRow() { row in
@@ -31,6 +32,15 @@ class DetailRoomViewController: FormViewController {
             }
       
             +++ Section("0 Members") { section in
+                section <<< LabelRow(){ row in
+                    row.title = "Invite More User"
+                    row.cellUpdate({ cell, _ in
+                        cell.accessoryType = .disclosureIndicator
+                    })
+                    row.onCellSelection({ cell, _ in
+                        print("Invite more user")
+                    })
+                }
                 Room.get(completion: { rooms in
                     guard let rooms = rooms else {return}
                     guard let room = rooms.toArray().first(where: { $0.id == self.roomId }) else {return}
@@ -41,9 +51,11 @@ class DetailRoomViewController: FormViewController {
                             section <<< LabelRow() { row in
                                 row.title = user.name
                                 row.cellUpdate({ cell, _ in
-                                    cell.imageView?.contentMode = .scaleAspectFill
-                                    cell.imageView?.roundSquareImage()
-                                    cell.imageView?.setPersistentImage(url: URL(string: user.photo ?? "")!)
+                                    cell.accessoryType = .disclosureIndicator
+                                    cell.imageView?.setPersistentImage(url: URL(string: user.photo ?? "")!, isRounded: true)
+                                })
+                                row.onCellSelection({ cell, _ in
+                                    print("selected user \(user.name)")
                                 })
                             }
                         })

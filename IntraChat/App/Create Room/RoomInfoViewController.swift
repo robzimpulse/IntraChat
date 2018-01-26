@@ -75,6 +75,7 @@ class RoomInfoViewController: UIViewController {
         guard let name = roomNameTextField.text else {return}
         guard let icon = photoImageView.image else {return}
         guard let user = FirebaseManager.shared.currentUser() else {return}
+        guard !name.isBlank else {return}
         photoImageView.addSubview(progressView)
         progressView.centerInSuperView()
         FirebaseManager.shared.upload(image: icon, handleProgress: { snapshot in
