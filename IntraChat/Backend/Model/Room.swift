@@ -10,36 +10,30 @@ import UIKit
 import RealmSwift
 import ObjectMapper
 
-class RoomUserString: Object {
-    @objc dynamic var value = ""
-}
-
 class Room: Object, Mappable, FirebaseModel {
     
     @objc dynamic var id: String?
     @objc dynamic var name: String?
     @objc dynamic var icon: String?
     @objc dynamic var lastChat: Date?
-    
+    @objc dynamic var _users: String?
+  
     override static func primaryKey() -> String? { return "id" }
     
-    let _users = List<RoomUserString>()
     var users: [String] {
-        get { return _users.map { $0.value } }
-        set {
-            _users.removeAll()
-            newValue.forEach({ _users.append(RoomUserString(value: [$0])) })
-        }
+        get { return _users?.split("|") ?? [] }
+        set { _users = newValue.joined(separator: "|") }
     }
+  
     override static func ignoredProperties() -> [String] {
         return ["users"]
     }
-    
+  
     convenience init(name: String, icon: String, users: [User]) {
         self.init()
         self.name = name
         self.icon = icon
-        self.users = users.flatMap { $0.uid }
+        self.users = users.flatMap({ $0.uid })
     }
     
     // MARK: Mappable

@@ -63,10 +63,9 @@ class FirebaseManager: NSObject {
                 
                 self.roomRef.observe(.childAdded, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard room.users.contains(user.uid) else {return}
                     Room.update(object: room)
                     
-                    // Mark: User Listener
+                    // Mark: Message Listener
                     
                     guard let id = room.id else {return}
                     self.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
@@ -88,16 +87,13 @@ class FirebaseManager: NSObject {
                 
                 self.roomRef.observe(.childRemoved, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard room.users.contains(user.uid) else {return}
                     Room.delete(object: room)
                     guard let id = room.id else {return}
-                    self.messageRef.queryEqual(toValue: id, childKey: "roomId")
-                        .removeAllObservers()
+                    self.messageRef.queryEqual(toValue: id, childKey: "roomId").removeAllObservers()
                 })
                 
                 self.roomRef.observe(.childChanged, with: { snapshot in
                     guard let room = Room(snapshot: snapshot) else {return}
-                    guard room.users.contains(user.uid) else {return}
                     Room.update(object: room)
                 })
                 
@@ -175,7 +171,6 @@ class FirebaseManager: NSObject {
                             realm.delete(realm.objects(Room.self))
                             realm.delete(realm.objects(Message.self))
                             realm.delete(realm.objects(User.self))
-                            realm.delete(realm.objects(RoomUserString.self))
                         }
                     } catch { completion?(error) }
                 })
@@ -253,14 +248,25 @@ class FirebaseManager: NSObject {
             completion?(error)
         })
     }
-    
-    func updateLastChatTimeStamp(roomId: String, date: Date, completion: ((Error?) -> Void)? = nil){
-        roomRef.child(roomId)
-            .updateChildValues(
-                ["lastChat": Transform.date.transformToJSON(date) as Any],
-                withCompletionBlock: { error, _ in
-                    completion?(error)
+  
+    func exit(roomId: String, completion: ((Error?) -> Void)? = nil){
+        Room.get(completion: { rooms in
+            guard let currentUser = self.currentUser() else {return}
+            guard let rooms = rooms else { completion?(nil); return}
+            guard let room = rooms.first(where: { $0.id == roomId }) else { completion?(nil); return }
+            let users = room.users.filter({ $0 != currentUser.uid })
+            self.roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
+              completion?(error)
             })
+        })
+
+    }
+  
+    func updateLastChatTimeStamp(roomId: String, date: Date, completion: ((Error?) -> Void)? = nil){
+        roomRef.child(roomId).updateChildValues(
+            ["lastChat": Transform.date.transformToJSON(date) as Any],
+            withCompletionBlock: { error, _ in completion?(error) }
+        )
     }
     
     // MARK: files upload

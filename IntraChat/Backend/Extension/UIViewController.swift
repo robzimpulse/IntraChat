@@ -10,7 +10,6 @@ import UIKit
 import EZSwiftExtensions
 
 extension UIViewController: UIGestureRecognizerDelegate {
-    
     @IBAction func back(_ sender: Any){
         if let nav = self.navigationController {
             if nav.viewControllers.count > 1 {

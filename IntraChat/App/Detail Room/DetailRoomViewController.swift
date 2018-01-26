@@ -65,15 +65,9 @@ class DetailRoomViewController: FormViewController {
                     cell.contentView.addSubview(indicator)
                     cell.isUserInteractionEnabled = false
                     cell.textLabel?.alpha = 0
-                    Timer.runThisAfterDelay(seconds: 1.0, after: {
-                        indicator.stopAnimating()
-                        indicator.removeFromSuperview()
-                        cell.isUserInteractionEnabled = true
-                        cell.textLabel?.alpha = 1
-                    })
+                    FirebaseManager.shared.exit(roomId: self.roomId ?? "", completion: { _ in self.popToRootVC() })
                 })
             }
-      
     }
 
 }

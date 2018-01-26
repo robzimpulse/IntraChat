@@ -70,7 +70,8 @@ class RoomListViewController: UIViewController {
         
         Realm.asyncOpen(callback: { realm, _ in
             guard let realm = realm else {return}
-            Observable.collection(from: realm.objects(Room.self).toAnyCollection()).bind(
+            guard let currentUser = FirebaseManager.shared.currentUser() else {return}
+            Observable.collection(from: realm.objects(Room.self).filter("_users CONTAINS '\(currentUser.uid)'").toAnyCollection()).bind(
                 to: self.tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
                 curriedArgument: { row, room, cell in cell.configure(room: room)}
             ).disposed(by: self.disposeBag)
