@@ -60,11 +60,15 @@ class RoomInviteUserViewController: UIViewController {
     
     User.get(completion: { users in
       guard let users = users else {return}
+      guard let room = self.room else {return}
       
-      Observable.changeset(from: users).bind(onNext: { results, _ in
-        guard let user = FirebaseManager.shared.currentUser() else {return}
-        self.users.value = results.toArray().filter({ $0.uid != user.uid })
-      }).disposed(by: self.disposeBag)
+      Observable
+        .changeset(from: users.filter("NOT uid IN %@", room.users))
+        .bind(onNext: { results, _ in
+          guard let user = FirebaseManager.shared.currentUser() else {return}
+          self.users.value = results.toArray().filter({ $0.uid != user.uid })
+        })
+        .disposed(by: self.disposeBag)
       
       self.searchBar.rx.text.orEmpty
         .throttle(0.3, scheduler: MainScheduler.instance)
@@ -163,6 +167,11 @@ class RoomInviteUserViewController: UIViewController {
     }).disposed(by: disposeBag)
     
     NotificationCenter.default.addObserver(self, selector: #selector(didChangeSelectedUser(_:)), name: .didChangeSelectedUser, object: nil)
+  }
+  
+  @IBAction func invite(_ sender: Any) {
+    guard let room = room else {return}
+    FirebaseManager.shared.invite(user: selectedUsers.value, to: room, completion: { _ in self.popVC() })
   }
   
   @objc func didChangeSelectedUser(_ notification: NSNotification) {

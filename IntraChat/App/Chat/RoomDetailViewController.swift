@@ -80,5 +80,9 @@ class RoomDetailViewController: FormViewController {
         })
     }
   }
+ 
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    if let destination = segue.destination as? RoomInviteUserViewController { destination.room = room }
+  }
   
 }

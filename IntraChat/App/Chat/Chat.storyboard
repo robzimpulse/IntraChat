@@ -267,6 +267,12 @@
                                 <action selector="back:" destination="QLZ-0g-45n" id="gHN-Le-Hp3"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Invite" id="mkr-WY-z5x">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="invite:" destination="QLZ-0g-45n" id="uiA-YN-wV8"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="Nt7-Y5-FsP" id="eAI-dl-Fw7"/>

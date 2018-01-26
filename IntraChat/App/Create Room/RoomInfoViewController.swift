@@ -90,13 +90,7 @@ class RoomInfoViewController: UIViewController {
         let room = Room(name: name, icon: icon, users: self.users.value)
         FirebaseManager.shared.create(room: room, completion: { error in
           guard error == nil else {return}
-          room.users.filter({ user.uid != $0 }).forEach({
-            FirebaseManager.shared.create(notification: Notification(
-              title: "Room Invitation",
-              body: "You have been invited to room @\(name) by \(user.displayName ?? "")",
-              receiver: $0
-            ))
-          })
+          
           self.navigationController?.dismissVC(completion: nil)
         })
       })

@@ -277,15 +277,31 @@ class FirebaseManager: NSObject {
   
   func create(room: Room, completion: ((Error?) -> Void)? = nil){
     roomRef.childByAutoId().setValue(room.keyValue(), withCompletionBlock: { error, ref in
+      guard error == nil else {completion?(error);return}
+      guard let user = self.currentUser() else {return}
+      room.users.filter({ $0 != user.uid }).forEach({
+        FirebaseManager.shared.create(notification: Notification(
+          title: "Room Invitation",
+          body: "You have been invited to room @\(room.name ?? "") by \(user.displayName ?? "")",
+          receiver: $0
+        ))
+      })
       completion?(error)
     })
   }
   
-  func invite(user: User, to room: Room, completion: ((Error?) -> Void)? = nil){
-    guard let currentUser = self.currentUser() else {completion?(nil);return}
+  func invite(user: [User], to room: Room, completion: ((Error?) -> Void)? = nil){
     guard let roomId = room.id else {completion?(nil);return}
-    let users = room.users + [currentUser.uid]
+    let users = room.users + user.flatMap({ $0.uid })
     self.roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
+      guard error == nil else {completion?(error);return}
+      user.forEach({
+        FirebaseManager.shared.create(notification: Notification(
+          title: "Room Invitation",
+          body: "You have been invited to room @\(room.name ?? "") by \($0.name ?? "")",
+          receiver: $0.uid ?? ""
+        ))
+      })
       completion?(error)
     })
   }
