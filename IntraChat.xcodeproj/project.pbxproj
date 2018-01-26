@@ -34,13 +34,13 @@
 		3E987DC9201778030073069E /* UserSectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E987DC8201778030073069E /* UserSectionModel.swift */; };
 		3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */; };
 		3EDA595020127C1900D0F32B /* LocationViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDA594F20127C1900D0F32B /* LocationViewer.swift */; };
+		3EDFE004201B5983006215E2 /* RoomDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDFE003201B5983006215E2 /* RoomDetailViewController.swift */; };
 		3EE3D7102000C34B00D77A8F /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D70F2000C34B00D77A8F /* UIViewController.swift */; };
 		3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */; };
 		3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7152000D74200D77A8F /* BaseMappable.swift */; };
 		3EE3D71D20016E9E00D77A8F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D71C20016E9E00D77A8F /* Auth.storyboard */; };
 		3EE98595201321C60013D4F4 /* SelectedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE98593201321C60013D4F4 /* SelectedUserCell.swift */; };
 		3EE98596201321C60013D4F4 /* SelectedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98594201321C60013D4F4 /* SelectedUserCell.xib */; };
-		3EF534412018D10600D72AE5 /* RoomDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF534402018D10600D72AE5 /* RoomDetailViewController.swift */; };
 		3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78FEC200A5283008E1AEB /* UIImage.swift */; };
 		3EF838FA200CEDAC008993A4 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF838F9200CEDAC008993A4 /* Chat.swift */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
@@ -85,13 +85,13 @@
 		3E987DC8201778030073069E /* UserSectionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSectionModel.swift; sourceTree = "<group>"; };
 		3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStoryboardSegue.swift; sourceTree = "<group>"; };
 		3EDA594F20127C1900D0F32B /* LocationViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewer.swift; sourceTree = "<group>"; };
+		3EDFE003201B5983006215E2 /* RoomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewController.swift; sourceTree = "<group>"; };
 		3EE3D70F2000C34B00D77A8F /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		3EE3D7152000D74200D77A8F /* BaseMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMappable.swift; sourceTree = "<group>"; };
 		3EE3D71C20016E9E00D77A8F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
 		3EE98593201321C60013D4F4 /* SelectedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedUserCell.swift; sourceTree = "<group>"; };
 		3EE98594201321C60013D4F4 /* SelectedUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectedUserCell.xib; sourceTree = "<group>"; };
-		3EF534402018D10600D72AE5 /* RoomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewController.swift; sourceTree = "<group>"; };
 		3EF78FEC200A5283008E1AEB /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		3EF838F9200CEDAC008993A4 /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
@@ -213,7 +213,7 @@
 				3E6A22E620005DF0006A5607 /* Chat.storyboard */,
 				3E6A22E820005EA4006A5607 /* RoomListViewController.swift */,
 				3E6A230020009652006A5607 /* RoomChatViewController.swift */,
-				3EF534402018D10600D72AE5 /* RoomDetailViewController.swift */,
+				3EDFE003201B5983006215E2 /* RoomDetailViewController.swift */,
 				3E46DF04201B497D002962D7 /* RoomInviteUserViewController.swift */,
 			);
 			path = Chat;
@@ -518,6 +518,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E3487EC1FFFDBD1009ED2E0 /* AppDelegate.swift in Sources */,
+				3EDFE004201B5983006215E2 /* RoomDetailViewController.swift in Sources */,
 				3E987DC9201778030073069E /* UserSectionModel.swift in Sources */,
 				842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */,
 				3EDA595020127C1900D0F32B /* LocationViewer.swift in Sources */,
@@ -528,7 +529,6 @@
 				3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */,
 				3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */,
 				3EE98595201321C60013D4F4 /* SelectedUserCell.swift in Sources */,
-				3EF534412018D10600D72AE5 /* RoomDetailViewController.swift in Sources */,
 				3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */,
 				3E6A230120009652006A5607 /* RoomChatViewController.swift in Sources */,
 				3E46DF05201B497D002962D7 /* RoomInviteUserViewController.swift in Sources */,
