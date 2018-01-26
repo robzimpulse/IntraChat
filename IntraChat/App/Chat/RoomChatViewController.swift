@@ -186,9 +186,9 @@ class RoomChatViewController: MessagesViewController {
       guard let realm = realm else {return}
       
       guard let roomId = self.room?.id else {return}
+      
       Observable
         .changeset(from: realm.objects(Message.self).filter("roomId = '\(roomId)'"))
-        .throttle(1.0, scheduler: MainScheduler.instance)
         .bind(onNext: { results, changes in
           self.messageList = results.flatMap({ Chat(message: $0) })
           self.messagesCollectionView.reloadData()
