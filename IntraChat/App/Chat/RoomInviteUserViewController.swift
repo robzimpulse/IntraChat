@@ -19,7 +19,7 @@ class RoomInviteUserViewController: UIViewController {
   @IBOutlet weak var selectedUserCollectionView: UICollectionView!
   @IBOutlet weak var selectedUserCollectionViewHeight: NSLayoutConstraint!
   
-  var roomId: String?
+  var room: Room?
   
   let users = Variable<[User]>([])
   

@@ -203,7 +203,7 @@ class RoomChatViewController: MessagesViewController {
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if let destination = segue.destination as? RoomDetailViewController { destination.roomId = room?.id }
+    if let destination = segue.destination as? RoomDetailViewController { destination.room = room }
   }
   
 }
