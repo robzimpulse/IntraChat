@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Disk
 import RxSwift
 import RxCocoa
 import Firebase
@@ -171,7 +170,6 @@ class FirebaseManager: NSObject {
           guard let realm = realm else {return}
           print("remove all database")
           do {
-            try Disk.clear(.caches)
             try Auth.auth().signOut()
             try realm.write {
               realm.delete(realm.objects(Room.self))

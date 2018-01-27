@@ -7,7 +7,6 @@
 //
 
 import Hero
-import Disk
 import UIKit
 import AVKit
 import RxSwift

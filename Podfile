@@ -7,7 +7,6 @@ target 'IntraChat' do
   
   # Pods for IntraChat
   pod 'Hero'
-  pod 'Disk'
   pod 'Eureka'
   pod 'Gallery'
   pod 'Lightbox'

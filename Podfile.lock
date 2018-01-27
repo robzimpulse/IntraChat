@@ -4,7 +4,6 @@ PODS:
     - Alamofire (~> 4.5)
   - Cache (4.1.2)
   - Differentiator (3.0.2)
-  - Disk (0.3.3)
   - Eureka (4.0.1)
   - EZSwiftExtensions (1.11)
   - FileBrowser (1.0.0)
@@ -108,7 +107,6 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireImage
-  - Disk
   - Eureka
   - EZSwiftExtensions
   - FileBrowser
@@ -148,7 +146,6 @@ SPEC CHECKSUMS:
   AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
   Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
-  Disk: d1f55cd61f6ca20f368232d0c6e37e3c3dfcb63e
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   EZSwiftExtensions: 84000042202d9fd574f626cda3064143f27fa767
   FileBrowser: 2ca91ff61c9ea09665eb3b8f9e64a7a77e66a0bf
@@ -187,6 +184,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 6d972f2c609372312648f96758e13a7f689efbc0
   ViewRow: e278428ff53da5eab18b191d3e19a16f3e299fc1
 
-PODFILE CHECKSUM: 417543ec004b1201bafa849a2851daceb1748457
+PODFILE CHECKSUM: 12d0db7254c365aac9c6581d22a18a150bef95f9
 
 COCOAPODS: 1.4.0

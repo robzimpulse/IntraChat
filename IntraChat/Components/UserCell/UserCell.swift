@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Disk
 import AlamofireImage
 
 class UserCell: UITableViewCell {
