@@ -9,23 +9,23 @@
 import UIKit
 
 class SelectedUserCell: UICollectionViewCell {
-
-    @IBOutlet weak var profileImageView: UIImageView!
-    @IBOutlet weak var cancelImageView: UIImageView!
-    
-    var user: User?
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    func configure(user: User){
-        self.user = user
-        profileImageView.image = nil
-        guard let photo = user.photo, let url = URL(string: photo) else {return}
-        profileImageView.setPersistentImage(url: url)
-        profileImageView.roundSquareImage()
-        cancelImageView.roundSquareImage()
-    }
+  
+  @IBOutlet weak var profileImageView: UIImageView!
+  @IBOutlet weak var cancelImageView: UIImageView!
+  
+  var user: User?
+  
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    // Initialization code
+  }
+  
+  func configure(user: User){
+    self.user = user
+    profileImageView.image = nil
+    guard let photo = user.photo, let url = URL(string: photo) else {return}
+    profileImageView.setPersistentImage(url: url)
+    profileImageView.roundSquareImage()
+    cancelImageView.roundSquareImage()
+  }
 }

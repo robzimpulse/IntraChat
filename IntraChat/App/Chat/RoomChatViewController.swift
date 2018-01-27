@@ -47,7 +47,7 @@ class RoomChatViewController: MessagesViewController {
   override var inputAccessoryView: UIView? {
     return (presentedViewController == nil) ? messageInputBar : nil
   }
-
+  
   lazy var filePicker: FileBrowser = {
     let filePicker = FileBrowser()
     filePicker.didSelectFile = { (file: FBFile) -> Void in
