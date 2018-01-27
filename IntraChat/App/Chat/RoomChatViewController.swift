@@ -39,14 +39,6 @@ class RoomChatViewController: MessagesViewController {
   
   let users = Variable<[String]>([])
   
-  var usersDisposable: Disposable?
-  
-  var messageDisposable: Disposable?
-  
-  var roomDisposable: Disposable?
-  
-  var usersOnlineDisposable: Disposable?
-  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -158,20 +150,6 @@ class RoomChatViewController: MessagesViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     reloadInputViews()
-    
-    if let usersDisposable = usersDisposable { usersDisposable.disposed(by: disposeBag) }
-    if let messageDisposable = messageDisposable { messageDisposable.disposed(by: disposeBag) }
-    if let roomDisposable = roomDisposable { roomDisposable.disposed(by: disposeBag) }
-    if let usersOnlineDisposable = usersOnlineDisposable { usersOnlineDisposable.disposed(by: disposeBag) }
-    
-  }
-  
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    if let usersDisposable = usersDisposable { usersDisposable.dispose() }
-    if let messageDisposable = messageDisposable { messageDisposable.dispose() }
-    if let roomDisposable = roomDisposable { roomDisposable.dispose() }
-    if let usersOnlineDisposable = usersOnlineDisposable { usersOnlineDisposable.dispose() }
   }
   
   override func viewDidLoad() {
@@ -195,8 +173,8 @@ class RoomChatViewController: MessagesViewController {
     reloadInputViews()
     
     // Update subtitle for room when user updated
-    usersDisposable = users.asObservable()
-      .bind(onNext: { [unowned self] strings in
+    users.asObservable()
+      .bind(onNext: { strings in
         User.get(completion: { users in
           guard let users = users else {return}
           let totalUsers = users.filter("uid IN %@", strings)
@@ -204,25 +182,27 @@ class RoomChatViewController: MessagesViewController {
           self.subtitleLabel.text = " \(totalUsers.count) Member, \(totalOnline.count) Online"
         })
       })
+      .disposed(by: disposeBag)
     
     // Update message when new message appear
-    Message.get(completion: { [unowned self] messages in
+    Message.get(completion: { messages in
       guard let messages = messages else {return}
       guard let roomId = self.room?.id else {return}
-      self.messageDisposable = Observable
+      Observable
         .changeset(from: messages.filter("roomId = '\(roomId)'"))
         .bind(onNext: { results, changes in
           self.messageList = results.flatMap({ Chat(message: $0) })
           self.messagesCollectionView.reloadData()
           self.messagesCollectionView.scrollToBottom(animated: changes != nil)
         })
+        .disposed(by: self.disposeBag)
     })
     
     // Update user variable when room member invited / kicked
-    Room.get(completion: { [unowned self] rooms in
+    Room.get(completion: { rooms in
       guard let rooms = rooms else {return}
       guard let roomId = self.room?.id else {return}
-      self.roomDisposable = Observable
+      Observable
         .changeset(from: rooms.filter("id = '\(roomId)'"))
         .bind(onNext: { results, _ in
           guard let room = results.first else {return}
@@ -233,18 +213,20 @@ class RoomChatViewController: MessagesViewController {
               .filter({ room.users.contains($0) })
           })
         })
+        .disposed(by: self.disposeBag)
     })
     
     // Update user variable when user online
-    User.get(completion: { [unowned self] users in
+    User.get(completion: { users in
       guard let users = users else {return}
-      self.usersOnlineDisposable = Observable
+      Observable
         .changeset(from: users)
         .bind(onNext: { results, _ in
           self.users.value = results
             .flatMap({ $0.uid })
             .filter({ self.users.value.contains($0) })
         })
+        .disposed(by: self.disposeBag)
     })
     
   }
