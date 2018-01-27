@@ -173,6 +173,7 @@ class RoomChatViewController: MessagesViewController {
     messageInputBar = customInputBar
     reloadInputViews()
     
+    // Update subtitle for room when user updated
     users.asObservable().bind(onNext: { strings in
       User.get(completion: { users in
         guard let users = users else {return}
@@ -187,6 +188,7 @@ class RoomChatViewController: MessagesViewController {
       
       guard let roomId = self.room?.id else {return}
       
+      // Update message when new message appear
       Observable
         .changeset(from: realm.objects(Message.self).filter("roomId = '\(roomId)'"))
         .bind(onNext: { results, changes in
@@ -196,17 +198,29 @@ class RoomChatViewController: MessagesViewController {
         })
         .disposed(by: self.disposeBag)
       
+      // Update user variable when room member invited / kicked
       Observable
         .changeset(from: realm.objects(Room.self).filter("id = '\(roomId)'"))
         .bind(onNext: { results, _ in
+          guard let room = results.first else {return}
           User.get(completion: { users in
             guard let users = users else {return}
-            self.users.value = users.flatMap({ $0.uid })
+            self.users.value = users
+              .flatMap({ $0.uid })
+              .filter({ room.users.contains($0) })
           })
         })
         .disposed(by: self.disposeBag)
       
-      // TODO: Trigger from user state
+      // Update user variable when user online
+      Observable
+        .changeset(from: realm.objects(User.self))
+        .bind(onNext: { results, _ in
+          self.users.value = results
+            .flatMap({ $0.uid })
+            .filter({ self.users.value.contains($0) })
+        })
+        .disposed(by: self.disposeBag)
       
     })
   }
