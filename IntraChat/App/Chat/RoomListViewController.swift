@@ -68,14 +68,17 @@ class RoomListViewController: UIViewController {
       if user == nil { self.performSegue(withIdentifier: "auth", sender: self) }
     })
     
-    Realm.asyncOpen(callback: { realm, _ in
-      guard let realm = realm else {return}
+    Room.get(completion: { rooms in
+      guard let rooms = rooms else {return}
       guard let currentUser = FirebaseManager.shared.currentUser() else {return}
-      Observable.collection(from: realm.objects(Room.self).filter("_users CONTAINS '\(currentUser.uid)'").toAnyCollection()).bind(
-        to: self.tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
-        curriedArgument: { row, room, cell in cell.configure(room: room)}
-        ).disposed(by: self.disposeBag)
-    })
+      Observable
+        .collection(from: rooms.filter("_users CONTAINS '\(currentUser.uid)'").toAnyCollection())
+        .bind(
+          to: self.tableView.rx.items(cellIdentifier: "RoomCell", cellType: RoomCell.self),
+          curriedArgument: { row, room, cell in cell.configure(room: room)}
+        )
+        .disposed(by:self.disposeBag)
+    })    
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
