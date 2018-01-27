@@ -54,7 +54,7 @@ class FirebaseManager: NSObject {
     
     super.init()
     
-     _ = Observable<Int>
+    _ = Observable<Int>
       .interval(1, scheduler: MainScheduler.instance)
       .subscribe({ _ in
         print("Resource count \(RxSwift.Resources.total)")

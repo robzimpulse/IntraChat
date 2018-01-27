@@ -48,57 +48,57 @@ class RoomDetailViewController: FormViewController {
           })
         }
         
-//        User.get(completion: { users in
-//          guard let users = users else {return}
-//          section.header?.title = "\(users.count) Members"
-//          users.toArray().forEach({ user in
-//            section <<< LabelRow() { row in
-//              row.hidden = true
-//              row.tag = user.uid
-//              row.title = user.name
-//              row.cellUpdate({ cell, _ in
-//                cell.accessoryType = .disclosureIndicator
-//                cell.imageView?.setPersistentImage(url: URL(string: user.photo ?? "")!, isRounded: true)
-//              })
-//            }
-//          })
-//        })
+        //        User.get(completion: { users in
+        //          guard let users = users else {return}
+        //          section.header?.title = "\(users.count) Members"
+        //          users.toArray().forEach({ user in
+        //            section <<< LabelRow() { row in
+        //              row.hidden = true
+        //              row.tag = user.uid
+        //              row.title = user.name
+        //              row.cellUpdate({ cell, _ in
+        //                cell.accessoryType = .disclosureIndicator
+        //                cell.imageView?.setPersistentImage(url: URL(string: user.photo ?? "")!, isRounded: true)
+        //              })
+        //            }
+        //          })
+        //        })
         
-//        Room.get(completion: { rooms in
-//          guard let rooms = rooms else {return}
-//          guard let roomId = self.room?.id else {return}
-//          guard let section = self.form.sectionBy(tag: "member") else {return}
-//          Observable
-//            .changeset(from: rooms.filter("id = '\(roomId)'"))
-//            .bind(onNext: { results, _ in
-//              guard let room = results.first else {return}
-//              room.users.forEach({
-//                guard let row = self.form.rowBy(tag: $0) as? LabelRow else {return}
-//                row.hidden = false
-//              })
-//              section.reload()
-//            })
-//            .disposed(by: self.disposeBag)
-//        })
+        //        Room.get(completion: { rooms in
+        //          guard let rooms = rooms else {return}
+        //          guard let roomId = self.room?.id else {return}
+        //          guard let section = self.form.sectionBy(tag: "member") else {return}
+        //          Observable
+        //            .changeset(from: rooms.filter("id = '\(roomId)'"))
+        //            .bind(onNext: { results, _ in
+        //              guard let room = results.first else {return}
+        //              room.users.forEach({
+        //                guard let row = self.form.rowBy(tag: $0) as? LabelRow else {return}
+        //                row.hidden = false
+        //              })
+        //              section.reload()
+        //            })
+        //            .disposed(by: self.disposeBag)
+        //        })
         
-//        guard let room = room else {return}
-//        User.get(completion: { users in
-//          guard let users = users else {return}
-//          section.header?.title = "\(room.users.count) Members"
-//          users.filter("uid IN %@", room.users).toArray().forEach({ user in
-//            section <<< LabelRow() { row in
-//              row.title = user.name
-//              row.cellUpdate({ cell, _ in
-//                cell.accessoryType = .disclosureIndicator
-//                cell.imageView?.setPersistentImage(url: URL(string: user.photo ?? "")!, isRounded: true)
-//              })
-//              row.onCellSelection({ cell, _ in
-//                print("selected user \(user.name)")
-//              })
-//            }
-//          })
-//          section.reload()
-//        })
+        //        guard let room = room else {return}
+        //        User.get(completion: { users in
+        //          guard let users = users else {return}
+        //          section.header?.title = "\(room.users.count) Members"
+        //          users.filter("uid IN %@", room.users).toArray().forEach({ user in
+        //            section <<< LabelRow() { row in
+        //              row.title = user.name
+        //              row.cellUpdate({ cell, _ in
+        //                cell.accessoryType = .disclosureIndicator
+        //                cell.imageView?.setPersistentImage(url: URL(string: user.photo ?? "")!, isRounded: true)
+        //              })
+        //              row.onCellSelection({ cell, _ in
+        //                print("selected user \(user.name)")
+        //              })
+        //            }
+        //          })
+        //          section.reload()
+        //        })
       }
       
       +++ Section()

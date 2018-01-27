@@ -9,15 +9,15 @@
 import UIKit
 
 extension UIStoryboardSegue {
-    func safePresentingDestinationVC(){
-        if let presentedVC = self.destination.presentedViewController {
-            if presentedVC == self.source {
-                self.destination.dismiss(animated: false, completion: nil)
-            } else {
-                self.source.present(self.destination as UIViewController, animated: false, completion: nil)
-            }
-        }else {
-            self.source.present(self.destination as UIViewController, animated: false, completion: nil)
-        }
+  func safePresentingDestinationVC(){
+    if let presentedVC = self.destination.presentedViewController {
+      if presentedVC == self.source {
+        self.destination.dismiss(animated: false, completion: nil)
+      } else {
+        self.source.present(self.destination as UIViewController, animated: false, completion: nil)
+      }
+    }else {
+      self.source.present(self.destination as UIViewController, animated: false, completion: nil)
     }
+  }
 }

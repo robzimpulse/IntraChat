@@ -9,17 +9,17 @@
 import UIKit
 
 extension UIImage {
-
-    func thumbnail() -> UIImage {
-        return self.resizeWithWidth(50).resizeWithHeight(50)
-    }
-    
-    func resize(width: CGFloat, height: CGFloat) -> UIImage {
-        return self.resizeWithWidth(width).resizeWithHeight(height)
-    }
-    
-    func toBase64() -> String? {
-        return UIImagePNGRepresentation(self)?.base64EncodedString(options: .lineLength64Characters)
-    }
-    
+  
+  func thumbnail() -> UIImage {
+    return self.resizeWithWidth(50).resizeWithHeight(50)
+  }
+  
+  func resize(width: CGFloat, height: CGFloat) -> UIImage {
+    return self.resizeWithWidth(width).resizeWithHeight(height)
+  }
+  
+  func toBase64() -> String? {
+    return UIImagePNGRepresentation(self)?.base64EncodedString(options: .lineLength64Characters)
+  }
+  
 }
