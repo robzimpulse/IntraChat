@@ -47,7 +47,7 @@ class RoomChatViewController: MessagesViewController {
   override var inputAccessoryView: UIView? {
     return (presentedViewController == nil) ? messageInputBar : nil
   }
-  
+
   lazy var filePicker: FileBrowser = {
     let filePicker = FileBrowser()
     filePicker.didSelectFile = { (file: FBFile) -> Void in
@@ -183,24 +183,26 @@ class RoomChatViewController: MessagesViewController {
       })
     }).disposed(by: disposeBag)
     
-    Realm.asyncOpen(callback: { realm, _ in
-      guard let realm = realm else {return}
-      
+    // Update message when new message appear
+    Message.get(completion: { messages in
+      guard let messages = messages else {return}
       guard let roomId = self.room?.id else {return}
-      
-      // Update message when new message appear
       Observable
-        .changeset(from: realm.objects(Message.self).filter("roomId = '\(roomId)'"))
+        .changeset(from: messages.filter("roomId = '\(roomId)'"))
         .bind(onNext: { results, changes in
           self.messageList = results.flatMap({ Chat(message: $0) })
           self.messagesCollectionView.reloadData()
           self.messagesCollectionView.scrollToBottom(animated: changes != nil)
         })
         .disposed(by: self.disposeBag)
-      
-      // Update user variable when room member invited / kicked
+    })
+    
+    // Update user variable when room member invited / kicked
+    Room.get(completion: { rooms in
+      guard let rooms = rooms else {return}
+      guard let roomId = self.room?.id else {return}
       Observable
-        .changeset(from: realm.objects(Room.self).filter("id = '\(roomId)'"))
+        .changeset(from: rooms.filter("id = '\(roomId)'"))
         .bind(onNext: { results, _ in
           guard let room = results.first else {return}
           User.get(completion: { users in
@@ -211,18 +213,21 @@ class RoomChatViewController: MessagesViewController {
           })
         })
         .disposed(by: self.disposeBag)
-      
-      // Update user variable when user online
+    })
+    
+    // Update user variable when user online
+    User.get(completion: { users in
+      guard let users = users else {return}
       Observable
-        .changeset(from: realm.objects(User.self))
+        .changeset(from: users)
         .bind(onNext: { results, _ in
           self.users.value = results
             .flatMap({ $0.uid })
             .filter({ self.users.value.contains($0) })
         })
         .disposed(by: self.disposeBag)
-      
     })
+    
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

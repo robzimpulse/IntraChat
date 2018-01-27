@@ -54,6 +54,12 @@ class FirebaseManager: NSObject {
     
     super.init()
     
+     _ = Observable<Int>
+      .interval(1, scheduler: MainScheduler.instance)
+      .subscribe({ _ in
+        print("Resource count \(RxSwift.Resources.total)")
+      })
+    
     Messaging.messaging().delegate = self
     
     authListener = Auth.auth().addStateDidChangeListener({ auth, user in
