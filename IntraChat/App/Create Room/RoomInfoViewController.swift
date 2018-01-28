@@ -49,7 +49,7 @@ class RoomInfoViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    photoImageView.addTapGesture(action: { _ in self.presentVC(self.galleryController) })
+    photoImageView.addTapGesture(action: { [unowned self] _ in self.presentVC(self.galleryController) })
     
     collectionView.register(
       UINib(nibName: "SelectedUserCell", bundle: nil),
@@ -63,7 +63,7 @@ class RoomInfoViewController: UIViewController {
     
     collectionView.rx
       .modelSelected(User.self)
-      .bind(onNext: { user in
+      .bind(onNext: { [unowned self] user in
         guard let index = self.users.value.index(where: { $0.uid == user.uid }) else {return}
         self.users.value.remove(at: index)
         NotificationCenter.default.post(name: .didChangeSelectedUser, object: self.users.value)
@@ -78,10 +78,10 @@ class RoomInfoViewController: UIViewController {
     guard !name.isBlank else {return}
     photoImageView.addSubview(progressView)
     progressView.centerInSuperView()
-    FirebaseManager.shared.upload(image: icon, handleProgress: { snapshot in
+    FirebaseManager.shared.upload(image: icon, handleProgress: { [unowned self] snapshot in
       guard let progress = snapshot.progress?.fractionCompleted.toCGFloat else {return}
       self.progressView.updateProgress(progress)
-    }, completion: { meta, _ in
+    }, completion: { [unowned self] meta, _ in
       self.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
         self.progressView.removeFromSuperview()
         guard let meta = meta else {return}
@@ -104,7 +104,7 @@ extension RoomInfoViewController: GalleryControllerDelegate {
   func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {}
   
   func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
-    Image.resolve(images: images, completion: {
+    Image.resolve(images: images, completion: { [unowned self] in
       guard let image = $0.flatMap({ $0 }).first else {return}
       let cropController = TOCropViewController(croppingStyle: .circular, image: image)
       cropController.delegate = self
@@ -128,8 +128,8 @@ extension RoomInfoViewController: TOCropViewControllerDelegate {
     cropViewController.dismissVC(completion: nil)
   }
   func cropViewController(_ cropViewController: TOCropViewController, didCropToCircleImage image: UIImage, rect cropRect: CGRect, angle: Int) {
-    self.photoImageView.contentMode = .scaleAspectFill
-    self.photoImageView.image = image
-    cropViewController.dismissVC(completion: { self.galleryController.dismissVC(completion: nil) })
+    photoImageView.contentMode = .scaleAspectFill
+    photoImageView.image = image
+    cropViewController.dismissVC(completion: { [unowned self] in self.galleryController.dismissVC(completion: nil) })
   }
 }

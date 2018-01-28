@@ -32,10 +32,10 @@ extension NavigationController: UINavigationControllerDelegate {
     _ navigationController: UINavigationController,
     willShow viewController: UIViewController,
     animated: Bool
-    ) {
+  ) {
     theme(VC: viewController)
     if let coordinator = navigationController.topViewController?.transitionCoordinator {
-      coordinator.notifyWhenInteractionEnds({ (context) in
+      coordinator.notifyWhenInteractionEnds({ [unowned self] (context) in
         guard context.isCancelled else {return}
         guard let VC = context.viewController(forKey: .from) else {return}
         self.theme(VC: VC)

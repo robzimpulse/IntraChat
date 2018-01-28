@@ -61,7 +61,7 @@ class FirebaseManager: NSObject {
     
     Messaging.messaging().delegate = self
     
-    authListener = Auth.auth().addStateDidChangeListener({ auth, user in
+    authListener = Auth.auth().addStateDidChangeListener({ [unowned self] auth, user in
       if let user = user {
         
         // Mark: Room Listener
@@ -208,7 +208,7 @@ class FirebaseManager: NSObject {
     guard let user = Auth.auth().currentUser else {completion?(nil);return}
     let request = user.createProfileChangeRequest()
     request.displayName = name
-    request.commitChanges(completion: { error in
+    request.commitChanges(completion: { [unowned self] error in
       self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
       completion?(error)
     })
@@ -218,7 +218,7 @@ class FirebaseManager: NSObject {
     guard let user = Auth.auth().currentUser else {completion?(nil);return}
     let request = user.createProfileChangeRequest()
     request.photoURL = photoUrl
-    request.commitChanges(completion: { error in
+    request.commitChanges(completion: { [unowned self] error in
       self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
       completion?(error)
     })
@@ -280,7 +280,7 @@ class FirebaseManager: NSObject {
   // MARK: Room
   
   func create(room: Room, completion: ((Error?) -> Void)? = nil){
-    roomRef.childByAutoId().setValue(room.keyValue(), withCompletionBlock: { error, ref in
+    roomRef.childByAutoId().setValue(room.keyValue(), withCompletionBlock: { [unowned self] error, ref in
       guard error == nil else {completion?(error);return}
       guard let user = self.currentUser() else {return}
       room.users.filter({ $0 != user.uid }).forEach({
@@ -297,7 +297,7 @@ class FirebaseManager: NSObject {
   func invite(user: [User], to room: Room, completion: ((Error?) -> Void)? = nil){
     guard let roomId = room.id else {completion?(nil);return}
     let users = room.users + user.flatMap({ $0.uid })
-    self.roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
+    roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
       guard error == nil else {completion?(error);return}
       user.forEach({
         FirebaseManager.shared.create(notification: Notification(
@@ -311,10 +311,10 @@ class FirebaseManager: NSObject {
   }
   
   func exit(room: Room, completion: ((Error?) -> Void)? = nil){
-    guard let currentUser = self.currentUser() else {completion?(nil);return}
+    guard let currentUser = currentUser() else {completion?(nil);return}
     guard let roomId = room.id else {completion?(nil);return}
     let users = room.users.filter({ $0 != currentUser.uid })
-    self.roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
+    roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
       completion?(error)
     })
   }

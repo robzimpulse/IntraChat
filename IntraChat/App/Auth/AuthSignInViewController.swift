@@ -29,7 +29,7 @@ class AuthSignInViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    submitButton.rx.tap.bind(onNext: {
+    submitButton.rx.tap.bind(onNext: { [unowned self] in
       guard let email = self.emailTextField.text else {return}
       guard let password = self.passwordTextField.text else {return}
       self.submitButton.isEnabled = false

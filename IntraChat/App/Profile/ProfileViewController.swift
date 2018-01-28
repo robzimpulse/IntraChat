@@ -59,7 +59,7 @@ class ProfileViewController: FormViewController {
             +++ Section()
             <<< ViewRow<UIImageView>(){ row in
                 row.tag = formIndex.image
-                row.cellSetup { cell, _ in
+                row.cellSetup { [unowned self] cell, _ in
                     cell.view = self.profileImageView
                     cell.contentView.addSubview(cell.view!)
                     cell.viewRightMargin = 0.0
@@ -73,7 +73,7 @@ class ProfileViewController: FormViewController {
                         self.profileImageView.setPersistentImage(url: url )
                     }
                 }
-                row.onCellSelection({ cell, _ in self.presentVC(self.galleryController) })
+                row.onCellSelection({ [unowned self] cell, _ in self.presentVC(self.galleryController) })
             }
             
             +++ Section("Email")
@@ -126,7 +126,7 @@ extension ProfileViewController: GalleryControllerDelegate {
     func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {}
     
     func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
-        Image.resolve(images: images, completion: {
+        Image.resolve(images: images, completion: { [unowned self] in
             guard let image = $0.flatMap({ $0 }).first else {return}
             let cropController = TOCropViewController(image: image)
             cropController.delegate = self
@@ -150,7 +150,7 @@ extension ProfileViewController: TOCropViewControllerDelegate {
         cropViewController.dismissVC(completion: nil)
     }
     func cropViewController(_ cropViewController: TOCropViewController, didCropToImage image: UIImage, rect cropRect: CGRect, angle: Int) {
-        cropViewController.dismissVC(completion: {
+        cropViewController.dismissVC(completion: { [unowned self] in
             self.galleryController.dismissVC(completion: {
                 self.profileImageView.addSubview(self.progressView)
                 self.progressView.centerInSuperView()

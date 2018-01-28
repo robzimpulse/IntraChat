@@ -17,13 +17,13 @@ class VideoManager: NSObject {
   let time: CMTime = CMTime(seconds: 2, preferredTimescale: 1)
   
   init(url: URL) {
-    self.asset = AVURLAsset(url: url)
-    self.thumbnailGenerator = AVAssetImageGenerator(asset: self.asset)
-    self.preset = AVAssetExportSession.exportPresets(compatibleWith: asset)
+    asset = AVURLAsset(url: url)
+    thumbnailGenerator = AVAssetImageGenerator(asset: asset)
+    preset = AVAssetExportSession.exportPresets(compatibleWith: asset)
   }
   
   func getThumbnail(completion: @escaping ((UIImage) -> Void)){
-    DispatchQueue.global().async {
+    DispatchQueue.global().async { [unowned self] in
       let OCGImage = try? self.thumbnailGenerator.copyCGImage(at: self.time, actualTime: nil)
       guard let CGImage = OCGImage else {return}
       let image = UIImage(cgImage: CGImage)

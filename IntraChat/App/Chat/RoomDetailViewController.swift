@@ -43,7 +43,7 @@ class RoomDetailViewController: FormViewController {
           row.cellUpdate({ cell, _ in
             cell.accessoryType = .disclosureIndicator
           })
-          row.onCellSelection({ cell, _ in
+          row.onCellSelection({ [unowned self] cell, _ in
             self.performSegue(withIdentifier: "invite", sender: self)
           })
         }
@@ -107,7 +107,7 @@ class RoomDetailViewController: FormViewController {
         row.cellUpdate({ cell, _ in
           cell.textLabel?.textColor = UIColor.black
         })
-        row.onCellSelection({ cell, _ in
+        row.onCellSelection({ [unowned self] cell, _ in
           let indicator = UIActivityIndicatorView(frame: cell.contentView.frame)
           indicator.color = UIColor.black
           indicator.startAnimating()

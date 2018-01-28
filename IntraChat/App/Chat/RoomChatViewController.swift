@@ -49,7 +49,7 @@ class RoomChatViewController: MessagesViewController {
   
   lazy var filePicker: FileBrowser = {
     let filePicker = FileBrowser()
-    filePicker.didSelectFile = { (file: FBFile) -> Void in
+    filePicker.didSelectFile = { [unowned self] (file: FBFile) -> Void in
       print(file.filePath)
       self.showAlert(title: "Sorry", message: "This feature is not implemented yet.", completion: {
         self.reloadInputViews()
@@ -63,7 +63,7 @@ class RoomChatViewController: MessagesViewController {
     locationPicker.useCurrentLocationAsHint = true
     locationPicker.searchBarPlaceholder = "Search or Enter an address"
     locationPicker.searchHistoryLabel = "Previously searched"
-    locationPicker.completion = { location in
+    locationPicker.completion = { [unowned self] location in
       guard let room = self.room else {return}
       guard let location = location else {return}
       let message = Message(roomId: room.id ?? "", location: location.location, sender: self.currentSender().id, date: Date())
@@ -106,7 +106,7 @@ class RoomChatViewController: MessagesViewController {
       $0.spacing = .flexible
       $0.image = #imageLiteral(resourceName: "icon_add").resizeWithWidth(height - 14).resizeWithHeight(height - 14)
       $0.setSize(CGSize(width: height, height: height), animated: true)
-    }).onTouchUpInside({ _ in
+    }).onTouchUpInside({ [unowned self]  _ in
       self.showActionSheet(title: nil, actions: [
         UIAlertAction(title: "Media", style: .default, handler: { _ in
           self.presentVC(self.galleryController)
@@ -117,7 +117,7 @@ class RoomChatViewController: MessagesViewController {
         UIAlertAction(title: "Location", style: .default, handler: { _ in
           self.presentVC(self.locationPicker)
         })
-        ], cancel: { self.reloadInputViews() })
+        ], cancel: { [unowned self] in self.reloadInputViews() })
     }).onTextViewDidChange({ button, textView in
       let width = textView.text.isBlank ? height : 0
       button.setSize(CGSize(width: width, height: height), animated: true)
@@ -174,7 +174,7 @@ class RoomChatViewController: MessagesViewController {
     
     // Update subtitle for room when user updated
     users.asObservable()
-      .bind(onNext: { strings in
+      .bind(onNext: { [unowned self] strings in
         User.get(completion: { users in
           guard let users = users else {return}
           let totalUsers = users.filter("uid IN %@", strings)
@@ -185,7 +185,7 @@ class RoomChatViewController: MessagesViewController {
       .disposed(by: disposeBag)
     
     // Update message when new message appear
-    Message.get(completion: { messages in
+    Message.get(completion: { [unowned self] messages in
       guard let messages = messages else {return}
       guard let roomId = self.room?.id else {return}
       Observable
@@ -199,7 +199,7 @@ class RoomChatViewController: MessagesViewController {
     })
     
     // Update user variable when room member invited / kicked
-    Room.get(completion: { rooms in
+    Room.get(completion: { [unowned self] rooms in
       guard let rooms = rooms else {return}
       guard let roomId = self.room?.id else {return}
       Observable
@@ -217,7 +217,7 @@ class RoomChatViewController: MessagesViewController {
     })
     
     // Update user variable when user online
-    User.get(completion: { users in
+    User.get(completion: { [unowned self] users in
       guard let users = users else {return}
       Observable
         .changeset(from: users)
@@ -353,7 +353,7 @@ extension RoomChatViewController: MessageCellDelegate {
   func didTapMessage(in cell: MessageCollectionViewCell) {
     guard let index = messagesCollectionView.indexPath(for: cell) else {return}
     let chat = messageList[index.section]
-    chat.getMessage(completion: { message in
+    chat.getMessage(completion: { [unowned self] message in
       guard let message = message else {return}
       switch chat.data {
       case .text(let text):
@@ -433,7 +433,7 @@ extension RoomChatViewController: UINavigationControllerDelegate, UIVideoEditorC
     editor.dismissVC(completion: { print(error) })
   }
   func videoEditorController(_ editor: UIVideoEditorController, didSaveEditedVideoToPath editedVideoPath: String) {
-    editor.dismissVC(completion: {
+    editor.dismissVC(completion: { [unowned self] in
       self.galleryController.dismissVC(completion: {
         let manager = VideoManager(url: URL(fileURLWithPath: editedVideoPath))
         
@@ -490,7 +490,7 @@ extension RoomChatViewController: TOCropViewControllerDelegate {
     cropViewController.dismissVC(completion: nil)
   }
   func cropViewController(_ cropViewController: TOCropViewController, didCropToImage image: UIImage, rect cropRect: CGRect, angle: Int) {
-    cropViewController.dismissVC(completion: {
+    cropViewController.dismissVC(completion: { [unowned self] in
       self.galleryController.dismissVC(completion: {
         guard let room = self.room else {return}
         guard let roomId = room.id else {return}

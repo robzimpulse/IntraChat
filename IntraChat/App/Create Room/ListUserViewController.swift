@@ -56,7 +56,7 @@ class ListUserViewController: UIViewController {
       forCellWithReuseIdentifier: "SelectedUserCell"
     )
     
-    User.get(completion: { users in
+    User.get(completion: { [unowned self] users in
       guard let users = users else {return}
       
       Observable.changeset(from: users).bind(onNext: { results, _ in
@@ -81,15 +81,15 @@ class ListUserViewController: UIViewController {
       
     })
     
-    searchBar.rx.textDidBeginEditing.bind(onNext: {
+    searchBar.rx.textDidBeginEditing.bind(onNext: { [unowned self]  in
       self.searchBar.setShowsCancelButton(true, animated: true)
     }).disposed(by: disposeBag)
     
-    searchBar.rx.textDidEndEditing.bind(onNext: {
+    searchBar.rx.textDidEndEditing.bind(onNext: { [unowned self] in
       self.searchBar.setShowsCancelButton(false, animated: true)
     }).disposed(by: disposeBag)
     
-    searchBar.rx.cancelButtonClicked.bind(onNext: {
+    searchBar.rx.cancelButtonClicked.bind(onNext: { [unowned self]  in
       self.searchBar.endEditing(true)
     }).disposed(by: disposeBag)
     
@@ -98,10 +98,10 @@ class ListUserViewController: UIViewController {
     selectedUsers.asObservable().bind(
       to: selectedUserCollectionView.rx.items(cellIdentifier: "SelectedUserCell", cellType: SelectedUserCell.self),
       curriedArgument: { row, user, cell in cell.configure(user: user) }
-      ).disposed(by: disposeBag)
+    ).disposed(by: disposeBag)
     
     selectedUsers.asObservable()
-      .bind(onNext: {
+      .bind(onNext: { [unowned self] in
         self.navigationItem.titleView = self.setTitle(title: "Add Participant", subtitle: " \($0.count) / 256")
         self.navigationItem.rightBarButtonItem?.isEnabled = ($0.count > 0)
         self.selectedUserCollectionViewHeight.constant = ($0.count > 0) ? 80 : 0
@@ -111,7 +111,7 @@ class ListUserViewController: UIViewController {
     
     selectedUserCollectionView.rx
       .modelSelected(User.self)
-      .bind(onNext: { user in
+      .bind(onNext: { [unowned self] user in
         guard let index = self.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
         self.selectedUsers.value.remove(at: index)
         
@@ -126,7 +126,7 @@ class ListUserViewController: UIViewController {
     
     tableView.rx
       .modelSelected(SectionItem.self)
-      .bind(onNext: { model in
+      .bind(onNext: { [unowned self] model in
         switch model {
         case .UserSectionItem(user: let user):
           guard !self.selectedUsers.value.contains(where: {$0.uid == user.uid}) else {return}
@@ -138,7 +138,7 @@ class ListUserViewController: UIViewController {
     
     tableView.rx
       .modelDeselected(SectionItem.self)
-      .bind(onNext: { model in
+      .bind(onNext: { [unowned self] model in
         switch model {
         case .UserSectionItem(user: let user):
           guard let index = self.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
@@ -148,7 +148,7 @@ class ListUserViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
-    filteredUsers.asObservable().bind(onNext: { users in
+    filteredUsers.asObservable().bind(onNext: { [unowned self] users in
       self.sectionedUser.value = users.sorted(by: {
         guard let name1 = $0.name, let name2 = $1.name else {return false}
         return name1 < name2
@@ -165,7 +165,7 @@ class ListUserViewController: UIViewController {
   
   @objc func didChangeSelectedUser(_ notification: NSNotification) {
     guard let users = notification.object as? [User] else {return}
-    selectedUsers.value.difference(users).forEach({ user in
+    selectedUsers.value.difference(users).forEach({ [unowned self] user in
       guard let rows = tableView.indexPathsForSelectedRows else {return}
       guard let userIndex = rows.index(where: {
         guard let cell = self.tableView.cellForRow(at: $0) as? UserCell else {return false}
@@ -173,7 +173,7 @@ class ListUserViewController: UIViewController {
       }) else {return}
       self.tableView.deselectRow(at: rows[userIndex], animated: false)
     })
-    self.selectedUsers.value = users
+    selectedUsers.value = users
   }
   
   private func setTitle(title: String?, subtitle: String?) -> UIView {
@@ -205,16 +205,14 @@ class ListUserViewController: UIViewController {
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    if let destination = segue.destination as? RoomInfoViewController {
-      destination.users.value = selectedUsers.value
-    }
+    if let destination = segue.destination as? RoomInfoViewController { destination.users.value = selectedUsers.value }
   }
   
 }
 
 extension ListUserViewController {
   func datasource() -> RxTableViewSectionedReloadDataSource<MultipleSectionModel> {
-    return RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: { datasource, table, indexPath, _ in
+    return RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: { [unowned self] datasource, table, indexPath, _ in
       switch datasource[indexPath] {
       case .UserSectionItem(user: let user):
         let cell: UserCell = table.dequeueReusableCell(forIndexPath: indexPath)
