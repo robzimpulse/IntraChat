@@ -70,13 +70,6 @@ class RoomChatViewController: MessagesViewController {
       FirebaseManager.shared.create(message: message, room: room, completion: { error, _ in
         guard error == nil else {return}
         FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
-        room.users.filter({ self.currentSender().id != $0 }).forEach({ user in
-          FirebaseManager.shared.create(notification: Notification(
-            title: "\(self.currentSender().displayName) @\(room.name ?? "")",
-            body: "📍Location",
-            receiver: user
-          ))
-        })
       })
     }
     let picker = UINavigationController(rootViewController: locationPicker)

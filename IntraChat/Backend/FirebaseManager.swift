@@ -257,6 +257,15 @@ class FirebaseManager: NSObject {
         ))
       })
       break
+    case .location:
+      room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
+        FirebaseManager.shared.create(notification: Notification(
+          title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
+          body: "📍Location",
+          receiver: user
+        ))
+      })
+      break
     default:
       break
     }
