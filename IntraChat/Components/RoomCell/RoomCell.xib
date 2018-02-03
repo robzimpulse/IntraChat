@@ -28,28 +28,47 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FZ2-sY-dcu">
-                        <rect key="frame" x="82" y="31" width="188" height="18"/>
+                        <rect key="frame" x="82" y="34" width="37" height="18"/>
                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JZ-E3-odd">
-                        <rect key="frame" x="82" y="8" width="188" height="21"/>
+                        <rect key="frame" x="82" y="12.5" width="43.5" height="21"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HVF-MS-edb">
+                        <rect key="frame" x="261" y="20.5" width="25" height="25"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HsP-EM-9tH">
+                                <rect key="frame" x="2" y="2" width="21" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="HsP-EM-9tH" secondAttribute="bottom" constant="2" id="8rF-HI-q4x"/>
+                            <constraint firstAttribute="trailing" secondItem="HsP-EM-9tH" secondAttribute="trailing" constant="2" id="Asa-3s-7r5"/>
+                            <constraint firstAttribute="width" secondItem="HVF-MS-edb" secondAttribute="height" multiplier="1:1" id="NmU-9f-3yz"/>
+                            <constraint firstItem="HsP-EM-9tH" firstAttribute="leading" secondItem="HVF-MS-edb" secondAttribute="leading" constant="2" id="TbX-Jy-OXy"/>
+                            <constraint firstItem="HsP-EM-9tH" firstAttribute="top" secondItem="HVF-MS-edb" secondAttribute="top" constant="2" id="yXd-Z8-MFN"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="oO8-Rw-Bd2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="695-aw-6d2"/>
+                    <constraint firstItem="FZ2-sY-dcu" firstAttribute="centerY" secondItem="oO8-Rw-Bd2" secondAttribute="centerY" constant="10" id="8bi-CX-tnA"/>
                     <constraint firstAttribute="bottom" secondItem="oO8-Rw-Bd2" secondAttribute="bottom" constant="8" id="8nK-I7-fbJ"/>
-                    <constraint firstItem="FZ2-sY-dcu" firstAttribute="top" secondItem="5JZ-E3-odd" secondAttribute="bottom" constant="2" id="Jf8-K6-s8P"/>
+                    <constraint firstAttribute="trailing" secondItem="HVF-MS-edb" secondAttribute="trailing" id="SvT-9j-SOG"/>
                     <constraint firstItem="FZ2-sY-dcu" firstAttribute="leading" secondItem="5JZ-E3-odd" secondAttribute="leading" id="VIs-xq-7lj"/>
+                    <constraint firstItem="HVF-MS-edb" firstAttribute="centerY" secondItem="oO8-Rw-Bd2" secondAttribute="centerY" id="YVO-5w-kEd"/>
                     <constraint firstItem="oO8-Rw-Bd2" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="a0l-NP-6he"/>
-                    <constraint firstAttribute="trailing" secondItem="5JZ-E3-odd" secondAttribute="trailing" constant="16" id="eRe-lx-1Rj"/>
-                    <constraint firstItem="FZ2-sY-dcu" firstAttribute="trailing" secondItem="5JZ-E3-odd" secondAttribute="trailing" id="fV9-d6-JC2"/>
                     <constraint firstItem="oO8-Rw-Bd2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="j1S-ug-7lK"/>
-                    <constraint firstItem="5JZ-E3-odd" firstAttribute="top" secondItem="oO8-Rw-Bd2" secondAttribute="top" id="nfb-E6-1LT"/>
+                    <constraint firstItem="5JZ-E3-odd" firstAttribute="centerY" secondItem="oO8-Rw-Bd2" secondAttribute="centerY" constant="-10" id="lsd-fh-4Gc"/>
                     <constraint firstItem="5JZ-E3-odd" firstAttribute="leading" secondItem="oO8-Rw-Bd2" secondAttribute="trailing" constant="16" id="rhs-Uy-5a8"/>
                 </constraints>
             </tableViewCellContentView>
@@ -57,6 +76,8 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
+                <outlet property="containerCountView" destination="HVF-MS-edb" id="tpX-f8-C5a"/>
+                <outlet property="countLabel" destination="HsP-EM-9tH" id="hjF-4s-ap3"/>
                 <outlet property="iconImageView" destination="oO8-Rw-Bd2" id="muC-qm-elF"/>
                 <outlet property="lastChatLabel" destination="FZ2-sY-dcu" id="yJ7-hw-s0n"/>
                 <outlet property="nameLabel" destination="5JZ-E3-odd" id="zsO-IO-huo"/>

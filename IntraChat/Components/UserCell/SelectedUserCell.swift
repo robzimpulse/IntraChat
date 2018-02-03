@@ -22,7 +22,6 @@ class SelectedUserCell: UICollectionViewCell {
   
   func configure(user: User){
     self.user = user
-    profileImageView.image = nil
     guard let photo = user.photo, let url = URL(string: photo) else {return}
     profileImageView.setPersistentImage(url: url)
     cancelImageView.roundSquareImage()

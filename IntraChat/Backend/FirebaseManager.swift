@@ -53,7 +53,7 @@ class FirebaseManager: NSObject {
     
     super.init()
     
-    _ = Observable<Int>
+    Observable<Int>
       .interval(1, scheduler: MainScheduler.instance)
       .subscribe({ _ in
         print("Resource count \(RxSwift.Resources.total)")
@@ -100,6 +100,7 @@ class FirebaseManager: NSObject {
         
         strongSelf.roomRef.observe(.childChanged, with: { snapshot in
           guard let room = Room(snapshot: snapshot) else {return}
+          
           Room.update(object: room)
         })
         
@@ -123,6 +124,7 @@ class FirebaseManager: NSObject {
         strongSelf.notificationRef.observe(.childAdded, with: { snapshot in
           guard let notification = Notification(snapshot: snapshot) else {return}
           guard notification.receiver == user.uid else {return}
+          if let roomId = notification.room { Room.increaseUnread(roomId: roomId) }
           strongSelf.localNotification(object: notification)
           snapshot.ref.removeValue()
         })
@@ -238,7 +240,9 @@ class FirebaseManager: NSObject {
         FirebaseManager.shared.create(notification: Notification(
           title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
           body: "📷 Image",
-          receiver: user
+          receiver: user,
+          room: room.id ?? "",
+          sender: currentUser()?.uid ?? ""
         ))
       })
       break
@@ -247,7 +251,9 @@ class FirebaseManager: NSObject {
         FirebaseManager.shared.create(notification: Notification(
           title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
           body: text,
-          receiver: user
+          receiver: user,
+          room: room.id ?? "",
+          sender: currentUser()?.uid ?? ""
         ))
       })
       break
@@ -256,7 +262,9 @@ class FirebaseManager: NSObject {
         FirebaseManager.shared.create(notification: Notification(
           title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
           body: "📹 Video",
-          receiver: user
+          receiver: user,
+          room: room.id ?? "",
+          sender: currentUser()?.uid ?? ""
         ))
       })
       break
@@ -265,7 +273,9 @@ class FirebaseManager: NSObject {
         FirebaseManager.shared.create(notification: Notification(
           title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
           body: "📍Location",
-          receiver: user
+          receiver: user,
+          room: room.id ?? "",
+          sender: currentUser()?.uid ?? ""
         ))
       })
       break
@@ -300,7 +310,9 @@ class FirebaseManager: NSObject {
         FirebaseManager.shared.create(notification: Notification(
           title: "Room Invitation",
           body: "You have been invited to room @\(room.name ?? "") by \(user.displayName ?? "")",
-          receiver: $0
+          receiver: $0,
+          room: room.id ?? "",
+          sender: user.uid
         ))
       })
       completion?(error)
@@ -310,13 +322,17 @@ class FirebaseManager: NSObject {
   func invite(user: [User], to room: Room, completion: ((Error?) -> Void)? = nil){
     guard let roomId = room.id else {completion?(nil);return}
     let users = room.users + user.flatMap({ $0.uid })
-    roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { error, ref in
+    roomRef.child(roomId).updateChildValues(["users": users], withCompletionBlock: { [weak self] error, ref in
+      guard let strongSelf = self else {return}
+      guard let currentUser = strongSelf.currentUser() else {return}
       guard error == nil else {completion?(error);return}
       user.forEach({
-        FirebaseManager.shared.create(notification: Notification(
+        strongSelf.create(notification: Notification(
           title: "Room Invitation",
-          body: "You have been invited to room @\(room.name ?? "") by \($0.name ?? "")",
-          receiver: $0.uid ?? ""
+          body: "You have been invited to room @\(room.name ?? "") by \(currentUser.displayName ?? "")",
+          receiver: $0.uid ?? "",
+          room: room.id ?? "",
+          sender: currentUser.uid
         ))
       })
       completion?(error)
@@ -340,7 +356,8 @@ class FirebaseManager: NSObject {
     )
   }
   
-  // MARK: files upload
+  // MARK: Upload File
+  
   func upload(
     image: UIImage,
     handleFailure: ((StorageTaskSnapshot) -> Void)? = nil,

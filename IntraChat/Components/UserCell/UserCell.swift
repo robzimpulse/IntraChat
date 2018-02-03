@@ -27,7 +27,6 @@ class UserCell: UITableViewCell {
   func configure(user: User){
     self.user = user
     usernameLabel.text = user.name
-    profileImageView.image = nil
     guard let photo = user.photo, let url = URL(string: photo) else {return}
     profileImageView.setPersistentImage(url: url)
   }

@@ -17,6 +17,7 @@ class Room: Object, Mappable, FirebaseModel {
   @objc dynamic var icon: String?
   @objc dynamic var lastChat: Date?
   @objc dynamic var _users: String?
+  @objc dynamic var unread: Int = 0
   
   override static func primaryKey() -> String? { return "id" }
   
@@ -68,11 +69,41 @@ class Room: Object, Mappable, FirebaseModel {
   
   // Updater
   
+  static func resetUnread(roomId: String) {
+    Realm.asyncOpen(callback: { realm, _ in
+      guard let realm = realm else {return}
+      do {
+        try realm.write {
+          if let object = realm.object(ofType: Room.self, forPrimaryKey: roomId) {
+            object.unread = 0
+          }
+        }
+      } catch let error { print(error) }
+    })
+  }
+  
+  static func increaseUnread(roomId: String) {
+    Realm.asyncOpen(callback: { realm, _ in
+      guard let realm = realm else {return}
+      do {
+        try realm.write {
+          if let object = realm.object(ofType: Room.self, forPrimaryKey: roomId) {
+            object.unread = object.unread + 1
+          }
+        }
+      } catch let error { print(error) }
+    })
+  }
+  
   static func update(object: Room, completion: ((Error?) -> Void)? = nil) {
     Realm.asyncOpen(callback: { realm, error in
       guard let realm = realm else {completion?(error); return}
-      do { try realm.write { realm.add(object, update: true) } }
-      catch let error { completion?(error) }
+      do { try realm.write {
+        if let unread = realm.object(ofType: Room.self, forPrimaryKey: object.id)?.unread {
+          object.unread = unread
+        }
+        realm.add(object, update: true)
+      } } catch let error { completion?(error) }
     })
   }
   

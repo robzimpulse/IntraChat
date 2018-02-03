@@ -58,33 +58,31 @@ class RoomInviteUserViewController: UIViewController {
       forCellWithReuseIdentifier: "SelectedUserCell"
     )
     
-    User.get(completion: { [weak self] users in
-      guard let strongSelf = self else {return}
+    User.get(completion: { [unowned self] users in
       guard let users = users else {return}
-      guard let room = strongSelf.room else {return}
+      guard let room = self.room else {return}
+      guard let user = FirebaseManager.shared.currentUser() else {return}
       
       Observable
         .changeset(from: users.filter("NOT uid IN %@", room.users))
         .bind(onNext: { results, _ in
-          guard let user = FirebaseManager.shared.currentUser() else {return}
-          strongSelf.users.value = results.toArray().filter({ $0.uid != user.uid })
+          self.users.value = results.toArray().filter({ $0.uid != user.uid })
         })
-        .disposed(by: strongSelf.disposeBag)
+        .disposed(by: self.disposeBag)
       
-      strongSelf.searchBar.rx.text.orEmpty
+      self.searchBar.rx.text.orEmpty
         .throttle(0.3, scheduler: MainScheduler.instance)
         .distinctUntilChanged()
         .map({ return $0 })
         .observeOn(MainScheduler.instance)
         .bind(onNext: { text in
-          guard let user = FirebaseManager.shared.currentUser() else {return}
-          strongSelf.filteredUsers.value = text.isBlank ?
-            strongSelf.users.value.filter({$0.uid != user.uid}) :
-            strongSelf.users.value.filter({$0.uid != user.uid}).filter({
+          self.filteredUsers.value = text.isBlank ?
+            self.users.value.filter({$0.uid != user.uid}) :
+            self.users.value.filter({$0.uid != user.uid}).filter({
               $0.name?.contains(text, compareOption: .caseInsensitive) ?? true
             })
         })
-        .disposed(by: strongSelf.disposeBag)
+        .disposed(by: self.disposeBag)
       
     })
     

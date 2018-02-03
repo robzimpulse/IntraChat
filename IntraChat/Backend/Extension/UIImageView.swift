@@ -12,8 +12,9 @@ import AlamofireImage
 extension UIImageView {
   
   func setPersistentImage(url: URL, isRounded: Bool = true) {
+    image = nil
     let filter = AspectScaledToFillSizeCircleFilter(size: self.frame.size)
-     af_setImage(withURL: url, filter: isRounded ? filter : nil)
+    af_setImage(withURL: url, filter: isRounded ? filter : nil)
   }
   
 }

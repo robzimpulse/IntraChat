@@ -13,6 +13,8 @@ class RoomCell: UITableViewCell {
   @IBOutlet weak var nameLabel: UILabel!
   @IBOutlet weak var lastChatLabel: UILabel!
   @IBOutlet weak var iconImageView: UIImageView!
+  @IBOutlet weak var containerCountView: UIView!
+  @IBOutlet weak var countLabel: UILabel!
   
   var room: Room?
   
@@ -30,9 +32,10 @@ class RoomCell: UITableViewCell {
     self.room = room
     nameLabel.text = room.name
     lastChatLabel.text = "Last chat \((room.lastChat ?? Date()).timePassed())"
-    iconImageView.image = nil
-    guard let url = URL(string: room.icon ?? "") else {return}
-    iconImageView.setPersistentImage(url: url)
+    if let url = URL(string: room.icon ?? "") { iconImageView.setPersistentImage(url: url) }
+    containerCountView.roundView()
+    countLabel.text = room.unread.toString
+    containerCountView.isHidden = room.unread < 1
   }
   
 }

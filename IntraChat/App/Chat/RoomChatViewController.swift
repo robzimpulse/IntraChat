@@ -232,6 +232,12 @@ class RoomChatViewController: MessagesViewController {
     
   }
   
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    guard let roomId = room?.id else {return}
+    Room.resetUnread(roomId: roomId)
+  }
+  
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let destination = segue.destination as? RoomDetailViewController { destination.room = room }
   }
