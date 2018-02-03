@@ -19,6 +19,7 @@ import MessageKit
 import FileBrowser
 import LocationPicker
 import LocationViewer
+import AlamofireImage
 import RPCircularProgress
 import TOCropViewController
 
@@ -158,7 +159,7 @@ class RoomChatViewController: MessagesViewController {
     titleLabel.text = room?.name
     navigationItem.titleView = titleView
     
-    if let icon = room?.icon, let url = URL(string: icon) { iconImageView.setPersistentImage(url: url) }
+    if let url = URL(string: room?.icon ?? "") { iconImageView.setPersistentImage(url: url) }
     
     messagesCollectionView.messagesDataSource = self
     messagesCollectionView.messagesLayoutDelegate = self
@@ -389,7 +390,7 @@ extension RoomChatViewController: MessageCellDelegate {
 }
 
 extension RoomChatViewController: GalleryControllerDelegate {
-  func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
+  func galleryController(_ controller: GalleryController, didSelectImages images: [Gallery.Image]) {
     Image.resolve(images: images, completion: {
       guard let image = $0.flatMap({ $0 }).first else {return}
       let cropViewController = TOCropViewController(image: image)
@@ -412,7 +413,7 @@ extension RoomChatViewController: GalleryControllerDelegate {
     }
   }
   
-  func galleryController(_ controller: GalleryController, requestLightbox images: [Image]) {
+  func galleryController(_ controller: GalleryController, requestLightbox images: [Gallery.Image]) {
     Image.resolve(images: images, completion: {
       let lightboxImages = $0.flatMap({ $0 }).map({ LightboxImage(image: $0) })
       let lightboxController = LightboxController(images: lightboxImages, startIndex: 0)

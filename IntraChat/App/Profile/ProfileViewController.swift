@@ -71,7 +71,7 @@ class ProfileViewController: FormViewController {
           cell.separatorInset.left = 0
           strongSelf.profileImageView.image = nil
           if let url = FirebaseManager.shared.currentUser()?.photoURL {
-            strongSelf.profileImageView.setPersistentImage(url: url )
+            strongSelf.profileImageView.setPersistentImage(url: url, isRounded: false)
           }
         }
         row.onCellSelection({ [weak self] cell, _ in
@@ -169,7 +169,7 @@ extension ProfileViewController: TOCropViewControllerDelegate {
             guard let url = meta.downloadURL() else {return}
             FirebaseManager.shared.change(photoUrl: url, completion: { error in
               guard error == nil else {return}
-              strongSelf.profileImageView.setPersistentImage(url: url)
+              strongSelf.profileImageView.setPersistentImage(url: url, isRounded: false)
             })
           })
         })

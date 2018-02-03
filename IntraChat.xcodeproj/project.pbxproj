@@ -24,6 +24,7 @@
 		3E3487F31FFFDBD1009ED2E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E3487F21FFFDBD1009ED2E0 /* Assets.xcassets */; };
 		3E3487F61FFFDBD1009ED2E0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E3487F41FFFDBD1009ED2E0 /* LaunchScreen.storyboard */; };
 		3E36AEDE2017A7FC0083B45B /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E36AEDD2017A7FC0083B45B /* Constant.swift */; };
+		3E43AE46202622BD006161A2 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E43AE45202622BD006161A2 /* UIImageView.swift */; };
 		3E46DF05201B497D002962D7 /* RoomInviteUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E46DF04201B497D002962D7 /* RoomInviteUserViewController.swift */; };
 		3E6A22E720005DF0006A5607 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A22E620005DF0006A5607 /* Chat.storyboard */; };
 		3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A22E820005EA4006A5607 /* RoomListViewController.swift */; };
@@ -46,7 +47,6 @@
 		3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78FEC200A5283008E1AEB /* UIImage.swift */; };
 		3EF838FA200CEDAC008993A4 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF838F9200CEDAC008993A4 /* Chat.swift */; };
 		637E7180BDC86102AE6B222E /* Pods_IntraChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA82AD96B3C1AB72EAD1BC42 /* Pods_IntraChat.framework */; };
-		840E058520074D260084AB6F /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840E058420074D260084AB6F /* UIImageView.swift */; };
 		841F762D200E10D900D5BDAD /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 841F762C200E10D900D5BDAD /* VideoManager.swift */; };
 		842A229D2004D109008AE4A4 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229C2004D109008AE4A4 /* Message.swift */; };
 		842A229F2004D2EE008AE4A4 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A229E2004D2EE008AE4A4 /* String.swift */; };
@@ -77,6 +77,7 @@
 		3E3487F51FFFDBD1009ED2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3E3487F71FFFDBD1009ED2E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E36AEDD2017A7FC0083B45B /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		3E43AE45202622BD006161A2 /* UIImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		3E46DF04201B497D002962D7 /* RoomInviteUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomInviteUserViewController.swift; sourceTree = "<group>"; };
 		3E6A22E620005DF0006A5607 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
 		3E6A22E820005EA4006A5607 /* RoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewController.swift; sourceTree = "<group>"; };
@@ -99,7 +100,6 @@
 		3EF78FEC200A5283008E1AEB /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		3EF838F9200CEDAC008993A4 /* Chat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		5A083870B1F176C7A0BAAC42 /* Pods-IntraChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntraChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-IntraChat/Pods-IntraChat.release.xcconfig"; sourceTree = "<group>"; };
-		840E058420074D260084AB6F /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		841F762C200E10D900D5BDAD /* VideoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
 		842A229C2004D109008AE4A4 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		842A229E2004D2EE008AE4A4 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
@@ -259,13 +259,13 @@
 		3EE3D70E2000C33D00D77A8F /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				3E43AE45202622BD006161A2 /* UIImageView.swift */,
 				3EE3D7152000D74200D77A8F /* BaseMappable.swift */,
 				3E04E4232026041300804B49 /* UITableViewCell.swift */,
 				3E04E425202604A900804B49 /* UICollectionViewCell.swift */,
 				3EE3D70F2000C34B00D77A8F /* UIViewController.swift */,
 				3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */,
 				3E2090252003D7EA0062BA7C /* UINavigationController.swift */,
-				840E058420074D260084AB6F /* UIImageView.swift */,
 				3EF78FEC200A5283008E1AEB /* UIImage.swift */,
 				842A229E2004D2EE008AE4A4 /* String.swift */,
 			);
@@ -546,10 +546,10 @@
 				3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */,
 				3E36AEDE2017A7FC0083B45B /* Constant.swift in Sources */,
 				3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */,
-				840E058520074D260084AB6F /* UIImageView.swift in Sources */,
 				3E6A22EE200064BD006A5607 /* ProfileViewController.swift in Sources */,
 				3E6A22FE200087BF006A5607 /* RoomCell.swift in Sources */,
 				8451A0D62005CDE40097BED7 /* Transform.swift in Sources */,
+				3E43AE46202622BD006161A2 /* UIImageView.swift in Sources */,
 				3E15536520027082007BD985 /* AuthSignInViewController.swift in Sources */,
 				842A229D2004D109008AE4A4 /* Message.swift in Sources */,
 				3EF838FA200CEDAC008993A4 /* Chat.swift in Sources */,
