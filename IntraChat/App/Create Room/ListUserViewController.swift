@@ -37,9 +37,7 @@ class ListUserViewController: UIViewController {
     return .lightContent
   }
   
-  deinit {
-    NotificationCenter.default.removeObserver(self, name: .didChangeSelectedUser, object: nil)
-  }
+  deinit { NotificationCenter.default.removeObserver(self, name: .didChangeSelectedUser, object: nil) }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -54,29 +52,28 @@ class ListUserViewController: UIViewController {
     
     selectedUserCollectionView.register(cell2.nib(), forCellWithReuseIdentifier: cell2.identifier())
     
-    User.get(completion: { [weak self] users in
+    User.get(completion: { [unowned self] users in
       guard let users = users else {return}
-      guard let strongSelf = self else {return}
-      
+    
       Observable.changeset(from: users).bind(onNext: { results, _ in
         guard let user = FirebaseManager.shared.currentUser() else {return}
-        strongSelf.users.value = results.toArray().filter({ $0.uid != user.uid })
-      }).disposed(by: strongSelf.disposeBag)
-      
-      strongSelf.searchBar.rx.text.orEmpty
+        self.users.value = results.toArray().filter({ $0.uid != user.uid })
+      }).disposed(by: self.disposeBag)
+
+      self.searchBar.rx.text.orEmpty
         .throttle(0.3, scheduler: MainScheduler.instance)
         .distinctUntilChanged()
         .map({ return $0 })
         .observeOn(MainScheduler.instance)
         .bind(onNext: { text in
           guard let user = FirebaseManager.shared.currentUser() else {return}
-          strongSelf.filteredUsers.value = text.isBlank ?
-            strongSelf.users.value.filter({$0.uid != user.uid}) :
-            strongSelf.users.value.filter({$0.uid != user.uid}).filter({
+          self.filteredUsers.value = text.isBlank ?
+            self.users.value.filter({$0.uid != user.uid}) :
+            self.users.value.filter({$0.uid != user.uid}).filter({
               $0.name?.contains(text, compareOption: .caseInsensitive) ?? true
             })
         })
-        .disposed(by: strongSelf.disposeBag)
+        .disposed(by: self.disposeBag)
       
     })
     

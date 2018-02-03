@@ -185,51 +185,48 @@ class RoomChatViewController: MessagesViewController {
       .disposed(by: disposeBag)
     
     // Update message when new message appear
-    Message.get(completion: { [weak self] messages in
-      guard let strongSelf = self else {return}
+    Message.get(completion: { [unowned self] messages in
       guard let messages = messages else {return}
-      guard let roomId = strongSelf.room?.id else {return}
+      guard let roomId = self.room?.id else {return}
       Observable
         .changeset(from: messages.filter("roomId = '\(roomId)'"))
         .bind(onNext: { results, changes in
-          strongSelf.messageList = results.flatMap({ Chat(message: $0) })
-          strongSelf.messagesCollectionView.reloadData()
-          strongSelf.messagesCollectionView.scrollToBottom(animated: changes != nil)
+          self.messageList = results.flatMap({ Chat(message: $0) })
+          self.messagesCollectionView.reloadData()
+          self.messagesCollectionView.scrollToBottom(animated: changes != nil)
         })
-        .disposed(by: strongSelf.disposeBag)
+        .disposed(by: self.disposeBag)
     })
     
     // Update user variable when room member invited / kicked
-    Room.get(completion: { [weak self] rooms in
-      guard let strongSelf = self else {return}
+    Room.get(completion: { [unowned self] rooms in
       guard let rooms = rooms else {return}
-      guard let roomId = strongSelf.room?.id else {return}
+      guard let roomId = self.room?.id else {return}
       Observable
         .changeset(from: rooms.filter("id = '\(roomId)'"))
         .bind(onNext: { results, _ in
           guard let room = results.first else {return}
           User.get(completion: { users in
             guard let users = users else {return}
-            strongSelf.users.value = users
+            self.users.value = users
               .flatMap({ $0.uid })
               .filter({ room.users.contains($0) })
           })
         })
-        .disposed(by: strongSelf.disposeBag)
+        .disposed(by: self.disposeBag)
     })
     
     // Update user variable when user online
-    User.get(completion: { [weak self] users in
-      guard let strongSelf = self else {return}
+    User.get(completion: { [unowned self] users in
       guard let users = users else {return}
       Observable
         .changeset(from: users)
         .bind(onNext: { results, _ in
-          strongSelf.users.value = results
+          self.users.value = results
             .flatMap({ $0.uid })
-            .filter({ strongSelf.users.value.contains($0) })
+            .filter({ self.users.value.contains($0) })
         })
-        .disposed(by: strongSelf.disposeBag)
+        .disposed(by: self.disposeBag)
     })
     
   }
