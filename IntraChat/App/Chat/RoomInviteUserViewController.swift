@@ -58,45 +58,49 @@ class RoomInviteUserViewController: UIViewController {
       forCellWithReuseIdentifier: "SelectedUserCell"
     )
     
-    User.get(completion: { [unowned self] users in
+    User.get(completion: { [weak self] users in
+      guard let strongSelf = self else {return}
       guard let users = users else {return}
-      guard let room = self.room else {return}
+      guard let room = strongSelf.room else {return}
       
       Observable
         .changeset(from: users.filter("NOT uid IN %@", room.users))
         .bind(onNext: { results, _ in
           guard let user = FirebaseManager.shared.currentUser() else {return}
-          self.users.value = results.toArray().filter({ $0.uid != user.uid })
+          strongSelf.users.value = results.toArray().filter({ $0.uid != user.uid })
         })
-        .disposed(by: self.disposeBag)
+        .disposed(by: strongSelf.disposeBag)
       
-      self.searchBar.rx.text.orEmpty
+      strongSelf.searchBar.rx.text.orEmpty
         .throttle(0.3, scheduler: MainScheduler.instance)
         .distinctUntilChanged()
         .map({ return $0 })
         .observeOn(MainScheduler.instance)
         .bind(onNext: { text in
           guard let user = FirebaseManager.shared.currentUser() else {return}
-          self.filteredUsers.value = text.isBlank ?
-            self.users.value.filter({$0.uid != user.uid}) :
-            self.users.value.filter({$0.uid != user.uid}).filter({
+          strongSelf.filteredUsers.value = text.isBlank ?
+            strongSelf.users.value.filter({$0.uid != user.uid}) :
+            strongSelf.users.value.filter({$0.uid != user.uid}).filter({
               $0.name?.contains(text, compareOption: .caseInsensitive) ?? true
             })
         })
-        .disposed(by: self.disposeBag)
+        .disposed(by: strongSelf.disposeBag)
       
     })
     
-    searchBar.rx.textDidBeginEditing.bind(onNext: { [unowned self] in
-      self.searchBar.setShowsCancelButton(true, animated: true)
+    searchBar.rx.textDidBeginEditing.bind(onNext: { [weak self] in
+      guard let strongSelf = self else {return}
+      strongSelf.searchBar.setShowsCancelButton(true, animated: true)
     }).disposed(by: disposeBag)
     
-    searchBar.rx.textDidEndEditing.bind(onNext: { [unowned self]  in
-      self.searchBar.setShowsCancelButton(false, animated: true)
+    searchBar.rx.textDidEndEditing.bind(onNext: { [weak self]  in
+      guard let strongSelf = self else {return}
+      strongSelf.searchBar.setShowsCancelButton(false, animated: true)
     }).disposed(by: disposeBag)
     
-    searchBar.rx.cancelButtonClicked.bind(onNext: { [unowned self]  in
-      self.searchBar.endEditing(true)
+    searchBar.rx.cancelButtonClicked.bind(onNext: { [weak self]  in
+      guard let strongSelf = self else {return}
+      strongSelf.searchBar.endEditing(true)
     }).disposed(by: disposeBag)
     
     sectionedUser.asObservable().bind(to: tableView.rx.items(dataSource: datasource())).disposed(by: disposeBag)
@@ -107,36 +111,39 @@ class RoomInviteUserViewController: UIViewController {
       ).disposed(by: disposeBag)
     
     selectedUsers.asObservable()
-      .bind(onNext: { [unowned self] in
-        self.navigationItem.titleView = self.setTitle(title: "Add Participant", subtitle: " \($0.count) / 256")
-        self.navigationItem.rightBarButtonItem?.isEnabled = ($0.count > 0)
-        self.selectedUserCollectionViewHeight.constant = ($0.count > 0) ? 80 : 0
-        UIView.animate(withDuration: 0.2, animations: { self.view.layoutIfNeeded() })
+      .bind(onNext: { [weak self] in
+        guard let strongSelf = self else {return}
+        strongSelf.navigationItem.titleView = strongSelf.setTitle(title: "Add Participant", subtitle: " \($0.count) / 256")
+        strongSelf.navigationItem.rightBarButtonItem?.isEnabled = ($0.count > 0)
+        strongSelf.selectedUserCollectionViewHeight.constant = ($0.count > 0) ? 80 : 0
+        UIView.animate(withDuration: 0.2, animations: { strongSelf.view.layoutIfNeeded() })
       })
       .disposed(by: disposeBag)
     
     selectedUserCollectionView.rx
       .modelSelected(User.self)
-      .bind(onNext: { [unowned self] user in
-        guard let index = self.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
-        self.selectedUsers.value.remove(at: index)
+      .bind(onNext: { [weak self] user in
+        guard let strongSelf = self else {return}
+        guard let index = strongSelf.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
+        strongSelf.selectedUsers.value.remove(at: index)
         
-        guard let rows = self.tableView.indexPathsForSelectedRows else {return}
+        guard let rows = strongSelf.tableView.indexPathsForSelectedRows else {return}
         guard let userIndex = rows.index(where: {
-          guard let cell = self.tableView.cellForRow(at: $0) as? UserCell else {return false}
+          guard let cell = strongSelf.tableView.cellForRow(at: $0) as? UserCell else {return false}
           return user.uid == cell.user?.uid
         }) else {return}
-        self.tableView.deselectRow(at: rows[userIndex], animated: false)
+        strongSelf.tableView.deselectRow(at: rows[userIndex], animated: false)
       })
       .disposed(by: disposeBag)
     
     tableView.rx
       .modelSelected(SectionItem.self)
-      .bind(onNext: { [unowned self] model in
+      .bind(onNext: { [weak self] model in
+        guard let strongSelf = self else {return}
         switch model {
         case .UserSectionItem(user: let user):
-          guard !self.selectedUsers.value.contains(where: {$0.uid == user.uid}) else {return}
-          self.selectedUsers.value.append(user)
+          guard !strongSelf.selectedUsers.value.contains(where: {$0.uid == user.uid}) else {return}
+          strongSelf.selectedUsers.value.append(user)
           break
         }
       })
@@ -144,18 +151,20 @@ class RoomInviteUserViewController: UIViewController {
     
     tableView.rx
       .modelDeselected(SectionItem.self)
-      .bind(onNext: { [unowned self] model in
+      .bind(onNext: { [weak self] model in
+        guard let strongSelf = self else {return}
         switch model {
         case .UserSectionItem(user: let user):
-          guard let index = self.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
-          self.selectedUsers.value.remove(at: index)
+          guard let index = strongSelf.selectedUsers.value.index(where: { $0.uid == user.uid }) else {return}
+          strongSelf.selectedUsers.value.remove(at: index)
           break
         }
       })
       .disposed(by: disposeBag)
     
-    filteredUsers.asObservable().bind(onNext: { [unowned self] users in
-      self.sectionedUser.value = users.sorted(by: {
+    filteredUsers.asObservable().bind(onNext: { [weak self] users in
+      guard let strongSelf = self else {return}
+      strongSelf.sectionedUser.value = users.sorted(by: {
         guard let name1 = $0.name, let name2 = $1.name else {return false}
         return name1 < name2
       }).categorise({ $0.name?.first ?? Character("") }).map({ key, items in
@@ -171,18 +180,22 @@ class RoomInviteUserViewController: UIViewController {
   
   @IBAction func invite(_ sender: Any) {
     guard let room = room else {return}
-    FirebaseManager.shared.invite(user: selectedUsers.value, to: room, completion: { [unowned self] _ in self.popVC() })
+    FirebaseManager.shared.invite(user: selectedUsers.value, to: room, completion: { [weak self] _ in
+      guard let strongSelf = self else {return}
+      strongSelf.popVC()
+    })
   }
   
   @objc func didChangeSelectedUser(_ notification: NSNotification) {
     guard let users = notification.object as? [User] else {return}
-    selectedUsers.value.difference(users).forEach({ [unowned self] user in
+    selectedUsers.value.difference(users).forEach({ [weak self] user in
+      guard let strongSelf = self else {return}
       guard let rows = tableView.indexPathsForSelectedRows else {return}
       guard let userIndex = rows.index(where: {
-        guard let cell = self.tableView.cellForRow(at: $0) as? UserCell else {return false}
+        guard let cell = strongSelf.tableView.cellForRow(at: $0) as? UserCell else {return false}
         return user.uid == cell.user?.uid
       }) else {return}
-      self.tableView.deselectRow(at: rows[userIndex], animated: false)
+      strongSelf.tableView.deselectRow(at: rows[userIndex], animated: false)
     })
     selectedUsers.value = users
   }
@@ -225,12 +238,13 @@ class RoomInviteUserViewController: UIViewController {
 
 extension RoomInviteUserViewController {
   func datasource() -> RxTableViewSectionedReloadDataSource<MultipleSectionModel> {
-    return RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: { [unowned self] datasource, table, indexPath, _ in
+    return RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: { [weak self] datasource, table, indexPath, _ in
+      guard let strongSelf = self else {return UITableViewCell.init(style: .default, reuseIdentifier: "cell")}
       switch datasource[indexPath] {
       case .UserSectionItem(user: let user):
         let cell: UserCell = table.dequeueReusableCell(forIndexPath: indexPath)
         cell.configure(user: user)
-        cell.setSelected(self.selectedUsers.value.contains(where: { $0.uid == user.uid }), animated: false)
+        cell.setSelected(strongSelf.selectedUsers.value.contains(where: { $0.uid == user.uid }), animated: false)
         return cell
       }
     }, titleForHeaderInSection: { datasource, indexPath in

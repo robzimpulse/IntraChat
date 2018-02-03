@@ -23,8 +23,9 @@ class VideoManager: NSObject {
   }
   
   func getThumbnail(completion: @escaping ((UIImage) -> Void)){
-    DispatchQueue.global().async { [unowned self] in
-      let OCGImage = try? self.thumbnailGenerator.copyCGImage(at: self.time, actualTime: nil)
+    DispatchQueue.global().async { [weak self] in
+      guard let strongSelf = self else {return}
+      let OCGImage = try? strongSelf.thumbnailGenerator.copyCGImage(at: strongSelf.time, actualTime: nil)
       guard let CGImage = OCGImage else {return}
       let image = UIImage(cgImage: CGImage)
       DispatchQueue.main.async { completion(image) }

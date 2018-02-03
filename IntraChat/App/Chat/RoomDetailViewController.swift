@@ -43,8 +43,9 @@ class RoomDetailViewController: FormViewController {
           row.cellUpdate({ cell, _ in
             cell.accessoryType = .disclosureIndicator
           })
-          row.onCellSelection({ [unowned self] cell, _ in
-            self.performSegue(withIdentifier: "invite", sender: self)
+          row.onCellSelection({ [weak self] cell, _ in
+            guard let strongSelf = self else {return}
+            strongSelf.performSegue(withIdentifier: "invite", sender: self)
           })
         }
         
@@ -107,15 +108,16 @@ class RoomDetailViewController: FormViewController {
         row.cellUpdate({ cell, _ in
           cell.textLabel?.textColor = UIColor.black
         })
-        row.onCellSelection({ [unowned self] cell, _ in
+        row.onCellSelection({ [weak self] cell, _ in
+          guard let strongSelf = self else {return}
           let indicator = UIActivityIndicatorView(frame: cell.contentView.frame)
           indicator.color = UIColor.black
           indicator.startAnimating()
           cell.contentView.addSubview(indicator)
           cell.isUserInteractionEnabled = false
           cell.textLabel?.alpha = 0
-          guard let room = self.room else {return}
-          FirebaseManager.shared.exit(room: room, completion: { _ in self.popToRootVC() })
+          guard let room = strongSelf.room else {return}
+          FirebaseManager.shared.exit(room: room, completion: { _ in strongSelf.popToRootVC() })
         })
     }
   }

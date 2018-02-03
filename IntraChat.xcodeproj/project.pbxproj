@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E04E4242026041300804B49 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E04E4232026041300804B49 /* UITableViewCell.swift */; };
+		3E04E426202604A900804B49 /* UICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E04E425202604A900804B49 /* UICollectionViewCell.swift */; };
 		3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1553622002688A007BD985 /* AuthInitialViewController.swift */; };
 		3E15536520027082007BD985 /* AuthSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E15536420027082007BD985 /* AuthSignInViewController.swift */; };
 		3E15536720027089007BD985 /* AuthSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E15536620027089007BD985 /* AuthSignUpViewController.swift */; };
@@ -56,6 +58,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E04E4232026041300804B49 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
+		3E04E425202604A900804B49 /* UICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCell.swift; sourceTree = "<group>"; };
 		3E1553622002688A007BD985 /* AuthInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInitialViewController.swift; sourceTree = "<group>"; };
 		3E15536420027082007BD985 /* AuthSignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSignInViewController.swift; sourceTree = "<group>"; };
 		3E15536620027089007BD985 /* AuthSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSignUpViewController.swift; sourceTree = "<group>"; };
@@ -256,6 +260,8 @@
 			isa = PBXGroup;
 			children = (
 				3EE3D7152000D74200D77A8F /* BaseMappable.swift */,
+				3E04E4232026041300804B49 /* UITableViewCell.swift */,
+				3E04E425202604A900804B49 /* UICollectionViewCell.swift */,
 				3EE3D70F2000C34B00D77A8F /* UIViewController.swift */,
 				3EC902602003AC6700BEBA71 /* UIStoryboardSegue.swift */,
 				3E2090252003D7EA0062BA7C /* UINavigationController.swift */,
@@ -520,6 +526,7 @@
 				3E987DC9201778030073069E /* UserSectionModel.swift in Sources */,
 				842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */,
 				3EDA595020127C1900D0F32B /* LocationViewer.swift in Sources */,
+				3E04E4242026041300804B49 /* UITableViewCell.swift in Sources */,
 				3E2090262003D7EA0062BA7C /* UINavigationController.swift in Sources */,
 				841F762D200E10D900D5BDAD /* VideoManager.swift in Sources */,
 				3E2499302009D1920058639B /* AuthNavigationController.swift in Sources */,
@@ -528,6 +535,7 @@
 				3E6A22E920005EA4006A5607 /* RoomListViewController.swift in Sources */,
 				3EE98595201321C60013D4F4 /* SelectedUserCell.swift in Sources */,
 				3EC902612003AC6700BEBA71 /* UIStoryboardSegue.swift in Sources */,
+				3E04E426202604A900804B49 /* UICollectionViewCell.swift in Sources */,
 				3E6A230120009652006A5607 /* RoomChatViewController.swift in Sources */,
 				3E46DF05201B497D002962D7 /* RoomInviteUserViewController.swift in Sources */,
 				3E6A22F1200065F0006A5607 /* Room.swift in Sources */,

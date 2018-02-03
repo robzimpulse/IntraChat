@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import Firebase
 import RealmSwift
 import UserNotifications
@@ -15,6 +17,8 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow?
+  
+  let disposeBag = DisposeBag()
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     FirebaseApp.configure()

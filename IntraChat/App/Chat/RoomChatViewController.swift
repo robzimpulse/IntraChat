@@ -49,10 +49,11 @@ class RoomChatViewController: MessagesViewController {
   
   lazy var filePicker: FileBrowser = {
     let filePicker = FileBrowser()
-    filePicker.didSelectFile = { [unowned self] (file: FBFile) -> Void in
+    filePicker.didSelectFile = { [weak self] (file: FBFile) -> Void in
+      guard let strongSelf = self else {return}
       print(file.filePath)
-      self.showAlert(title: "Sorry", message: "This feature is not implemented yet.", completion: {
-        self.reloadInputViews()
+      strongSelf.showAlert(title: "Sorry", message: "This feature is not implemented yet.", completion: {
+        strongSelf.reloadInputViews()
       })
     }
     return filePicker
@@ -63,10 +64,11 @@ class RoomChatViewController: MessagesViewController {
     locationPicker.useCurrentLocationAsHint = true
     locationPicker.searchBarPlaceholder = "Search or Enter an address"
     locationPicker.searchHistoryLabel = "Previously searched"
-    locationPicker.completion = { [unowned self] location in
-      guard let room = self.room else {return}
+    locationPicker.completion = { [weak self] location in
+      guard let strongSelf = self else {return}
+      guard let room = strongSelf.room else {return}
       guard let location = location else {return}
-      let message = Message(roomId: room.id ?? "", location: location.location, sender: self.currentSender().id, date: Date())
+      let message = Message(roomId: room.id ?? "", location: location.location, sender: strongSelf.currentSender().id, date: Date())
       FirebaseManager.shared.create(message: message, room: room, completion: { error, _ in
         guard error == nil else {return}
         FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
@@ -99,18 +101,22 @@ class RoomChatViewController: MessagesViewController {
       $0.spacing = .flexible
       $0.image = #imageLiteral(resourceName: "icon_add").resizeWithWidth(height - 14).resizeWithHeight(height - 14)
       $0.setSize(CGSize(width: height, height: height), animated: true)
-    }).onTouchUpInside({ [unowned self]  _ in
-      self.showActionSheet(title: nil, actions: [
+    }).onTouchUpInside({ [weak self]  _ in
+      guard let strongSelf = self else {return}
+      strongSelf.showActionSheet(title: nil, actions: [
         UIAlertAction(title: "Media", style: .default, handler: { _ in
-          self.presentVC(self.galleryController)
+          strongSelf.presentVC(strongSelf.galleryController)
         }),
         UIAlertAction(title: "Document", style: .default, handler: { _ in
-          self.presentVC(self.filePicker)
+          strongSelf.presentVC(strongSelf.filePicker)
         }),
         UIAlertAction(title: "Location", style: .default, handler: { _ in
-          self.presentVC(self.locationPicker)
+          strongSelf.presentVC(strongSelf.locationPicker)
         })
-        ], cancel: { [unowned self] in self.reloadInputViews() })
+        ], cancel: { [weak self] in
+          guard let strongSelf = self else {return}
+          strongSelf.reloadInputViews()
+      })
     }).onTextViewDidChange({ button, textView in
       let width = textView.text.isBlank ? height : 0
       button.setSize(CGSize(width: width, height: height), animated: true)
@@ -167,59 +173,63 @@ class RoomChatViewController: MessagesViewController {
     
     // Update subtitle for room when user updated
     users.asObservable()
-      .bind(onNext: { [unowned self] strings in
+      .bind(onNext: { [weak self] strings in
+        guard let strongSelf = self else {return}
         User.get(completion: { users in
           guard let users = users else {return}
           let totalUsers = users.filter("uid IN %@", strings)
           let totalOnline = totalUsers.filter("online = true")
-          self.subtitleLabel.text = " \(totalUsers.count) Member, \(totalOnline.count) Online"
+          strongSelf.subtitleLabel.text = " \(totalUsers.count) Member, \(totalOnline.count) Online"
         })
       })
       .disposed(by: disposeBag)
     
     // Update message when new message appear
-    Message.get(completion: { [unowned self] messages in
+    Message.get(completion: { [weak self] messages in
+      guard let strongSelf = self else {return}
       guard let messages = messages else {return}
-      guard let roomId = self.room?.id else {return}
+      guard let roomId = strongSelf.room?.id else {return}
       Observable
         .changeset(from: messages.filter("roomId = '\(roomId)'"))
         .bind(onNext: { results, changes in
-          self.messageList = results.flatMap({ Chat(message: $0) })
-          self.messagesCollectionView.reloadData()
-          self.messagesCollectionView.scrollToBottom(animated: changes != nil)
+          strongSelf.messageList = results.flatMap({ Chat(message: $0) })
+          strongSelf.messagesCollectionView.reloadData()
+          strongSelf.messagesCollectionView.scrollToBottom(animated: changes != nil)
         })
-        .disposed(by: self.disposeBag)
+        .disposed(by: strongSelf.disposeBag)
     })
     
     // Update user variable when room member invited / kicked
-    Room.get(completion: { [unowned self] rooms in
+    Room.get(completion: { [weak self] rooms in
+      guard let strongSelf = self else {return}
       guard let rooms = rooms else {return}
-      guard let roomId = self.room?.id else {return}
+      guard let roomId = strongSelf.room?.id else {return}
       Observable
         .changeset(from: rooms.filter("id = '\(roomId)'"))
         .bind(onNext: { results, _ in
           guard let room = results.first else {return}
           User.get(completion: { users in
             guard let users = users else {return}
-            self.users.value = users
+            strongSelf.users.value = users
               .flatMap({ $0.uid })
               .filter({ room.users.contains($0) })
           })
         })
-        .disposed(by: self.disposeBag)
+        .disposed(by: strongSelf.disposeBag)
     })
     
     // Update user variable when user online
-    User.get(completion: { [unowned self] users in
+    User.get(completion: { [weak self] users in
+      guard let strongSelf = self else {return}
       guard let users = users else {return}
       Observable
         .changeset(from: users)
         .bind(onNext: { results, _ in
-          self.users.value = results
+          strongSelf.users.value = results
             .flatMap({ $0.uid })
-            .filter({ self.users.value.contains($0) })
+            .filter({ strongSelf.users.value.contains($0) })
         })
-        .disposed(by: self.disposeBag)
+        .disposed(by: strongSelf.disposeBag)
     })
     
   }
@@ -346,7 +356,8 @@ extension RoomChatViewController: MessageCellDelegate {
   func didTapMessage(in cell: MessageCollectionViewCell) {
     guard let index = messagesCollectionView.indexPath(for: cell) else {return}
     let chat = messageList[index.section]
-    chat.getMessage(completion: { [unowned self] message in
+    chat.getMessage(completion: { [weak self] message in
+      guard let strongSelf = self else {return}
       guard let message = message else {return}
       switch chat.data {
       case .text(let text):
@@ -355,14 +366,14 @@ extension RoomChatViewController: MessageCellDelegate {
       case .photo(_):
         guard let imageUrl = message.contentImageUrl, let url = URL(string: imageUrl) else {return}
         let lightboxController = LightboxController(images: [LightboxImage(imageURL: url)], startIndex: 0)
-        self.presentVC(lightboxController)
+        strongSelf.presentVC(lightboxController)
         break
       case .video(file: let url, thumbnail: let thumbnail):
         let lightboxImage = LightboxImage(image: thumbnail, text: "", videoURL: url)
         let lightboxController = LightboxController(images: [lightboxImage], startIndex: 0)
-        self.presentVC(lightboxController)
+        strongSelf.presentVC(lightboxController)
       case .location(let location):
-        let backButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_chevron_left"), style: .plain, target: self, action: #selector(self.back(_:)))
+        let backButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_chevron_left"), style: .plain, target: strongSelf, action: #selector(strongSelf.back(_:)))
         backButton.tintColor = UIColor.white
         let controller = ICLocationViewerController(location: location, forName: chat.sender.displayName)
         controller.titleColor = UIColor.white
@@ -370,7 +381,7 @@ extension RoomChatViewController: MessageCellDelegate {
         controller.leftCallOutAction = { print("left callout") }
         controller.shareAction = { location in print("share \(location.coordinate)") }
         controller.backButton = backButton
-        self.pushVC(controller)
+        strongSelf.pushVC(controller)
         break
       default:
         break
@@ -426,22 +437,22 @@ extension RoomChatViewController: UINavigationControllerDelegate, UIVideoEditorC
     editor.dismissVC(completion: { print(error) })
   }
   func videoEditorController(_ editor: UIVideoEditorController, didSaveEditedVideoToPath editedVideoPath: String) {
-    editor.dismissVC(completion: { [unowned self] in
-      self.galleryController.dismissVC(completion: {
+    editor.dismissVC(completion: { [weak self] in
+      guard let strongSelf = self else {return}
+      strongSelf.galleryController.dismissVC(completion: {
         let manager = VideoManager(url: URL(fileURLWithPath: editedVideoPath))
-        
         manager.getThumbnail(completion: { image in
           manager.convertToMp4(quality: AVAssetExportPresetHighestQuality, handler: { session in
             switch session.status {
             case .completed:
-              guard let room = self.room else {return}
+              guard let room = strongSelf.room else {return}
               guard let roomId = room.id else {return}
               guard let convertedUrl = session.outputURL else {return}
               let message = Message(
                 roomId: roomId,
                 thumbnail: image,
                 video: convertedUrl,
-                sender: self.currentSender().id,
+                sender: strongSelf.currentSender().id,
                 date: Date()
               )
               FirebaseManager.shared.create(message: message, room: room, completion: { error, ref in
@@ -470,7 +481,6 @@ extension RoomChatViewController: UINavigationControllerDelegate, UIVideoEditorC
             case .unknown:
               print("unknown")
             }
-            
           })
         })
       })
@@ -483,11 +493,12 @@ extension RoomChatViewController: TOCropViewControllerDelegate {
     cropViewController.dismissVC(completion: nil)
   }
   func cropViewController(_ cropViewController: TOCropViewController, didCropToImage image: UIImage, rect cropRect: CGRect, angle: Int) {
-    cropViewController.dismissVC(completion: { [unowned self] in
-      self.galleryController.dismissVC(completion: {
-        guard let room = self.room else {return}
+    cropViewController.dismissVC(completion: { [weak self] in
+      guard let strongSelf = self else {return}
+      strongSelf.galleryController.dismissVC(completion: {
+        guard let room = strongSelf.room else {return}
         guard let roomId = room.id else {return}
-        let message = Message(roomId: roomId, image: image, sender: self.currentSender().id, date: Date())
+        let message = Message(roomId: roomId, image: image, sender: strongSelf.currentSender().id, date: Date())
         FirebaseManager.shared.create(message: message, room: room, completion: { error, ref in
           guard let ref = ref else {return}
           FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())

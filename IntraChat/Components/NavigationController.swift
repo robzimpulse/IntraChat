@@ -35,10 +35,11 @@ extension NavigationController: UINavigationControllerDelegate {
   ) {
     theme(VC: viewController)
     if let coordinator = navigationController.topViewController?.transitionCoordinator {
-      coordinator.notifyWhenInteractionEnds({ [unowned self] (context) in
+      coordinator.notifyWhenInteractionEnds({ [weak self] (context) in
+        guard let strongSelf = self else {return}
         guard context.isCancelled else {return}
         guard let VC = context.viewController(forKey: .from) else {return}
-        self.theme(VC: VC)
+        strongSelf.theme(VC: VC)
       })
     }
   }

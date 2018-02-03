@@ -61,87 +61,88 @@ class FirebaseManager: NSObject {
     
     Messaging.messaging().delegate = self
     
-    authListener = Auth.auth().addStateDidChangeListener({ [unowned self] auth, user in
+    authListener = Auth.auth().addStateDidChangeListener({ [weak self] auth, user in
+      guard let strongSelf = self else {return}
       if let user = user {
         
         // Mark: Room Listener
         
-        self.roomRef.observe(.childAdded, with: { snapshot in
+        strongSelf.roomRef.observe(.childAdded, with: { snapshot in
           guard let room = Room(snapshot: snapshot) else {return}
           Room.update(object: room)
           
           // Mark: Message Listener
           
           guard let id = room.id else {return}
-          self.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
+          strongSelf.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
             .observe(.childAdded, with: { snapshot in
               guard let message = Message(snapshot: snapshot) else {return}
               Message.update(object: message)
             })
-          self.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
+          strongSelf.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
             .observe(.childChanged, with: { snapshot in
               guard let message = Message(snapshot: snapshot) else {return}
               Message.update(object: message)
             })
-          self.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
+          strongSelf.messageRef.queryOrdered(byChild: "room").queryEqual(toValue: id)
             .observe(.childRemoved, with: { snapshot in
               guard let message = Message(snapshot: snapshot) else {return}
               Message.delete(object: message)
             })
         })
         
-        self.roomRef.observe(.childRemoved, with: { snapshot in
+        strongSelf.roomRef.observe(.childRemoved, with: { snapshot in
           guard let room = Room(snapshot: snapshot) else {return}
           Room.delete(object: room)
           guard let id = room.id else {return}
-          self.messageRef.queryEqual(toValue: id, childKey: "roomId").removeAllObservers()
+          strongSelf.messageRef.queryEqual(toValue: id, childKey: "roomId").removeAllObservers()
         })
         
-        self.roomRef.observe(.childChanged, with: { snapshot in
+        strongSelf.roomRef.observe(.childChanged, with: { snapshot in
           guard let room = Room(snapshot: snapshot) else {return}
           Room.update(object: room)
         })
         
         // Mark: User Listener
         
-        self.userRef.observe(.childAdded, with: { snapshot in
+        strongSelf.userRef.observe(.childAdded, with: { snapshot in
           guard let user = User(snapshot: snapshot) else {return}
           User.update(object: user)
         })
         
-        self.userRef.observe(.childRemoved, with: { snapshot in
+        strongSelf.userRef.observe(.childRemoved, with: { snapshot in
           guard let user = User(snapshot: snapshot) else {return}
           User.delete(object: user)
         })
         
-        self.userRef.observe(.childChanged, with: { snapshot in
+        strongSelf.userRef.observe(.childChanged, with: { snapshot in
           guard let user = User(snapshot: snapshot) else {return}
           User.update(object: user)
         })
         
-        self.notificationRef.observe(.childAdded, with: { snapshot in
+        strongSelf.notificationRef.observe(.childAdded, with: { snapshot in
           guard let notification = Notification(snapshot: snapshot) else {return}
           guard notification.receiver == user.uid else {return}
-          self.localNotification(object: notification)
+          strongSelf.localNotification(object: notification)
           snapshot.ref.removeValue()
         })
         
-        self.userRef.child(user.uid).updateChildValues(["online": true])
-        self.userRef.child(user.uid).onDisconnectUpdateChildValues(["online": false])
-        self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
+        strongSelf.userRef.child(user.uid).updateChildValues(["online": true])
+        strongSelf.userRef.child(user.uid).onDisconnectUpdateChildValues(["online": false])
+        strongSelf.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
         
         Messaging.messaging().subscribe(toTopic: user.uid)
-        self.lastUid = user.uid
+        strongSelf.lastUid = user.uid
         
       }else{
         
-        self.messageRef.removeAllObservers()
-        self.roomRef.removeAllObservers()
-        self.userRef.removeAllObservers()
-        self.notificationRef.removeAllObservers()
-        if let uid = self.lastUid {
-          defer{ self.lastUid = nil }
-          self.userRef.child(uid).updateChildValues(["online": false])
+        strongSelf.messageRef.removeAllObservers()
+        strongSelf.roomRef.removeAllObservers()
+        strongSelf.userRef.removeAllObservers()
+        strongSelf.notificationRef.removeAllObservers()
+        if let uid = strongSelf.lastUid {
+          defer{ strongSelf.lastUid = nil }
+          strongSelf.userRef.child(uid).updateChildValues(["online": false])
           Messaging.messaging().unsubscribe(fromTopic: uid)
         }
         
@@ -208,8 +209,9 @@ class FirebaseManager: NSObject {
     guard let user = Auth.auth().currentUser else {completion?(nil);return}
     let request = user.createProfileChangeRequest()
     request.displayName = name
-    request.commitChanges(completion: { [unowned self] error in
-      self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
+    request.commitChanges(completion: { [weak self] error in
+      guard let strongSelf = self else {return}
+      strongSelf.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
       completion?(error)
     })
   }
@@ -218,8 +220,9 @@ class FirebaseManager: NSObject {
     guard let user = Auth.auth().currentUser else {completion?(nil);return}
     let request = user.createProfileChangeRequest()
     request.photoURL = photoUrl
-    request.commitChanges(completion: { [unowned self] error in
-      self.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
+    request.commitChanges(completion: { [weak self] error in
+      guard let strongSelf = self else {return}
+      strongSelf.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
       completion?(error)
     })
   }
@@ -289,9 +292,10 @@ class FirebaseManager: NSObject {
   // MARK: Room
   
   func create(room: Room, completion: ((Error?) -> Void)? = nil){
-    roomRef.childByAutoId().setValue(room.keyValue(), withCompletionBlock: { [unowned self] error, ref in
+    roomRef.childByAutoId().setValue(room.keyValue(), withCompletionBlock: { [weak self] error, ref in
+      guard let strongSelf = self else {return}
       guard error == nil else {completion?(error);return}
-      guard let user = self.currentUser() else {return}
+      guard let user = strongSelf.currentUser() else {return}
       room.users.filter({ $0 != user.uid }).forEach({
         FirebaseManager.shared.create(notification: Notification(
           title: "Room Invitation",

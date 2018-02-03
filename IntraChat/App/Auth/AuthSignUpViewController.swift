@@ -31,24 +31,25 @@ class AuthSignUpViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    submitButton.rx.tap.bind(onNext: { [unowned self] in
-      guard let username = self.usernameTextField.text else {return}
-      guard let email = self.emailTextField.text else {return}
-      guard let password = self.passwordTextField.text else {return}
-      guard let confirmPassword = self.confirmPasswordTextField.text else {return}
+    submitButton.rx.tap.bind(onNext: { [weak self] in
+      guard let strongSelf = self else {return}
+      guard let username = strongSelf.usernameTextField.text else {return}
+      guard let email = strongSelf.emailTextField.text else {return}
+      guard let password = strongSelf.passwordTextField.text else {return}
+      guard let confirmPassword = strongSelf.confirmPasswordTextField.text else {return}
       guard password == confirmPassword else {return}
-      self.submitButton.isEnabled = false
+      strongSelf.submitButton.isEnabled = false
       Auth.auth().createUser(withEmail: email, password: password, completion: { user, error in
         guard let user = user else {
           print(error as Any)
-          self.submitButton.isEnabled = true
+          strongSelf.submitButton.isEnabled = true
           return
         }
         let request = user.createProfileChangeRequest()
         request.displayName = username
         request.commitChanges(completion: { error in
           FirebaseManager.shared.userRef.child(user.uid).updateChildValues(User(user: user).keyValue() ?? [:])
-          self.navigationController?.dismissVC(completion: nil)
+          strongSelf.navigationController?.dismissVC(completion: nil)
           print(error as Any)
         })
       })

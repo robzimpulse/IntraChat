@@ -18,6 +18,8 @@ import TOCropViewController
 
 class RoomInfoViewController: UIViewController {
   
+  typealias cell = SelectedUserCell
+  
   @IBOutlet weak var collectionView: UICollectionView!
   @IBOutlet weak var photoImageView: UIImageView!
   @IBOutlet weak var roomNameContainer: UIView!
@@ -49,24 +51,25 @@ class RoomInfoViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    photoImageView.addTapGesture(action: { [unowned self] _ in self.presentVC(self.galleryController) })
+    photoImageView.addTapGesture(action: { [weak self] _ in
+      guard let strongSelf = self else {return}
+      strongSelf.presentVC(strongSelf.galleryController)
+    })
     
-    collectionView.register(
-      UINib(nibName: "SelectedUserCell", bundle: nil),
-      forCellWithReuseIdentifier: "SelectedUserCell"
-    )
+    collectionView.register(cell.nib(), forCellWithReuseIdentifier: cell.identifier())
     
     users.asObservable().bind(
-      to: collectionView.rx.items(cellIdentifier: "SelectedUserCell", cellType: SelectedUserCell.self),
+      to: collectionView.rx.items(cellIdentifier: cell.identifier(), cellType: cell.self),
       curriedArgument: { row, user, cell in cell.configure(user: user) }
-      ).disposed(by: disposeBag)
+    ).disposed(by: disposeBag)
     
     collectionView.rx
       .modelSelected(User.self)
-      .bind(onNext: { [unowned self] user in
-        guard let index = self.users.value.index(where: { $0.uid == user.uid }) else {return}
-        self.users.value.remove(at: index)
-        NotificationCenter.default.post(name: .didChangeSelectedUser, object: self.users.value)
+      .bind(onNext: { [weak self] user in
+        guard let strongSelf = self else {return}
+        guard let index = strongSelf.users.value.index(where: { $0.uid == user.uid }) else {return}
+        strongSelf.users.value.remove(at: index)
+        NotificationCenter.default.post(name: .didChangeSelectedUser, object: strongSelf.users.value)
       })
       .disposed(by: disposeBag)
   }
@@ -78,20 +81,21 @@ class RoomInfoViewController: UIViewController {
     guard !name.isBlank else {return}
     photoImageView.addSubview(progressView)
     progressView.centerInSuperView()
-    FirebaseManager.shared.upload(image: icon, handleProgress: { [unowned self] snapshot in
+    FirebaseManager.shared.upload(image: icon, handleProgress: { [weak self] snapshot in
+      guard let strongSelf = self else {return}
       guard let progress = snapshot.progress?.fractionCompleted.toCGFloat else {return}
-      self.progressView.updateProgress(progress)
-    }, completion: { [unowned self] meta, _ in
-      self.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
-        self.progressView.removeFromSuperview()
+      strongSelf.progressView.updateProgress(progress)
+    }, completion: { [weak self] meta, _ in
+      guard let strongSelf = self else {return}
+      strongSelf.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
+        strongSelf.progressView.removeFromSuperview()
         guard let meta = meta else {return}
         guard let icon = meta.downloadURL()?.absoluteString else {return}
-        self.users.value.append(User(user: user))
-        let room = Room(name: name, icon: icon, users: self.users.value)
+        strongSelf.users.value.append(User(user: user))
+        let room = Room(name: name, icon: icon, users: strongSelf.users.value)
         FirebaseManager.shared.create(room: room, completion: { error in
           guard error == nil else {return}
-          
-          self.navigationController?.dismissVC(completion: nil)
+          strongSelf.navigationController?.dismissVC(completion: nil)
         })
       })
     })
@@ -104,7 +108,7 @@ extension RoomInfoViewController: GalleryControllerDelegate {
   func galleryController(_ controller: GalleryController, didSelectVideo video: Video) {}
   
   func galleryController(_ controller: GalleryController, didSelectImages images: [Image]) {
-    Image.resolve(images: images, completion: { [unowned self] in
+    Image.resolve(images: images, completion: { [weak self] in
       guard let image = $0.flatMap({ $0 }).first else {return}
       let cropController = TOCropViewController(croppingStyle: .circular, image: image)
       cropController.delegate = self
@@ -130,6 +134,9 @@ extension RoomInfoViewController: TOCropViewControllerDelegate {
   func cropViewController(_ cropViewController: TOCropViewController, didCropToCircleImage image: UIImage, rect cropRect: CGRect, angle: Int) {
     photoImageView.contentMode = .scaleAspectFill
     photoImageView.image = image
-    cropViewController.dismissVC(completion: { [unowned self] in self.galleryController.dismissVC(completion: nil) })
+    cropViewController.dismissVC(completion: { [weak self] in
+      guard let strongSelf = self else {return}
+      strongSelf.galleryController.dismissVC(completion: nil)
+    })
   }
 }
