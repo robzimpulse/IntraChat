@@ -44,24 +44,11 @@ extension MultipleSectionModel {
   }
 }
 
-protocol ReusableView: class {
-  static var reuseIdentifier: String {get}
-}
-
-extension ReusableView {
-  static var reuseIdentifier: String {
-    return String(describing: self)
-  }
-}
-
-extension UITableViewCell: ReusableView {
-}
-
 extension UITableView {
   
   func dequeueReusableCell<T: UITableViewCell>(forIndexPath indexPath: IndexPath) -> T {
-    guard let cell = dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as? T else {
-      fatalError("Could not dequeue cell with identifier: \(T.reuseIdentifier)")
+    guard let cell = dequeueReusableCell(withIdentifier: T.identifier(), for: indexPath) as? T else {
+      fatalError("Could not dequeue cell with identifier: \(T.identifier())")
     }
     
     return cell

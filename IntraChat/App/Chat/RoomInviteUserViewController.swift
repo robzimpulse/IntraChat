@@ -14,6 +14,10 @@ import RxDataSources
 
 class RoomInviteUserViewController: UIViewController {
   
+  typealias cell1 = UserCell
+  
+  typealias cell2 = SelectedUserCell
+  
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var searchBar: UISearchBar!
   @IBOutlet weak var selectedUserCollectionView: UICollectionView!
@@ -48,15 +52,9 @@ class RoomInviteUserViewController: UIViewController {
     
     tableView.sectionIndexColor = UIColor.black
     
-    tableView.register(
-      UINib(nibName: "UserCell", bundle: nil),
-      forCellReuseIdentifier: "UserCell"
-    )
+    tableView.register(cell1.nib(), forCellReuseIdentifier: cell1.identifier())
     
-    selectedUserCollectionView.register(
-      UINib(nibName: "SelectedUserCell", bundle: nil),
-      forCellWithReuseIdentifier: "SelectedUserCell"
-    )
+    selectedUserCollectionView.register(cell2.nib(), forCellWithReuseIdentifier: cell2.identifier())
     
     User.get(completion: { [unowned self] users in
       guard let users = users else {return}
@@ -104,14 +102,14 @@ class RoomInviteUserViewController: UIViewController {
     sectionedUser.asObservable().bind(to: tableView.rx.items(dataSource: datasource())).disposed(by: disposeBag)
     
     selectedUsers.asObservable().bind(
-      to: selectedUserCollectionView.rx.items(cellIdentifier: "SelectedUserCell", cellType: SelectedUserCell.self),
+      to: selectedUserCollectionView.rx.items(cellIdentifier: cell2.identifier(), cellType: cell2.self),
       curriedArgument: { row, user, cell in cell.configure(user: user) }
       ).disposed(by: disposeBag)
     
     selectedUsers.asObservable()
       .bind(onNext: { [weak self] in
         guard let strongSelf = self else {return}
-        strongSelf.navigationItem.titleView = strongSelf.setTitle(title: "Add Participant", subtitle: " \($0.count) / 256")
+        strongSelf.navigationItem.titleView = Helper.getTitleView(title: "Add Participant", subtitle: " \($0.count) / 256")
         strongSelf.navigationItem.rightBarButtonItem?.isEnabled = ($0.count > 0)
         strongSelf.selectedUserCollectionViewHeight.constant = ($0.count > 0) ? 80 : 0
         UIView.animate(withDuration: 0.2, animations: { strongSelf.view.layoutIfNeeded() })
@@ -196,34 +194,6 @@ class RoomInviteUserViewController: UIViewController {
       strongSelf.tableView.deselectRow(at: rows[userIndex], animated: false)
     })
     selectedUsers.value = users
-  }
-  
-  private func setTitle(title: String?, subtitle: String?) -> UIView {
-    let titleLabel = UILabel(frame: CGRect(x:0, y:-5, width:0, height:0))
-    
-    titleLabel.backgroundColor = UIColor.clear
-    titleLabel.textColor = .white
-    titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
-    titleLabel.text = title
-    titleLabel.sizeToFit()
-    
-    let subtitleLabel = UILabel(frame: CGRect(x:0, y:18, width:0, height:0))
-    subtitleLabel.backgroundColor = UIColor.clear
-    subtitleLabel.textColor = .lightGray
-    subtitleLabel.font = UIFont.systemFont(ofSize: 12)
-    subtitleLabel.text = subtitle
-    subtitleLabel.sizeToFit()
-    
-    let width = max(titleLabel.frame.size.width, subtitleLabel.frame.size.width)
-    let titleView = UIView(frame: CGRect(x:0, y:0, width:width, height:30))
-    titleView.addSubview(titleLabel)
-    titleView.addSubview(subtitleLabel)
-    
-    let widthDiff = subtitleLabel.frame.size.width - titleLabel.frame.size.width
-    let newX = widthDiff / 2
-    if widthDiff < 0 { subtitleLabel.frame.origin.x = abs(newX) }
-    else { titleLabel.frame.origin.x = newX }
-    return titleView
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

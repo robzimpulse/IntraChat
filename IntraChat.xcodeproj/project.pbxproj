@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3E04E4242026041300804B49 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E04E4232026041300804B49 /* UITableViewCell.swift */; };
 		3E04E426202604A900804B49 /* UICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E04E425202604A900804B49 /* UICollectionViewCell.swift */; };
+		3E11EC182026ECEA0039932D /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E11EC172026ECEA0039932D /* Helper.swift */; };
 		3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1553622002688A007BD985 /* AuthInitialViewController.swift */; };
 		3E15536520027082007BD985 /* AuthSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E15536420027082007BD985 /* AuthSignInViewController.swift */; };
 		3E15536720027089007BD985 /* AuthSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E15536620027089007BD985 /* AuthSignUpViewController.swift */; };
@@ -60,6 +61,7 @@
 /* Begin PBXFileReference section */
 		3E04E4232026041300804B49 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		3E04E425202604A900804B49 /* UICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCell.swift; sourceTree = "<group>"; };
+		3E11EC172026ECEA0039932D /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		3E1553622002688A007BD985 /* AuthInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInitialViewController.swift; sourceTree = "<group>"; };
 		3E15536420027082007BD985 /* AuthSignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSignInViewController.swift; sourceTree = "<group>"; };
 		3E15536620027089007BD985 /* AuthSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSignUpViewController.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				3E6A22EF200065E4006A5607 /* Model */,
 				3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */,
 				841F762C200E10D900D5BDAD /* VideoManager.swift */,
+				3E11EC172026ECEA0039932D /* Helper.swift */,
 				8451A0D52005CDE40097BED7 /* Transform.swift */,
 				3E36AEDD2017A7FC0083B45B /* Constant.swift */,
 			);
@@ -545,6 +548,7 @@
 				3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */,
 				3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */,
 				3E36AEDE2017A7FC0083B45B /* Constant.swift in Sources */,
+				3E11EC182026ECEA0039932D /* Helper.swift in Sources */,
 				3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */,
 				3E6A22EE200064BD006A5607 /* ProfileViewController.swift in Sources */,
 				3E6A22FE200087BF006A5607 /* RoomCell.swift in Sources */,

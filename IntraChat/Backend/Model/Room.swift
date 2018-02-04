@@ -12,11 +12,17 @@ import ObjectMapper
 
 class Room: Object, Mappable, FirebaseModel {
   
+  enum typeRoom: String {
+    case personal = "personal"
+    case group = "group"
+  }
+  
   @objc dynamic var id: String?
   @objc dynamic var name: String?
   @objc dynamic var icon: String?
   @objc dynamic var lastChat: Date?
   @objc dynamic var _users: String?
+  @objc dynamic var type: String = typeRoom.personal.rawValue
   @objc dynamic var unread: Int = 0
   
   override static func primaryKey() -> String? { return "id" }
@@ -30,11 +36,20 @@ class Room: Object, Mappable, FirebaseModel {
     return ["users"]
   }
   
+  convenience init(name: String, icon: String, user: User) {
+    self.init()
+    self.name = name
+    self.icon = icon
+    self.users = [user.uid ?? ""]
+    self.type = typeRoom.personal.rawValue
+  }
+  
   convenience init(name: String, icon: String, users: [User]) {
     self.init()
     self.name = name
     self.icon = icon
     self.users = users.flatMap({ $0.uid })
+    self.type = typeRoom.group.rawValue
   }
   
   // MARK: Mappable
@@ -48,6 +63,7 @@ class Room: Object, Mappable, FirebaseModel {
     name <- map["name"]
     icon <- map["icon"]
     users <- map["users"]
+    type <- map["type"]
     lastChat <- (map["lastChat"], Transform.date)
   }
   
@@ -57,6 +73,7 @@ class Room: Object, Mappable, FirebaseModel {
     array["name"] = name
     array["icon"] = icon
     array["users"] = users
+    array["type"] = type
     return array
   }
   
