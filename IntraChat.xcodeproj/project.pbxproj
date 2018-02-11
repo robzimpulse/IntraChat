@@ -9,13 +9,14 @@
 /* Begin PBXBuildFile section */
 		3E04E4242026041300804B49 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E04E4232026041300804B49 /* UITableViewCell.swift */; };
 		3E04E426202604A900804B49 /* UICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E04E425202604A900804B49 /* UICollectionViewCell.swift */; };
+		3E0C718B2030718D00F3F517 /* GroupListUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0C718A2030718D00F3F517 /* GroupListUserViewController.swift */; };
 		3E11EC182026ECEA0039932D /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E11EC172026ECEA0039932D /* Helper.swift */; };
 		3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1553622002688A007BD985 /* AuthInitialViewController.swift */; };
 		3E15536520027082007BD985 /* AuthSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E15536420027082007BD985 /* AuthSignInViewController.swift */; };
 		3E15536720027089007BD985 /* AuthSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E15536620027089007BD985 /* AuthSignUpViewController.swift */; };
 		3E2090172003BBE00062BA7C /* Create Room.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3E2090162003BBE00062BA7C /* Create Room.storyboard */; };
 		3E20901E2003CE650062BA7C /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20901D2003CE650062BA7C /* User.swift */; };
-		3E2090202003D2060062BA7C /* ListUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20901F2003D2060062BA7C /* ListUserViewController.swift */; };
+		3E2090202003D2060062BA7C /* PrivateListUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20901F2003D2060062BA7C /* PrivateListUserViewController.swift */; };
 		3E2090232003D4660062BA7C /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2090212003D4660062BA7C /* UserCell.swift */; };
 		3E2090242003D4660062BA7C /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E2090222003D4660062BA7C /* UserCell.xib */; };
 		3E2090262003D7EA0062BA7C /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2090252003D7EA0062BA7C /* UINavigationController.swift */; };
@@ -61,13 +62,14 @@
 /* Begin PBXFileReference section */
 		3E04E4232026041300804B49 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
 		3E04E425202604A900804B49 /* UICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCell.swift; sourceTree = "<group>"; };
+		3E0C718A2030718D00F3F517 /* GroupListUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupListUserViewController.swift; sourceTree = "<group>"; };
 		3E11EC172026ECEA0039932D /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		3E1553622002688A007BD985 /* AuthInitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInitialViewController.swift; sourceTree = "<group>"; };
 		3E15536420027082007BD985 /* AuthSignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSignInViewController.swift; sourceTree = "<group>"; };
 		3E15536620027089007BD985 /* AuthSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSignUpViewController.swift; sourceTree = "<group>"; };
 		3E2090162003BBE00062BA7C /* Create Room.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Create Room.storyboard"; sourceTree = "<group>"; };
 		3E20901D2003CE650062BA7C /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		3E20901F2003D2060062BA7C /* ListUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListUserViewController.swift; sourceTree = "<group>"; };
+		3E20901F2003D2060062BA7C /* PrivateListUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateListUserViewController.swift; sourceTree = "<group>"; };
 		3E2090212003D4660062BA7C /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		3E2090222003D4660062BA7C /* UserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		3E2090252003D7EA0062BA7C /* UINavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
@@ -140,7 +142,8 @@
 			isa = PBXGroup;
 			children = (
 				3E2090162003BBE00062BA7C /* Create Room.storyboard */,
-				3E20901F2003D2060062BA7C /* ListUserViewController.swift */,
+				3E20901F2003D2060062BA7C /* PrivateListUserViewController.swift */,
+				3E0C718A2030718D00F3F517 /* GroupListUserViewController.swift */,
 				848FE20220045F3F0025B982 /* RoomInfoViewController.swift */,
 			);
 			path = "Create Room";
@@ -527,6 +530,7 @@
 				3E3487EC1FFFDBD1009ED2E0 /* AppDelegate.swift in Sources */,
 				3EDFE004201B5983006215E2 /* RoomDetailViewController.swift in Sources */,
 				3E987DC9201778030073069E /* UserSectionModel.swift in Sources */,
+				3E0C718B2030718D00F3F517 /* GroupListUserViewController.swift in Sources */,
 				842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */,
 				3EDA595020127C1900D0F32B /* LocationViewer.swift in Sources */,
 				3E04E4242026041300804B49 /* UITableViewCell.swift in Sources */,
@@ -559,7 +563,7 @@
 				3EF838FA200CEDAC008993A4 /* Chat.swift in Sources */,
 				8447F73F20061617002B9528 /* Notification.swift in Sources */,
 				3EE3D7102000C34B00D77A8F /* UIViewController.swift in Sources */,
-				3E2090202003D2060062BA7C /* ListUserViewController.swift in Sources */,
+				3E2090202003D2060062BA7C /* PrivateListUserViewController.swift in Sources */,
 				848FE20320045F3F0025B982 /* RoomInfoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

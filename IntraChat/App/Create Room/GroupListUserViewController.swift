@@ -1,8 +1,8 @@
 //
-//  ListUserViewController.swift
+//  GroupListUserViewController.swift
 //  IntraChat
 //
-//  Created by Robyarta on 1/8/18.
+//  Created by Robyarta Ruci on 11/02/18.
 //  Copyright © 2018 Personal. All rights reserved.
 //
 
@@ -12,8 +12,8 @@ import RxSwift
 import RxRealm
 import RxDataSources
 
-class ListUserViewController: UIViewController {
-  
+class GroupListUserViewController: UIViewController {
+
   typealias cell1 = UserCell
   
   typealias cell2 = SelectedUserCell
@@ -54,12 +54,12 @@ class ListUserViewController: UIViewController {
     
     User.get(completion: { [unowned self] users in
       guard let users = users else {return}
-    
+      
       Observable.changeset(from: users).bind(onNext: { results, _ in
         guard let user = FirebaseManager.shared.currentUser() else {return}
         self.users.value = results.toArray().filter({ $0.uid != user.uid })
       }).disposed(by: self.disposeBag)
-
+      
       self.searchBar.rx.text.orEmpty
         .throttle(0.3, scheduler: MainScheduler.instance)
         .distinctUntilChanged()
@@ -97,7 +97,7 @@ class ListUserViewController: UIViewController {
     selectedUsers.asObservable().bind(
       to: selectedUserCollectionView.rx.items(cellIdentifier: cell2.identifier(), cellType: cell2.self),
       curriedArgument: { row, user, cell in cell.configure(user: user) }
-    ).disposed(by: disposeBag)
+      ).disposed(by: disposeBag)
     
     selectedUsers.asObservable()
       .bind(onNext: { [weak self] in
@@ -183,10 +183,10 @@ class ListUserViewController: UIViewController {
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if let destination = segue.destination as? RoomInfoViewController { destination.users.value = selectedUsers.value }
   }
-  
+
 }
 
-extension ListUserViewController {
+extension GroupListUserViewController {
   func datasource() -> RxTableViewSectionedReloadDataSource<MultipleSectionModel> {
     return RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: { [weak self] datasource, table, indexPath, _ in
       guard let strongSelf = self else {return UITableViewCell.init(style: .default, reuseIdentifier: "cell") }
@@ -197,11 +197,10 @@ extension ListUserViewController {
         cell.setSelected(strongSelf.selectedUsers.value.contains(where: { $0.uid == user.uid }), animated: false)
         return cell
       }
-    }, titleForHeaderInSection: { datasource, indexPath in
-      return datasource[indexPath].title
+      }, titleForHeaderInSection: { datasource, indexPath in
+        return datasource[indexPath].title
     }, sectionIndexTitles: { datasource in
       return datasource.sectionModels.map { $0.title }
     })
   }
 }
-
