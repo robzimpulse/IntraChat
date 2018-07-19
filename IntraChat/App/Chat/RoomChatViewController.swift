@@ -66,14 +66,14 @@ class RoomChatViewController: MessagesViewController {
         locationPicker.searchBarPlaceholder = "Search or Enter an address"
         locationPicker.searchHistoryLabel = "Previously searched"
         locationPicker.completion = { [weak self] location in
-            guard let strongSelf = self else {return}
-            guard let room = strongSelf.room else {return}
-            guard let location = location else {return}
-            let message = Message(roomId: room.id ?? "", location: location.location, sender: strongSelf.currentSender().id, date: Date())
-            FirebaseManager.shared.create(message: message, room: room, completion: { error, _ in
-                guard error == nil else {return}
-                FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
-            })
+//            guard let strongSelf = self else {return}
+//            guard let room = strongSelf.room else {return}
+//            guard let location = location else {return}
+//            let message = Message(roomId: room.id ?? "", location: location.location, sender: strongSelf.currentSender().id, date: Date())
+//            FirebaseManager.shared.create(message: message, room: room, completion: { error, _ in
+//                guard error == nil else {return}
+//                FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
+//            })
         }
         let picker = UINavigationController(rootViewController: locationPicker)
         return picker
@@ -269,11 +269,11 @@ extension RoomChatViewController: MessagesDataSource {
         return messageList[indexPath.section]
     }
     
-    func numberOfMessages(in messagesCollectionView: MessagesCollectionView) -> Int {
+    func numberOfSections(in messagesCollectionView: MessagesCollectionView) -> Int {
         return messageList.count
     }
     
-    func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
+    func messageBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         return NSAttributedString(
             string: message.sentDate.toString(format: "HH:mm"),
             attributes: [
@@ -295,18 +295,6 @@ extension RoomChatViewController: MessagesLayoutDelegate {
         return isFromCurrentSender(message: message) ?
             UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 4):
             UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 30)
-    }
-    
-    func cellTopLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
-        return isFromCurrentSender(message: message) ?
-            .messageTrailing(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)) :
-            .messageLeading(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
-    }
-    
-    func cellBottomLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {
-        return isFromCurrentSender(message: message) ?
-            .messageTrailing(UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)) :
-            .messageLeading(UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0))
     }
     
     func footerViewSize(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CGSize {
@@ -360,37 +348,38 @@ extension RoomChatViewController: MessageCellDelegate {
     func didTapMessage(in cell: MessageCollectionViewCell) {
         guard let index = messagesCollectionView.indexPath(for: cell) else {return}
         let chat = messageList[index.section]
-        chat.getMessage(completion: { [weak self] message in
-            guard let strongSelf = self else {return}
-            guard let message = message else {return}
-            switch chat.data {
-            case .text(let text):
-                print(text)
-                break
-            case .photo(_):
-                guard let imageUrl = message.contentImageUrl, let url = URL(string: imageUrl) else {return}
-                let lightboxController = LightboxController(images: [LightboxImage(imageURL: url)], startIndex: 0)
-                strongSelf.presentVC(lightboxController)
-                break
-            case .video(file: let url, thumbnail: let thumbnail):
-                let lightboxImage = LightboxImage(image: thumbnail, text: "", videoURL: url)
-                let lightboxController = LightboxController(images: [lightboxImage], startIndex: 0)
-                strongSelf.presentVC(lightboxController)
-            case .location(let location):
-                let backButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_chevron_left"), style: .plain, target: strongSelf, action: #selector(strongSelf.back(_:)))
-                backButton.tintColor = UIColor.white
-                let controller = ICLocationViewerController(location: location, forName: chat.sender.displayName)
-                controller.titleColor = UIColor.white
-                controller.subtitleColor = UIColor.lightGray
-                controller.leftCallOutAction = { print("left callout") }
-                controller.shareAction = { location in print("share \(location.coordinate)") }
-                controller.backButton = backButton
-                strongSelf.pushVC(controller)
-                break
-            default:
-                break
-            }
-        })
+//        chat.getMessage(completion: { [weak self] message in
+//            guard let strongSelf = self else {return}
+//            guard let message = message else {return}
+//            switch chat.kind {
+//            case .text(let text):
+//                print(text)
+//                break
+//            case .photo(_):
+//                guard let imageUrl = message.contentImageUrl, let url = URL(string: imageUrl) else {return}
+//                let lightboxController = LightboxController(images: [LightboxImage(imageURL: url)], startIndex: 0)
+//                strongSelf.presentVC(lightboxController)
+//                break
+//            case .video(let media):
+//                let lightboxImage = LightboxImage(image: media.placeholderImage, text: "", videoURL: media.url)
+//                let lightboxController = LightboxController(images: [lightboxImage], startIndex: 0)
+//                strongSelf.presentVC(lightboxController)
+//                break
+//            case .location(let location):
+//                let backButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_chevron_left"), style: .plain, target: strongSelf, action: #selector(strongSelf.back(_:)))
+//                backButton.tintColor = UIColor.white
+//                let controller = ICLocationViewerController(location: location.location, forName: chat.sender.displayName)
+//                controller.titleColor = UIColor.white
+//                controller.subtitleColor = UIColor.lightGray
+//                controller.leftCallOutAction = { print("left callout") }
+//                controller.shareAction = { location in print("share \(location.coordinate)") }
+//                controller.backButton = backButton
+//                strongSelf.pushVC(controller)
+//                break
+//            default:
+//                break
+//            }
+//        })
     }
     
 }
@@ -441,54 +430,54 @@ extension RoomChatViewController: UINavigationControllerDelegate, UIVideoEditorC
         editor.dismissVC(completion: { print(error) })
     }
     func videoEditorController(_ editor: UIVideoEditorController, didSaveEditedVideoToPath editedVideoPath: String) {
-        editor.dismissVC(completion: { [weak self] in
-            guard let strongSelf = self else {return}
-            strongSelf.galleryController.dismissVC(completion: {
-                let manager = VideoManager(url: URL(fileURLWithPath: editedVideoPath))
-                manager.getThumbnail(completion: { image in
-                    manager.convertToMp4(quality: AVAssetExportPresetHighestQuality, handler: { session in
-                        switch session.status {
-                        case .completed:
-                            guard let room = strongSelf.room else {return}
-                            guard let roomId = room.id else {return}
-                            guard let convertedUrl = session.outputURL else {return}
-                            let message = Message(
-                                roomId: roomId,
-                                thumbnail: image,
-                                video: convertedUrl,
-                                sender: strongSelf.currentSender().id,
-                                date: Date()
-                            )
-                            FirebaseManager.shared.create(message: message, room: room, completion: { error, ref in
-                                guard let ref = ref else {return}
-                                FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
-                                FirebaseManager.shared.upload(video: convertedUrl, completion: { meta, _ in
-                                    message.messageId = ref.key
-                                    message.contentVideoUrl = meta?.downloadURL()?.absoluteString
-                                    FirebaseManager.shared.update(message: message)
-                                    FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
-                                })
-                            })
-                            break
-                        case .exporting:
-                            print("exporting: \(session.progress)")
-                            break
-                        case .failed:
-                            print("failed: \(session.error as Any)")
-                            break
-                        case .cancelled:
-                            print("cancelled")
-                            break
-                        case .waiting:
-                            print("waiting")
-                            break
-                        case .unknown:
-                            print("unknown")
-                        }
-                    })
-                })
-            })
-        })
+//        editor.dismissVC(completion: { [weak self] in
+//            guard let strongSelf = self else {return}
+//            strongSelf.galleryController.dismissVC(completion: {
+//                let manager = VideoManager(url: URL(fileURLWithPath: editedVideoPath))
+//                manager.getThumbnail(completion: { image in
+//                    manager.convertToMp4(quality: AVAssetExportPresetHighestQuality, handler: { session in
+//                        switch session.status {
+//                        case .completed:
+//                            guard let room = strongSelf.room else {return}
+//                            guard let roomId = room.id else {return}
+//                            guard let convertedUrl = session.outputURL else {return}
+//                            let message = Message(
+//                                roomId: roomId,
+//                                thumbnail: image,
+//                                video: convertedUrl,
+//                                sender: strongSelf.currentSender().id,
+//                                date: Date()
+//                            )
+//                            FirebaseManager.shared.create(message: message, room: room, completion: { error, ref in
+//                                guard let ref = ref else {return}
+//                                FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
+//                                FirebaseManager.shared.upload(video: convertedUrl, completion: { meta, _ in
+//                                    message.messageId = ref.key
+//                                    message.contentVideoUrl = meta?.downloadURL()?.absoluteString
+//                                    FirebaseManager.shared.update(message: message)
+//                                    FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
+//                                })
+//                            })
+//                            break
+//                        case .exporting:
+//                            print("exporting: \(session.progress)")
+//                            break
+//                        case .failed:
+//                            print("failed: \(session.error as Any)")
+//                            break
+//                        case .cancelled:
+//                            print("cancelled")
+//                            break
+//                        case .waiting:
+//                            print("waiting")
+//                            break
+//                        case .unknown:
+//                            print("unknown")
+//                        }
+//                    })
+//                })
+//            })
+//        })
     }
 }
 
@@ -498,22 +487,22 @@ extension RoomChatViewController: TOCropViewControllerDelegate {
     }
     func cropViewController(_ cropViewController: TOCropViewController, didCropToImage image: UIImage, rect cropRect: CGRect, angle: Int) {
         cropViewController.dismissVC(completion: { [weak self] in
-            guard let strongSelf = self else {return}
-            strongSelf.galleryController.dismissVC(completion: {
-                guard let room = strongSelf.room else {return}
-                guard let roomId = room.id else {return}
-                let message = Message(roomId: roomId, image: image, sender: strongSelf.currentSender().id, date: Date())
-                FirebaseManager.shared.create(message: message, room: room, completion: { error, ref in
-                    guard let ref = ref else {return}
-                    FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
-                    FirebaseManager.shared.upload(image: image, completion: { meta, _ in
-                        message.messageId = ref.key
-                        message.contentImageUrl = meta?.downloadURL()?.absoluteString
-                        FirebaseManager.shared.update(message: message)
-                        FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
-                    })
-                })
-            })
+//            guard let strongSelf = self else {return}
+//            strongSelf.galleryController.dismissVC(completion: {
+//                guard let room = strongSelf.room else {return}
+//                guard let roomId = room.id else {return}
+//                let message = Message(roomId: roomId, image: image, sender: strongSelf.currentSender().id, date: Date())
+//                FirebaseManager.shared.create(message: message, room: room, completion: { error, ref in
+//                    guard let ref = ref else {return}
+//                    FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
+//                    FirebaseManager.shared.upload(image: image, completion: { meta, _ in
+//                        message.messageId = ref.key
+//                        message.contentImageUrl = meta?.downloadURL()?.absoluteString
+//                        FirebaseManager.shared.update(message: message)
+//                        FirebaseManager.shared.updateLastChatTimeStamp(room: room, date: Date())
+//                    })
+//                })
+//            })
         })
     }
 }

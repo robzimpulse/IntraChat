@@ -233,55 +233,55 @@ class FirebaseManager: NSObject {
     
     func create(message: Message, room: Room, completion: ((Error?, DatabaseReference?) -> Void)? = nil){
         messageRef.childByAutoId().setValue(message.keyValue(), withCompletionBlock: { completion?($0, $1) })
-        guard let type = message.data else {return}
-        switch type {
-        case .photo:
-            room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
-                FirebaseManager.shared.create(notification: Notification(
-                    title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
-                    body: "📷 Image",
-                    receiver: user,
-                    room: room.id ?? "",
-                    sender: currentUser()?.uid ?? ""
-                ))
-            })
-            break
-        case .text(let text):
-            room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
-                FirebaseManager.shared.create(notification: Notification(
-                    title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
-                    body: text,
-                    receiver: user,
-                    room: room.id ?? "",
-                    sender: currentUser()?.uid ?? ""
-                ))
-            })
-            break
-        case .video:
-            room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
-                FirebaseManager.shared.create(notification: Notification(
-                    title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
-                    body: "📹 Video",
-                    receiver: user,
-                    room: room.id ?? "",
-                    sender: currentUser()?.uid ?? ""
-                ))
-            })
-            break
-        case .location:
-            room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
-                FirebaseManager.shared.create(notification: Notification(
-                    title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
-                    body: "📍Location",
-                    receiver: user,
-                    room: room.id ?? "",
-                    sender: currentUser()?.uid ?? ""
-                ))
-            })
-            break
-        default:
-            break
-        }
+//        guard let type = message.data else {return}
+//        switch type {
+//        case .photo:
+//            room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
+//                FirebaseManager.shared.create(notification: Notification(
+//                    title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
+//                    body: "📷 Image",
+//                    receiver: user,
+//                    room: room.id ?? "",
+//                    sender: currentUser()?.uid ?? ""
+//                ))
+//            })
+//            break
+//        case .text(let text):
+//            room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
+//                FirebaseManager.shared.create(notification: Notification(
+//                    title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
+//                    body: text,
+//                    receiver: user,
+//                    room: room.id ?? "",
+//                    sender: currentUser()?.uid ?? ""
+//                ))
+//            })
+//            break
+//        case .video:
+//            room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
+//                FirebaseManager.shared.create(notification: Notification(
+//                    title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
+//                    body: "📹 Video",
+//                    receiver: user,
+//                    room: room.id ?? "",
+//                    sender: currentUser()?.uid ?? ""
+//                ))
+//            })
+//            break
+//        case .location:
+//            room.users.filter({ currentUser()?.uid != $0 }).forEach({ user in
+//                FirebaseManager.shared.create(notification: Notification(
+//                    title: "\(currentUser()?.displayName ?? "") @\(room.name ?? "")",
+//                    body: "📍Location",
+//                    receiver: user,
+//                    room: room.id ?? "",
+//                    sender: currentUser()?.uid ?? ""
+//                ))
+//            })
+//            break
+//        default:
+//            break
+//        }
     }
     
     func update(message: Message, completion: ((Error?) -> Void)? = nil){
@@ -367,7 +367,7 @@ class FirebaseManager: NSObject {
         handleSuccess: ((StorageTaskSnapshot) -> Void)? = nil,
         handleUnknown: ((StorageTaskSnapshot) -> Void)? = nil,
         completion: ((StorageMetadata?, Error?) -> Void)? = nil
-        ){
+    ){
         guard let task = upload(image: image, completion: completion) else {return}
         if let handler = handleFailure {task.observe(.failure, handler: handler)}
         if let handler = handlePause {task.observe(.pause, handler: handler)}
@@ -386,7 +386,7 @@ class FirebaseManager: NSObject {
         handleSuccess: ((StorageTaskSnapshot) -> Void)? = nil,
         handleUnknown: ((StorageTaskSnapshot) -> Void)? = nil,
         completion: ((StorageMetadata?, Error?) -> Void)? = nil
-        ){
+    ){
         guard let task = upload(video: video, completion: completion) else {return}
         if let handler = handleFailure {task.observe(.failure, handler: handler)}
         if let handler = handlePause {task.observe(.pause, handler: handler)}

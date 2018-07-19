@@ -81,24 +81,24 @@ class RoomInfoViewController: UIViewController {
         guard !name.isBlank else {return}
         photoImageView.addSubview(progressView)
         progressView.centerInSuperView()
-        FirebaseManager.shared.upload(image: icon, handleProgress: { [weak self] snapshot in
-            guard let strongSelf = self else {return}
-            guard let progress = snapshot.progress?.fractionCompleted.toCGFloat else {return}
-            strongSelf.progressView.updateProgress(progress)
-            }, completion: { [weak self] meta, _ in
-                guard let strongSelf = self else {return}
-                strongSelf.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
-                    strongSelf.progressView.removeFromSuperview()
-                    guard let meta = meta else {return}
-                    guard let icon = meta.downloadURL()?.absoluteString else {return}
-                    strongSelf.users.value.append(User(user: user))
-                    let room = Room(name: name, icon: icon, users: strongSelf.users.value)
-                    FirebaseManager.shared.create(room: room, completion: { error in
-                        guard error == nil else {return}
-                        strongSelf.navigationController?.dismissVC(completion: nil)
-                    })
-                })
-        })
+//        FirebaseManager.shared.upload(image: icon, handleProgress: { [weak self] snapshot in
+//            guard let strongSelf = self else {return}
+//            guard let progress = snapshot.progress?.fractionCompleted.toCGFloat else {return}
+//            strongSelf.progressView.updateProgress(progress)
+//            }, completion: { [weak self] meta, _ in
+//                guard let strongSelf = self else {return}
+//                strongSelf.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
+//                    strongSelf.progressView.removeFromSuperview()
+//                    guard let meta = meta else {return}
+//                    guard let icon = meta.downloadURL()?.absoluteString else {return}
+//                    strongSelf.users.value.append(User(user: user))
+//                    let room = Room(name: name, icon: icon, users: strongSelf.users.value)
+//                    FirebaseManager.shared.create(room: room, completion: { error in
+//                        guard error == nil else {return}
+//                        strongSelf.navigationController?.dismissVC(completion: nil)
+//                    })
+//                })
+//        })
     }
     
 }

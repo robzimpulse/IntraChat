@@ -157,22 +157,22 @@ extension ProfileViewController: TOCropViewControllerDelegate {
         cropViewController.dismissVC(completion: { [weak self] in
             guard let strongSelf = self else {return}
             strongSelf.galleryController.dismissVC(completion: {
-                strongSelf.profileImageView.addSubview(strongSelf.progressView)
-                strongSelf.progressView.centerInSuperView()
-                FirebaseManager.shared.upload(image: image, handleProgress: { snapshot in
-                    guard let progress = snapshot.progress?.fractionCompleted.toCGFloat else {return}
-                    strongSelf.progressView.updateProgress(progress)
-                }, completion: { meta, _ in
-                    strongSelf.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
-                        strongSelf.progressView.removeFromSuperview()
-                        guard let meta = meta else {return}
-                        guard let url = meta.downloadURL() else {return}
-                        FirebaseManager.shared.change(photoUrl: url, completion: { error in
-                            guard error == nil else {return}
-                            strongSelf.profileImageView.setPersistentImage(url: url, isRounded: false)
-                        })
-                    })
-                })
+//                strongSelf.profileImageView.addSubview(strongSelf.progressView)
+//                strongSelf.progressView.centerInSuperView()
+//                FirebaseManager.shared.upload(image: image, handleProgress: { snapshot in
+//                    guard let progress = snapshot.progress?.fractionCompleted.toCGFloat else {return}
+//                    strongSelf.progressView.updateProgress(progress)
+//                }, completion: { meta, _ in
+//                    strongSelf.progressView.updateProgress(1, animated: true, initialDelay: 0.2, duration: 0.2, completion: {
+//                        strongSelf.progressView.removeFromSuperview()
+//                        guard let meta = meta else {return}
+//                        guard let url = meta.downloadURL() else {return}
+//                        FirebaseManager.shared.change(photoUrl: url, completion: { error in
+//                            guard error == nil else {return}
+//                            strongSelf.profileImageView.setPersistentImage(url: url, isRounded: false)
+//                        })
+//                    })
+//                })
             })
         })
     }

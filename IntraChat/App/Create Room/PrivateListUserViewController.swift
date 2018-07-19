@@ -18,7 +18,7 @@ class PrivateListUserViewController: UIViewController {
         return .lightContent
     }
     
-    typealias cell1 = UserCell
+    typealias cell = UserCell
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -28,40 +28,38 @@ class PrivateListUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.tableFooterView = UIView()
-        
         tableView.allowsMultipleSelection = false
-        
         tableView.sectionIndexColor = UIColor.black
-        
-        tableView.register(cell1.nib(), forCellReuseIdentifier: cell1.identifier())
+        tableView.register(cell.nib(), forCellReuseIdentifier: cell.identifier())
         
         sectionedUser.asObservable()
             .bind(to: tableView.rx.items(dataSource: datasource()))
             .disposed(by: disposeBag)
         
-        User.get(completion: { [unowned self] users in
+        User.get(completion: { [weak self] users in
+            guard let ws = self else {return}
             guard let users = users else {return}
             guard let currentUser = FirebaseManager.shared.currentUser() else {return}
             
             Observable.arrayWithChangeset(from: users)
                 .map({ $0.0.filter({ $0.uid != currentUser.uid }) })
-                .map({
-                    $0.sorted(by: {
-                        guard let name1 = $0.name, let name2 = $1.name else {return false}
+                .map({ $0.sorted(by: {
+                        guard let name1 = $0.name else {return false}
+                        guard let name2 = $1.name else {return false}
                         return name1 < name2
-                    }).categorise({
-                        $0.name?.first ?? Character("")
-                    }).map({ key, items in
-                        return MultipleSectionModel.UserSection(
-                            title: String(key),
-                            items: items.map({ SectionItem.UserSectionItem(user:  $0) })
+                    })
+                })
+                .map({ $0.categorise({ $0.name?.first ?? Character("") }) })
+                .map({ $0.map({
+                        MultipleSectionModel.UserSection(
+                            title: String($0),
+                            items: $1.map({ SectionItem.UserSectionItem(user:  $0) })
                         )
                     })
                 })
-                .bind(to: self.sectionedUser)
-                .disposed(by: self.disposeBag)
+                .bind(to: ws.sectionedUser)
+                .disposed(by: ws.disposeBag)
         })
         
     }
@@ -74,14 +72,15 @@ extension PrivateListUserViewController {
             configureCell: { datasource, table, indexPath, _ in
                 switch datasource[indexPath] {
                 case .UserSectionItem(user: let user):
-                    let cell: UserCell = table.dequeueReusableCell(forIndexPath: indexPath)
+                    let cell: cell = table.dequeueReusableCell(forIndexPath: indexPath)
                     cell.configure(user: user)
                     return cell
                 }
-        }, titleForHeaderInSection: { datasource, indexPath in
-            return datasource[indexPath].title
-        }, sectionIndexTitles: { datasource in
-            return datasource.sectionModels.map { $0.title }
-        })
+            }, titleForHeaderInSection: { datasource, indexPath in
+                return datasource[indexPath].title
+            }, sectionIndexTitles: { datasource in
+                return datasource.sectionModels.map { $0.title }
+            }
+        )
     }
 }

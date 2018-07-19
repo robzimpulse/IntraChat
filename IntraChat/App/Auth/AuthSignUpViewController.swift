@@ -40,7 +40,7 @@ class AuthSignUpViewController: UIViewController {
             guard password == confirmPassword else {return}
             strongSelf.submitButton.isEnabled = false
             Auth.auth().createUser(withEmail: email, password: password, completion: { user, error in
-                guard let user = user else {
+                guard let user = user?.user else {
                     print(error as Any)
                     strongSelf.submitButton.isEnabled = true
                     return

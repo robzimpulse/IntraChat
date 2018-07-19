@@ -44,6 +44,8 @@
 		3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */; };
 		3EE3D7162000D74200D77A8F /* BaseMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE3D7152000D74200D77A8F /* BaseMappable.swift */; };
 		3EE3D71D20016E9E00D77A8F /* Auth.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EE3D71C20016E9E00D77A8F /* Auth.storyboard */; };
+		3EE4BB9121008D4F00BC7B3F /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE4BB9021008D4F00BC7B3F /* Media.swift */; };
+		3EE4BB93210090E100BC7B3F /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE4BB92210090E100BC7B3F /* Location.swift */; };
 		3EE98595201321C60013D4F4 /* SelectedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE98593201321C60013D4F4 /* SelectedUserCell.swift */; };
 		3EE98596201321C60013D4F4 /* SelectedUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EE98594201321C60013D4F4 /* SelectedUserCell.xib */; };
 		3EF78FED200A5283008E1AEB /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF78FEC200A5283008E1AEB /* UIImage.swift */; };
@@ -99,6 +101,8 @@
 		3EE3D7132000D29A00D77A8F /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		3EE3D7152000D74200D77A8F /* BaseMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseMappable.swift; sourceTree = "<group>"; };
 		3EE3D71C20016E9E00D77A8F /* Auth.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Auth.storyboard; sourceTree = "<group>"; };
+		3EE4BB9021008D4F00BC7B3F /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
+		3EE4BB92210090E100BC7B3F /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		3EE98593201321C60013D4F4 /* SelectedUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedUserCell.swift; sourceTree = "<group>"; };
 		3EE98594201321C60013D4F4 /* SelectedUserCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectedUserCell.xib; sourceTree = "<group>"; };
 		3EF78FEC200A5283008E1AEB /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
@@ -246,6 +250,8 @@
 				8447F73E20061617002B9528 /* Notification.swift */,
 				842A229C2004D109008AE4A4 /* Message.swift */,
 				3EF838F9200CEDAC008993A4 /* Chat.swift */,
+				3EE4BB9021008D4F00BC7B3F /* Media.swift */,
+				3EE4BB92210090E100BC7B3F /* Location.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -513,6 +519,7 @@
 			files = (
 				3E3487EC1FFFDBD1009ED2E0 /* AppDelegate.swift in Sources */,
 				3EDFE004201B5983006215E2 /* RoomDetailViewController.swift in Sources */,
+				3EE4BB93210090E100BC7B3F /* Location.swift in Sources */,
 				3E987DC9201778030073069E /* UserSectionModel.swift in Sources */,
 				3E0C718B2030718D00F3F517 /* GroupListUserViewController.swift in Sources */,
 				842A22A12004E867008AE4A4 /* NavigationController.swift in Sources */,
@@ -534,6 +541,7 @@
 				3E15536720027089007BD985 /* AuthSignUpViewController.swift in Sources */,
 				3E20901E2003CE650062BA7C /* User.swift in Sources */,
 				3EE3D7142000D29A00D77A8F /* FirebaseManager.swift in Sources */,
+				3EE4BB9121008D4F00BC7B3F /* Media.swift in Sources */,
 				3E1553632002688A007BD985 /* AuthInitialViewController.swift in Sources */,
 				3E36AEDE2017A7FC0083B45B /* Constant.swift in Sources */,
 				3E11EC182026ECEA0039932D /* Helper.swift in Sources */,
