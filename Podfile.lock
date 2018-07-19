@@ -1,97 +1,88 @@
 PODS:
-  - Alamofire (4.6.0)
-  - AlamofireImage (3.3.0):
+  - Alamofire (4.7.2)
+  - AlamofireImage (3.3.1):
     - Alamofire (~> 4.5)
-  - Cache (4.1.2)
+  - Cache (4.2.0)
   - Differentiator (3.0.2)
-  - Eureka (4.0.1)
+  - Eureka (4.2.0)
   - EZSwiftExtensions (1.11)
   - FileBrowser (1.0.0)
-  - Firebase/Auth (4.8.1):
-    - Firebase/Core
-    - FirebaseAuth (= 4.4.2)
-  - Firebase/Core (4.8.1):
-    - FirebaseAnalytics (= 4.0.7)
-    - FirebaseCore (= 4.0.14)
-  - Firebase/Database (4.8.1):
-    - Firebase/Core
-    - FirebaseDatabase (= 4.1.4)
-  - Firebase/Messaging (4.8.1):
-    - Firebase/Core
-    - FirebaseMessaging (= 2.0.8)
-  - Firebase/Storage (4.8.1):
-    - Firebase/Core
-    - FirebaseStorage (= 2.1.2)
-  - FirebaseAnalytics (4.0.7):
-    - FirebaseCore (~> 4.0)
-    - FirebaseInstanceID (~> 2.0)
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - Firebase/Auth (5.4.0):
+    - Firebase/CoreOnly
+    - FirebaseAuth (= 5.0.2)
+  - Firebase/Core (5.4.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 5.0.1)
+  - Firebase/CoreOnly (5.4.0):
+    - FirebaseCore (= 5.0.5)
+  - Firebase/Database (5.4.0):
+    - Firebase/CoreOnly
+    - FirebaseDatabase (= 5.0.2)
+  - Firebase/Messaging (5.4.0):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (= 3.0.3)
+  - Firebase/Storage (5.4.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (= 3.0.0)
+  - FirebaseAnalytics (5.0.1):
+    - FirebaseCore (~> 5.0)
+    - FirebaseInstanceID (~> 3.0)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
     - nanopb (~> 0.3)
-  - FirebaseAuth (4.4.2):
-    - FirebaseAnalytics (~> 4.0)
-    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
+  - FirebaseAuth (5.0.2):
+    - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - FirebaseCore (4.0.14):
-    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
-  - FirebaseDatabase (4.1.4):
-    - FirebaseAnalytics (~> 4.0)
-    - FirebaseCore (~> 4.0)
+  - FirebaseCore (5.0.5):
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+  - FirebaseDatabase (5.0.2):
+    - FirebaseCore (~> 5.0)
     - leveldb-library (~> 1.18)
-  - FirebaseInstanceID (2.0.8):
-    - FirebaseCore (~> 4.0)
-  - FirebaseMessaging (2.0.8):
-    - FirebaseAnalytics (~> 4.0)
-    - FirebaseCore (~> 4.0)
-    - FirebaseInstanceID (~> 2.0)
+  - FirebaseInstanceID (3.1.1):
+    - FirebaseCore (~> 5.0)
+  - FirebaseMessaging (3.0.3):
+    - FirebaseCore (~> 5.0)
+    - FirebaseInstanceID (~> 3.0)
     - GoogleToolboxForMac/Logger (~> 2.1)
     - Protobuf (~> 3.1)
-  - FirebaseStorage (2.1.2):
-    - FirebaseAnalytics (~> 4.0)
-    - FirebaseCore (~> 4.0)
+  - FirebaseStorage (3.0.0):
+    - FirebaseCore (~> 5.0)
     - GTMSessionFetcher/Core (~> 1.1)
   - Gallery (2.0.6)
-  - GoogleToolboxForMac/DebugUtils (2.1.3):
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-  - GoogleToolboxForMac/Defines (2.1.3)
-  - GoogleToolboxForMac/Logger (2.1.3):
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-  - GoogleToolboxForMac/NSData+zlib (2.1.3):
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3):
-    - GoogleToolboxForMac/DebugUtils (= 2.1.3)
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
-  - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
-  - GTMSessionFetcher/Core (1.1.12)
-  - Hero (1.0.1)
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - GoogleToolboxForMac/Logger (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GTMSessionFetcher/Core (1.1.15)
+  - Hero (1.2.0)
   - Hue (3.0.1)
   - Imaginary (3.0.3):
     - Cache (~> 4.0)
-  - IQKeyboardManager (5.0.7)
+  - IQKeyboardManager (6.0.4)
   - leveldb-library (1.20)
   - Lightbox (2.1.2):
     - Hue (~> 3.0)
     - Imaginary (~> 3.0)
-  - LocationPicker (1.0.3)
-  - LocationViewer (0.1.4)
-  - MessageKit (0.13.0)
+  - LocationPicker (1.1.0)
+  - LocationViewer (0.1.5)
+  - MessageKit (1.0.0)
   - nanopb (0.3.8):
     - nanopb/decode (= 0.3.8)
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
-  - ObjectMapper (3.1.0)
-  - Protobuf (3.5.0)
+  - ObjectMapper (3.3.0)
+  - Protobuf (3.6.0)
   - PusherChatkit (0.3.0):
     - PusherPlatform (~> 0.1.23)
   - PusherPlatform (0.1.30)
-  - Realm (3.1.0):
-    - Realm/Headers (= 3.1.0)
-  - Realm/Headers (3.1.0)
-  - RealmSwift (3.1.0):
-    - Realm (= 3.1.0)
+  - Realm (3.7.4):
+    - Realm/Headers (= 3.7.4)
+  - Realm/Headers (3.7.4)
+  - RealmSwift (3.7.4):
+    - Realm (= 3.7.4)
   - RPCircularProgress (0.4.0)
-  - RxCocoa (4.1.1):
+  - RxCocoa (4.2.0):
     - RxSwift (~> 4.0)
   - RxDataSources (3.0.2):
     - Differentiator (~> 3.0)
@@ -100,7 +91,7 @@ PODS:
   - RxRealm (0.7.5):
     - RealmSwift (~> 3.0)
     - RxSwift (~> 4.0)
-  - RxSwift (4.1.1)
+  - RxSwift (4.2.0)
   - TOCropViewController (2.3.6)
   - ViewRow (0.3.0):
     - Eureka (>= 4.0.0)
@@ -132,58 +123,101 @@ DEPENDENCIES:
   - TOCropViewController
   - ViewRow (from `https://github.com/EurekaCommunity/ViewRow`)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - AlamofireImage
+    - Cache
+    - Differentiator
+    - Eureka
+    - EZSwiftExtensions
+    - FileBrowser
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseAuth
+    - FirebaseCore
+    - FirebaseDatabase
+    - FirebaseInstanceID
+    - FirebaseMessaging
+    - FirebaseStorage
+    - Gallery
+    - GoogleToolboxForMac
+    - GTMSessionFetcher
+    - Hero
+    - Hue
+    - Imaginary
+    - IQKeyboardManager
+    - leveldb-library
+    - Lightbox
+    - LocationPicker
+    - LocationViewer
+    - MessageKit
+    - nanopb
+    - ObjectMapper
+    - Protobuf
+    - PusherChatkit
+    - PusherPlatform
+    - Realm
+    - RealmSwift
+    - RPCircularProgress
+    - RxCocoa
+    - RxDataSources
+    - RxRealm
+    - RxSwift
+    - TOCropViewController
+
 EXTERNAL SOURCES:
   ViewRow:
     :git: https://github.com/EurekaCommunity/ViewRow
 
 CHECKOUT OPTIONS:
   ViewRow:
-    :commit: fbfc539796f8a00102a671b338c1c3bbb39a6b89
+    :commit: 5f8816fa17af881048b8fe881df329e193c28f93
     :git: https://github.com/EurekaCommunity/ViewRow
 
 SPEC CHECKSUMS:
-  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  AlamofireImage: 2e784dc5d00f04903a52c1d169181469c805c3df
-  Cache: bd0233fc688b5e83a27bcd87807db7e6f23adcc5
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  AlamofireImage: 3b35b586853abaf94ca1250f4e94cff3c21a4c0d
+  Cache: f28f8dd64b632155aabf9b3906b036a659048251
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
-  Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
+  Eureka: 0748c7bbb2560130e43c7bfa83e99c98854a1f42
   EZSwiftExtensions: 84000042202d9fd574f626cda3064143f27fa767
   FileBrowser: 2ca91ff61c9ea09665eb3b8f9e64a7a77e66a0bf
-  Firebase: 2721056b8885eef90233b03f37be64358d35d262
-  FirebaseAnalytics: 617afa8c26b57a0c3f11361b248bc9e17bfd8dfd
-  FirebaseAuth: bd2738c5c1e92b108ba5f7f7335908097a4e50bb
-  FirebaseCore: 2e0b98fb2d64ca8140136beff15772bdd14d2dd7
-  FirebaseDatabase: de4446507ccd3257fca37d16f40e1540324571fd
-  FirebaseInstanceID: 81df5805a08001e69138664bdd02c6719a9ac80f
-  FirebaseMessaging: dfdcd307c2382290a1e297a81d0f18370f5b1bcd
-  FirebaseStorage: 181bb543d39ee3c53e0558de7ba86b1286a0427f
+  Firebase: d66f4f29c23f22d96808d9abc174d81d8eee968f
+  FirebaseAnalytics: b3628aea54c50464c32c393fb2ea032566e7ecc2
+  FirebaseAuth: 096e457cdd4274412a66c4a35874787e411f5a03
+  FirebaseCore: 42b3267233bd21a5abd54117ccc38ca3dd0f8e83
+  FirebaseDatabase: 27be5ac5bc75e0b17537b2bbfada8258addcc8cd
+  FirebaseInstanceID: f3f0657372592ecdfdfe2cac604a5a75758376a6
+  FirebaseMessaging: f43eb0c0e1da096e659de6f713038e74862a62cd
+  FirebaseStorage: 7ca4bb7b58a25fa647b04f524033fc7cb7eb272b
   Gallery: 5489ae11d8010a3cc163030f6e92d618afbdf4df
-  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
-  GTMSessionFetcher: ebaa1f79a5366922c1735f1566901f50beba23b7
-  Hero: cee286821578e170d8c0c9c9cda7897357401112
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
+  Hero: 33dadf2cd1c98af71e213dcbc2902e6e03622a4e
   Hue: 93e852fa6211ab35922ad8c293f51c43d6c79eb2
   Imaginary: 9b45836a5af881f452a86e0a1215772ae4712d00
-  IQKeyboardManager: 0bfa4607d39924116b5c0c8b55b5d789288b5cba
+  IQKeyboardManager: 29514134ef0334a6fa33cf4eee11c36c064baeaf
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   Lightbox: 2dc267df8be2285bc7724cb11cbbf4aaaf59dced
-  LocationPicker: d54d59c9d14d52496e3e8167e67f13440d6bcf1e
-  LocationViewer: 3a50ccf51e1299836db8e08596fcc4f9ad3bf839
-  MessageKit: 41c7e6dcb8f528413d00a0abebea7811cfa194c0
+  LocationPicker: 94dbd15ee053646d5c275d44b4dfce8634d66041
+  LocationViewer: fc4608545c371a63e606fb18793df92084ea5c22
+  MessageKit: 16160036b16476b04bd0e9f2c7ce67e662e503e4
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
-  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
+  Protobuf: 0fc0ad8bec688b2a3017a139953e01374fedbd5f
   PusherChatkit: 53d6b4f413f15d95421c9a215875fb647358ac7a
   PusherPlatform: d9abd46caac2d49c797bd18d9e34c36f2000364b
-  Realm: 09513d7c054678d65cd02ce09871f805b0d758ac
-  RealmSwift: e868fee9b10e5490ad94b6b6ecd9027944da1824
+  Realm: a469bb59e33f9926102ccaea4349822c53b9117e
+  RealmSwift: a45861b21c180f5cf0f122144b9759fa8dde3e9e
   RPCircularProgress: fdbf7c5b54156980cdd35c6cc8a87d6468c6c829
-  RxCocoa: fd0862fd2df95fa55562ad28ffd2522c25eb4a85
+  RxCocoa: 0b54909c902e1e581212a03e690bbd94032d8baa
   RxDataSources: cb7c31e652a87ebb919da45f716bbb87b3765f6b
   RxRealm: a6c6c0a07cb61f34209969ca6657734edfdfff30
-  RxSwift: c6e3b1c7b325c7d121cd4327e9d98b7ed746b570
+  RxSwift: 99e10317ddfcc7fbe01356aafd118fde4a0be104
   TOCropViewController: 6d972f2c609372312648f96758e13a7f689efbc0
   ViewRow: e278428ff53da5eab18b191d3e19a16f3e299fc1
 
 PODFILE CHECKSUM: 12d0db7254c365aac9c6581d22a18a150bef95f9
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.3

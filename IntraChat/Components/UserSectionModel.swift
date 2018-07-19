@@ -10,58 +10,58 @@ import UIKit
 import RxDataSources
 
 enum MultipleSectionModel {
-  case UserSection(title: String, items: [SectionItem])
+    case UserSection(title: String, items: [SectionItem])
 }
 
 enum SectionItem {
-  case UserSectionItem(user: User)
+    case UserSectionItem(user: User)
 }
 
 extension MultipleSectionModel: SectionModelType {
-  typealias Item = SectionItem
-  
-  var items: [SectionItem] {
-    switch  self {
-    case .UserSection(title: _, items: let items):
-      return items.map{$0}
+    typealias Item = SectionItem
+    
+    var items: [SectionItem] {
+        switch  self {
+        case .UserSection(title: _, items: let items):
+            return items.map{$0}
+        }
     }
-  }
-  
-  init(original: MultipleSectionModel, items: [Item]) {
-    switch original {
-    case .UserSection(title: let title, items: _):
-      self = .UserSection(title: title, items: items)
+    
+    init(original: MultipleSectionModel, items: [Item]) {
+        switch original {
+        case .UserSection(title: let title, items: _):
+            self = .UserSection(title: title, items: items)
+        }
     }
-  }
 }
 
 extension MultipleSectionModel {
-  var title: String {
-    switch self {
-    case .UserSection(title: let title, items: _):
-      return title
+    var title: String {
+        switch self {
+        case .UserSection(title: let title, items: _):
+            return title
+        }
     }
-  }
 }
 
 extension UITableView {
-  
-  func dequeueReusableCell<T: UITableViewCell>(forIndexPath indexPath: IndexPath) -> T {
-    guard let cell = dequeueReusableCell(withIdentifier: T.identifier(), for: indexPath) as? T else {
-      fatalError("Could not dequeue cell with identifier: \(T.identifier())")
-    }
     
-    return cell
-  }
+    func dequeueReusableCell<T: UITableViewCell>(forIndexPath indexPath: IndexPath) -> T {
+        guard let cell = dequeueReusableCell(withIdentifier: T.identifier(), for: indexPath) as? T else {
+            fatalError("Could not dequeue cell with identifier: \(T.identifier())")
+        }
+        
+        return cell
+    }
 }
 
 public extension Sequence {
-  func categorise<U : Hashable>(_ key: (Iterator.Element) -> U) -> [U:[Iterator.Element]] {
-    var dict: [U:[Iterator.Element]] = [:]
-    for el in self {
-      let key = key(el)
-      if case nil = dict[key]?.append(el) { dict[key] = [el] }
+    func categorise<U : Hashable>(_ key: (Iterator.Element) -> U) -> [U:[Iterator.Element]] {
+        var dict: [U:[Iterator.Element]] = [:]
+        for el in self {
+            let key = key(el)
+            if case nil = dict[key]?.append(el) { dict[key] = [el] }
+        }
+        return dict
     }
-    return dict
-  }
 }

@@ -9,13 +9,13 @@
 import UIKit
 
 extension UICollectionViewCell {
-  
-  static func nib() -> UINib {
-    return UINib(nibName: className, bundle: nil)
-  }
-  
-  static func identifier() -> String {
-    return className
-  }
-  
+    
+    static func nib() -> UINib {
+        return UINib(nibName: className, bundle: nil)
+    }
+    
+    static func identifier() -> String {
+        return className
+    }
+    
 }

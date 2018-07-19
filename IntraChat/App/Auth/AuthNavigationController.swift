@@ -10,21 +10,21 @@ import UIKit
 import Hero
 
 class AuthNavigationController: UINavigationController {
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    isHeroEnabled = true
-    heroNavigationAnimationType = .fade
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    heroModalAnimationType = .cover(direction: .up)
-  }
-  
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    heroModalAnimationType = .cover(direction: .down)
-  }
-  
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        isHeroEnabled = true
+        heroNavigationAnimationType = .fade
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        heroModalAnimationType = .cover(direction: .up)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        heroModalAnimationType = .cover(direction: .down)
+    }
+    
 }

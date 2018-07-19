@@ -10,10 +10,10 @@ import UIKit
 import LocationViewer
 
 class ICLocationViewerController: LocationViewerController {
-  
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-  
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
 }
 

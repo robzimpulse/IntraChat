@@ -11,12 +11,12 @@ import ObjectMapper
 import FirebaseDatabase
 
 extension BaseMappable {
-  static var firebaseIdKey : String {
-    get { return "FirebaseIdKey" }
-  }
-  init?(snapshot: DataSnapshot) {
-    guard var json = snapshot.value as? [String: Any] else {return nil}
-    json[Self.firebaseIdKey] = snapshot.key as Any
-    self.init(JSON: json)
-  }
+    static var firebaseIdKey : String {
+        get { return "FirebaseIdKey" }
+    }
+    init?(snapshot: DataSnapshot) {
+        guard var json = snapshot.value as? [String: Any] else {return nil}
+        json[Self.firebaseIdKey] = snapshot.key as Any
+        self.init(JSON: json)
+    }
 }
